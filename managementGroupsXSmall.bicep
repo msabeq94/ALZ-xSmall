@@ -80,3 +80,4 @@ output outLandingZonesOnlineManagementGroupId string = resLandingZonesOnlineMg.i
 output outTopLevelManagementGroupName string = resTopLevelMg.name
 output outLandingZonesManagementGroupName string = resLandingZonesMg.name
 output outLandingZonesOnlineManagementGroupName string = resLandingZonesOnlineMg.name
+
