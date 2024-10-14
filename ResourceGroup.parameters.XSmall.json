@@ -3,16 +3,16 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "ParResourceGroupProductionSpokeName" : {
-      "value": "Production Spoke"
+      "value": "ProductionSpoke"
     },
   "ParResourceGroupCentralNetworkName" : {
-      "value": "Central Network Hub"
+      "value": "CentralNetworkHub"
     },
     "ParResourceGroupdevelopmentSpokeName"  : {
-      "value": "Development Spoke"
+      "value": "DevelopmentSpoke"
     },
     "ParResourceGroupInternalServicesHubName" : {
-      "value": "Internal Services Hub"
+      "value": "InternalServicesHub"
     },
     "ParResourceGroupLocation"  : {
       "value": "customerLocation"
