@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "ParVnetProductionName" : {
+      "value": "vf-core-ProductionSpoke-production-vnet"
+    },
+    "ParVnetProductionAddressPrefix" : {
+      "value": "10.1.0.0/16"
+    },
+    "ParVnetProductionSubnetName" : {
+      "value": "ProductionSubnet"
+    },
+    "ParVnetProductionSubnetAddressPrefix" : {
+      "value": "10.1.0.0/24"
+    },
+  "ParVnetLocation" : {
+      "value": "uksouth"
+    }
+  }
+}
