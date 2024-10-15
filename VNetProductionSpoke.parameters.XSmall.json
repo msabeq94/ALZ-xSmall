@@ -14,6 +14,12 @@
     "ParVnetProductionSubnetAddressPrefix" : {
       "value": "10.1.0.0/24"
     },
+    "ParVnetCentralNetworkid" : {
+      "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/virtualNetworks/vf-core-CentralNetwork-central-NW-hub-vnet"
+    },
+    "ParVnetCentralNetworktSubnetAddressPrefix" : {
+      "value": "10.0.0.0/24"
+    },
   "ParVnetLocation" : {
       "value": "customerLocation"
     }
