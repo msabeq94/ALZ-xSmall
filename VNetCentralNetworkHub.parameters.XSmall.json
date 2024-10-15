@@ -17,8 +17,14 @@
     "ParVnetProductionid" : {
       "value": "/subscriptions/mgmtSubID/resourceGroups/ProductionSpoke/providers/Microsoft.Network/virtualNetworks/vf-core-ProductionSpoke-production-vnet"
     },
+    "ParVnetCentralNetworkid" : {
+      "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/virtualNetworks/vf-core-CentralNetwork-central-NW-hub-vnet"
+    },
     "ParVnetProductionAddressPrefix" : {
       "value": "10.1.0.0/16"
+    },
+    "ParVnetProductionName" : {
+      "value": "vf-core-ProductionSpoke-production-vnet"
     },
   "ParVnetLocation" : {
       "value": "customerLocation"
