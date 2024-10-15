@@ -37,7 +37,7 @@ echo "Enter customer management subscription ID:"
 read mgmtSubID
 
 # Feed file
-#sed -i "s/mgmtSubID/${mgmtSubID}/g" infra-as-code/bicep/modules/policy/assignments/alzDefaults/parameters/alzDefaultPolicyAssignments.parameters.all.json
+sed -i "s/mgmtSubID/${mgmtSubID}/g" VNetCentralNetworkHub.parameters.XSmall.json
 
 # Prompt the user for the securityEmail variable 
 #echo "Enter customer Security Email:"
