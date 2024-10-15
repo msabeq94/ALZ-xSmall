@@ -2,16 +2,16 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "ParVnetCentralNetworktName" : {
+    "VnetCentralNetworktName" : {
       "value": "vf-core-CentralNetwork-central-NW-hub-vnet"
     },
-    "ParVnetCentralNetworktAddressPrefix" : {
+    "VnetCentralNetworktAddressPrefix" : {
       "value": "10.0.0.0/16" 
     },
-    "ParVnetCentralNetworktSubnetName" : {
+    "VnetCentralNetworktSubnetName" : {
       "value": "CentralNetworkSubnet"
     },
-    "ParVnetCentralNetworktSubnetAddressPrefix" : {
+    "VnetCentralNetworktSubnetAddressPrefix" : {
       "value": "10.0.0.0/24"
     },
   "ParVnetLocation" : {

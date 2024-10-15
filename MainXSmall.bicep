@@ -9,6 +9,14 @@ param VnetProductionName string
 param VnetProductionAddressPrefix string
 param VnetProductionSubnetName string
 param VnetProductionSubnetAddressPrefix string
+param VnetDevelopmentName string
+param VnetDevelopmentAddressPrefix string
+param VnetDevelopmentSubnetName string
+param VnetDevelopmentSubnetAddressPrefix string
+param VnetCentralNetworktName string
+param VnetCentralNetworkAddressPrefix string
+param VnetCentralNetworkSubnetName string
+param VnetCentralNetworkSubnetAddressPrefix string
 param VnetLocation string
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -55,5 +63,35 @@ module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
   }
   dependsOn: [
     ResourceGroupProductionSpoke
+  ]
+}
+
+module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
+  name: 'VirtualNetworkDevelopment'
+  scope: resourceGroup(rgNameDevelopmentSpoke)
+  params: {
+    VnetName: VnetDevelopmentName
+    VnetLocation: VnetLocation
+    VnetAddressPrefix: VnetDevelopmentAddressPrefix
+    VnetSubnetName: VnetDevelopmentSubnetName
+    VnetSubnetAddressPrefix: VnetDevelopmentSubnetAddressPrefix
+  }
+  dependsOn: [
+    ResourceGroupDevelopmentSpoke
+  ]
+}
+
+module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
+  name: 'VirtualNetworkCentralNetwork'
+  scope: resourceGroup(rgNameCentralNetwork)
+  params: {
+    VnetName: VnetCentralNetworktName
+    VnetLocation: VnetLocation
+    VnetAddressPrefix: VnetCentralNetworkAddressPrefix
+    VnetSubnetName: VnetCentralNetworkSubnetName
+    VnetSubnetAddressPrefix: VnetCentralNetworkSubnetAddressPrefix
+  }
+  dependsOn: [
+    ResourceGroupCentralNetwork
   ]
 }
