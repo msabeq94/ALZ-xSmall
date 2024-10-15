@@ -1,17 +1,17 @@
-param ParVnetProductionName string 
-param ParVnetLocation string 
-param ParVnetProductionAddressPrefix string
-param ParVnetProductionSubnetName string
-param ParVnetProductionSubnetAddressPrefix string
+param VnetName string 
+param VnetLocation string 
+param VnetAddressPrefix string
+param VnetSubnetName string
+param VnetSubnetAddressPrefix string
 
 
-resource VirtualNetworksProductionVnet 'Microsoft.Network/virtualNetworks@2024-01-01' = {
-  name: ParVnetProductionName
-  location: ParVnetLocation
+resource VirtualNetworksVnet 'Microsoft.Network/virtualNetworks@2024-01-01' = {
+  name: VnetName
+  location: VnetLocation
   properties: {
     addressSpace: {
       addressPrefixes: [
-        ParVnetProductionAddressPrefix
+        VnetAddressPrefix
       ]
     }
     encryption: {
@@ -20,10 +20,10 @@ resource VirtualNetworksProductionVnet 'Microsoft.Network/virtualNetworks@2024-0
     }
     subnets: [
       {
-        name: ParVnetProductionSubnetName
+        name: VnetSubnetName
         properties: {
           addressPrefixes: [
-            ParVnetProductionSubnetAddressPrefix
+            VnetSubnetAddressPrefix
           ]
           delegations: []
           privateEndpointNetworkPolicies: 'Disabled'

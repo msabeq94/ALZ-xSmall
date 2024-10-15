@@ -16,6 +16,21 @@
     },
     "rgLocation"  : {
       "value": "eastus"
+    },
+    "VnetProductionName" : {
+      "value": "vf-core-ProductionSpoke-production-vnet"
+    },
+    "VnetProductionAddressPrefix" : {
+      "value": "10.1.0.0/16"
+    },
+    "VnetProductionSubnetName" : {
+      "value": "ProductionSubnet"
+    },
+    "VnetProductionSubnetAddressPrefix" : {
+      "value": "10.1.0.0/24"
+    },
+  "VnetLocation" : {
+      "value": "customerLocation"
     }
   }
 }
