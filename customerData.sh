@@ -16,6 +16,10 @@ read deploymentType
 echo "Enter customer Location (Eg uksouth):"
 read LOCATION
 sed -i "s/customerLocation/${LOCATION}/g" ResourceGroup.parameters.XSmall.json
+sed -i "s/customerLocation/${LOCATION}/g" VNetCentralNetworkHub.parameters.XSmall.json
+sed -i "s/customerLocation/${LOCATION}/g" VNetProductionSpoke.parameters.XSmall.json
+sed -i "s/customerLocation/${LOCATION}/g" VNetDevelopmentSpoke.parameters.XSmall.json
+
 # Feed files
 #sed -i "s/customerLocation/${LOCATION}/g" infra-as-code/bicep/modules/logging/parameters/logging.parameters.all.json
 #sed -i "s/customerLocation/${LOCATION}/g" infra-as-code/bicep/modules/policy/assignments/alzDefaults/parameters/alzDefaultPolicyAssignments.parameters.all.json
