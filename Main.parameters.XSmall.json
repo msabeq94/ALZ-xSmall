@@ -44,13 +44,13 @@
     "VnetCentralNetworktName" : {
       "value": "vf-core-CentralNetwork-central-NW-hub-vnet"
     },
-    "VnetCentralNetworktAddressPrefix" : {
+    "VnetCentralNetworkAddressPrefix" : {
       "value": "10.0.0.0/16" 
     },
-    "VnetCentralNetworktSubnetName" : {
+    "VnetCentralNetworkSubnetName" : {
       "value": "CentralNetworkSubnet"
     },
-    "VnetCentralNetworktSubnetAddressPrefix" : {
+    "VnetCentralNetworkSubnetAddressPrefix" : {
       "value": "10.0.0.0/24"
     },
   "VnetLocation" : {

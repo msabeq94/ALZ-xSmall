@@ -26,7 +26,7 @@ module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
     rgLocation: rgLocation
   }
 }
-output rgProductionSpokeId string = ResourceGroupProductionSpoke.outputs.rgXSmallId
+
 module ResourceGroupCentralNetwork 'Modules/ResourceGroupXSmall.bicep' = {
   name: 'ResourceGroupCentralNetwork'
   params: {
