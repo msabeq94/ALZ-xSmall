@@ -30,7 +30,7 @@
       "value": "10.1.0.0/24"
     },
   "VnetLocation" : {
-      "value": "customerLocation"
+      "value": "eastus"
     }
   }
 }
