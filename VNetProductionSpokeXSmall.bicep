@@ -3,8 +3,7 @@ param ParVnetLocation string
 param ParVnetProductionAddressPrefix string
 param ParVnetProductionSubnetName string
 param ParVnetProductionSubnetAddressPrefix string
-param ParVnetCentralNetworkid string
-param ParVnetCentralNetworktAddressPrefix string
+
 
 resource VirtualNetworksProductionVnet 'Microsoft.Network/virtualNetworks@2024-01-01' = {
   name: ParVnetProductionName
