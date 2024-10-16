@@ -9,10 +9,12 @@ param VnetProductionName string
 param VnetProductionAddressPrefix string
 param VnetProductionSubnetName string
 param VnetProductionSubnetAddressPrefix string
+param VnetProductionid string
 param VnetDevelopmentName string
 param VnetDevelopmentAddressPrefix string
 param VnetDevelopmentSubnetName string
 param VnetDevelopmentSubnetAddressPrefix string
+param VnetDevelopmentid string
 param VnetCentralNetworktName string
 param VnetCentralNetworkAddressPrefix string
 param VnetCentralNetworkSubnetName string
@@ -102,7 +104,7 @@ module VnetPeeringPRO_CENT 'Modules/VNetPeeringXSmall.bicep' = {
   name: 'VnetPeeringPRO_CENT-${deploymentTime}'
   scope: resourceGroup(rgNameProductionSpoke)
   params: {
-    VnetPeeringName: '${VnetProductionName}-PRO_CENT_peering'
+    VnetPeeringName: '${VnetProductionName}/PRO_CENT_peering'
     RemoteVnetID: VnetCentralNetworkid
     RemoteNetworkAddressPrefix: VnetCentralNetworkAddressPrefix
   }
