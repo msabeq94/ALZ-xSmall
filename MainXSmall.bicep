@@ -17,6 +17,7 @@ param VnetCentralNetworktName string
 param VnetCentralNetworkAddressPrefix string
 param VnetCentralNetworkSubnetName string
 param VnetCentralNetworkSubnetAddressPrefix string
+param VnetCentralNetworkid string
 param VnetLocation string
 param deploymentTime string = utcNow()
 
@@ -94,5 +95,19 @@ module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
   }
   dependsOn: [
     ResourceGroupCentralNetwork
+  ]
+}
+
+module VnetPeeringPRO_CENT 'Modules/VNetPeeringXSmall.bicep' = {
+  name: 'VnetPeeringPRO_CENT-${deploymentTime}'
+  scope: resourceGroup(rgNameProductionSpoke)
+  params: {
+    VnetPeeringName: '${VnetProductionName}-PRO_CENT_peering'
+    RemoteVnetID: VnetCentralNetworkid
+    RemoteNetworkAddressPrefix: VnetCentralNetworkAddressPrefix
+  }
+  dependsOn: [
+    VirtualNetworkProduction
+    VirtualNetworkCentralNetwork
   ]
 }
