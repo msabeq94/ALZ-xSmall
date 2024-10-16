@@ -18,9 +18,10 @@ param VnetCentralNetworkAddressPrefix string
 param VnetCentralNetworkSubnetName string
 param VnetCentralNetworkSubnetAddressPrefix string
 param VnetLocation string
+param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
-  name: 'ResourceGroupProductionSpoke'
+  name: 'ResourceGroupProductionSpoke-${deploymentTime}'
   params: {
     rgName: rgNameProductionSpoke
     rgLocation: rgLocation
@@ -28,7 +29,7 @@ module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
 }
 
 module ResourceGroupCentralNetwork 'Modules/ResourceGroupXSmall.bicep' = {
-  name: 'ResourceGroupCentralNetwork'
+  name: 'ResourceGroupCentralNetwork-${deploymentTime}'
   params: {
     rgName: rgNameCentralNetwork
     rgLocation: rgLocation
@@ -36,7 +37,7 @@ module ResourceGroupCentralNetwork 'Modules/ResourceGroupXSmall.bicep' = {
 }
 
 module ResourceGroupDevelopmentSpoke 'Modules/ResourceGroupXSmall.bicep' = {
-  name: 'ResourceGroupDevelopmentSpoke'
+  name: 'ResourceGroupDevelopmentSpoke-${deploymentTime}'
   params: {
     rgName: rgNameDevelopmentSpoke
     rgLocation: rgLocation
@@ -44,7 +45,7 @@ module ResourceGroupDevelopmentSpoke 'Modules/ResourceGroupXSmall.bicep' = {
 }
 
 module ResourceGroupInternalServicesHub 'Modules/ResourceGroupXSmall.bicep' = {
-  name: 'ResourceGroupInternalServicesHub'
+  name: 'ResourceGroupInternalServicesHub-${deploymentTime}'
   params: {
     rgName: rgNameInternalServicesHub
     rgLocation: rgLocation
@@ -52,7 +53,7 @@ module ResourceGroupInternalServicesHub 'Modules/ResourceGroupXSmall.bicep' = {
 }
 
 module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
-  name: 'VirtualNetworkProduction'
+  name: 'VirtualNetworkProduction-${deploymentTime}'
   scope: resourceGroup(rgNameProductionSpoke)
   params: {
     VnetName: VnetProductionName
@@ -67,7 +68,7 @@ module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
 }
 
 module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
-  name: 'VirtualNetworkDevelopment'
+  name: 'VirtualNetworkDevelopment-${deploymentTime}'
   scope: resourceGroup(rgNameDevelopmentSpoke)
   params: {
     VnetName: VnetDevelopmentName
@@ -82,7 +83,7 @@ module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
 }
 
 module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
-  name: 'VirtualNetworkCentralNetwork'
+  name: 'VirtualNetworkCentralNetwork-${deploymentTime}'
   scope: resourceGroup(rgNameCentralNetwork)
   params: {
     VnetName: VnetCentralNetworktName
