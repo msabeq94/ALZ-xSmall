@@ -113,3 +113,44 @@ module VnetPeeringPRO_CENT 'Modules/VNetPeeringXSmall.bicep' = {
     VirtualNetworkCentralNetwork
   ]
 }
+
+module VnetPeeringCEN_PRO 'Modules/VNetPeeringXSmall.bicep' = {
+  name: 'VnetPeeringCEN_PRO-${deploymentTime}'
+  scope: resourceGroup(rgNameCentralNetwork)
+  params: {
+    VnetPeeringName: '${VnetCentralNetworktName}/CEN_PRO_peering'
+    RemoteVnetID: VnetProductionid
+    RemoteNetworkAddressPrefix: VnetProductionAddressPrefix
+  }
+  dependsOn: [
+    VirtualNetworkCentralNetwork
+    VirtualNetworkProduction
+  ]
+}
+module VnetPeeringDEV_CENT 'Modules/VNetPeeringXSmall.bicep' = {
+  name: 'VnetPeeringDEV_CENT-${deploymentTime}'
+  scope: resourceGroup(rgNameDevelopmentSpoke)
+  params: {
+    VnetPeeringName: '${VnetDevelopmentName}/DEV_CENT_peering'
+    RemoteVnetID: VnetCentralNetworkid
+    RemoteNetworkAddressPrefix: VnetCentralNetworkAddressPrefix
+  }
+  dependsOn: [
+    VirtualNetworkDevelopment
+    VirtualNetworkCentralNetwork
+  ]
+}
+
+module VnetPeeringCENT_DEV 'Modules/VNetPeeringXSmall.bicep' = {
+  name: 'VnetPeeringCENT_DEV-${deploymentTime}'
+  scope: resourceGroup(rgNameCentralNetwork)
+  params: {
+    VnetPeeringName: '${VnetCentralNetworktName}/CENT_DEV_peering'
+    RemoteVnetID: VnetDevelopmentid
+    RemoteNetworkAddressPrefix: VnetDevelopmentAddressPrefix
+  }
+  dependsOn: [
+    VirtualNetworkCentralNetwork
+    VirtualNetworkDevelopment
+  ]
+}
