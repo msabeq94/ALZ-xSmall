@@ -48,7 +48,7 @@
       "value": "10.0.0.0/16" 
     },
     "VnetCentralNetworkSubnetName" : {
-      "value": "CentralNetworkSubnet"
+      "value": "AzureFirewallSubnet"
     },
     "VnetCentralNetworkSubnetAddressPrefix" : {
       "value": "10.0.0.0/24"
