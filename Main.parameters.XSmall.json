@@ -53,6 +53,15 @@
     "VnetCentralNetworkSubnetAddressPrefix" : {
       "value": "10.0.0.0/24"
     },
+    "VnetCentralNetworkid" : {
+      "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/virtualNetworks/vf-core-CentralNetwork-central-NW-hub-vnet"
+    },
+    "VnetProductionid" : {
+      "value": "/subscriptions/mgmtSubID/resourceGroups/ProductionSpoke/providers/Microsoft.Network/virtualNetworks/vf-core-ProductionSpoke-production-vnet"
+    },
+    "VnetDevelopmentid" : {
+      "value": "/subscriptions/mgmtSubID/resourceGroups/DevelopmentSpoke/providers/Microsoft.Network/virtualNetworks/vf-core-DevelopmentSpoke-development-vnet"
+    },
   "VnetLocation" : {
       "value": "customerLocation"
     }

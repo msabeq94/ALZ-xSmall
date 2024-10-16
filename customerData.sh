@@ -38,6 +38,7 @@ echo "Enter customer management subscription ID:"
 read mgmtSubID
 
 # Feed file
+sed -i "s/mgmtSubID/${mgmtSubID}/g" Main.parameters.XSmall.json
 #sed -i "s/mgmtSubID/${mgmtSubID}/g" VNetCentralNetworkHub.parameters.XSmall.json
 
 # Prompt the user for the securityEmail variable 
