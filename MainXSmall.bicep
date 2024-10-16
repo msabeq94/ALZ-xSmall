@@ -156,12 +156,12 @@ module VnetPeeringCENT_DEV 'Modules/VNetPeeringXSmall.bicep' = {
   ]
 }
 
-module FWpublicIP 'Modules/FWpublicIP.bicep' = {
+module FWpublicIP 'Modules/FWpubliceIP.bicep' = {
   name: 'FWpublicIP-${deploymentTime}'
   scope: resourceGroup(rgNameCentralNetwork)
   params: {
-    FWpublicIPAddName: FWpublicIPAddName
-    FWpublicIPAddLocation: VnetLocation
+    publicIPAddName: FWpublicIPAddName
+    publicIPAddLocation: VnetLocation
   }
   dependsOn: [
     ResourceGroupCentralNetwork
