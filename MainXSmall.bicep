@@ -9,10 +9,12 @@ param VnetProductionName string
 param VnetProductionAddressPrefix string
 param VnetProductionSubnetName string
 param VnetProductionSubnetAddressPrefix string
+param VnetProductionid string
 param VnetDevelopmentName string
 param VnetDevelopmentAddressPrefix string
 param VnetDevelopmentSubnetName string
 param VnetDevelopmentSubnetAddressPrefix string
+param VnetDevelopmentid string
 param VnetCentralNetworktName string
 param VnetCentralNetworkAddressPrefix string
 param VnetCentralNetworkSubnetName string
