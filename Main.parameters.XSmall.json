@@ -15,7 +15,7 @@
       "value": "InternalServicesHub"
     },
     "rgLocation"  : {
-      "value": "eastus"
+      "value": "customerLocation"
     },
     "VnetProductionName" : {
       "value": "vf-core-ProductionSpoke-production-vnet"
@@ -54,7 +54,7 @@
       "value": "10.0.0.0/24"
     },
   "VnetLocation" : {
-      "value": "eastus"
+      "value": "customerLocation"
     }
   }
 }

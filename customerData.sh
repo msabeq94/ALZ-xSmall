@@ -15,10 +15,11 @@ read deploymentType
 # Prompt the user for customer Location 
 echo "Enter customer Location (Eg uksouth):"
 read LOCATION
-sed -i "s/customerLocation/${LOCATION}/g" ResourceGroup.parameters.XSmall.json
-sed -i "s/customerLocation/${LOCATION}/g" VNetCentralNetworkHub.parameters.XSmall.json
-sed -i "s/customerLocation/${LOCATION}/g" VNetProductionSpoke.parameters.XSmall.json
-sed -i "s/customerLocation/${LOCATION}/g" VNetDevelopmentSpoke.parameters.XSmall.json
+sed -i "s/customerLocation/${LOCATION}/g" Main.parameters.XSmall.json
+# sed -i "s/customerLocation/${LOCATION}/g" ResourceGroup.parameters.XSmall.json
+# sed -i "s/customerLocation/${LOCATION}/g" VNetCentralNetworkHub.parameters.XSmall.json
+# sed -i "s/customerLocation/${LOCATION}/g" VNetProductionSpoke.parameters.XSmall.json
+# sed -i "s/customerLocation/${LOCATION}/g" VNetDevelopmentSpoke.parameters.XSmall.json
 
 # Feed files
 #sed -i "s/customerLocation/${LOCATION}/g" infra-as-code/bicep/modules/logging/parameters/logging.parameters.all.json
@@ -37,7 +38,7 @@ echo "Enter customer management subscription ID:"
 read mgmtSubID
 
 # Feed file
-sed -i "s/mgmtSubID/${mgmtSubID}/g" VNetCentralNetworkHub.parameters.XSmall.json
+#sed -i "s/mgmtSubID/${mgmtSubID}/g" VNetCentralNetworkHub.parameters.XSmall.json
 
 # Prompt the user for the securityEmail variable 
 #echo "Enter customer Security Email:"
