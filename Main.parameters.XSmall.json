@@ -62,6 +62,9 @@
     "VnetDevelopmentid" : {
       "value": "/subscriptions/mgmtSubID/resourceGroups/DevelopmentSpoke/providers/Microsoft.Network/virtualNetworks/vf-core-DevelopmentSpoke-development-vnet"
     },
+    "FWpublicIPAddName" : {
+      "value": "fw-public-ip"
+    },
   "VnetLocation" : {
       "value": "customerLocation"
     }
