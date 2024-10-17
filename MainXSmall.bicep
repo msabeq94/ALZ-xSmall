@@ -201,14 +201,26 @@ module NSG 'Modules/NSGXSmall.bicep' = {
   ]
 }
 
-module NSGAssociate 'Modules/NSGXSmallAssociate.bicep' = {
+module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
   name: 'NSGAssociate-${deploymentTime}'
-  scope: resourceGroup(rgNameCentralNetwork)
+  scope: resourceGroup(rgNameProductionSpoke)
   params: {
-    VnetProductionName: VnetProductionName
-    VnetProductionSubnetName: VnetProductionSubnetName
-    VnetDevelopmentName: VnetDevelopmentName
-    VnetDevelopmentSubnetName: VnetDevelopmentSubnetName
+    VnetName: VnetProductionName
+    VnetSubnetName: VnetProductionSubnetName
+    NSGID: NSG.outputs.NSG_ID
+  }
+  dependsOn: [
+    NSG
+    VirtualNetworkProduction
+  ]
+}
+
+module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
+  name: 'NSGAssociate-${deploymentTime}'
+  scope: resourceGroup(rgNameDevelopmentSpoke)
+  params: {
+    VnetName: VnetDevelopmentName
+    VnetSubnetName: VnetDevelopmentSubnetName
     NSGID: NSG.outputs.NSG_ID
   }
   dependsOn: [

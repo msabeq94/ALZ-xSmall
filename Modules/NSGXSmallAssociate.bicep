@@ -1,31 +1,22 @@
-param VnetProductionName string
-param VnetProductionSubnetName string
-param VnetDevelopmentName string
-param VnetDevelopmentSubnetName string
+param VnetName string
+param VnetSubnetName string
 param NSGID string
 
 
-resource vnetPRO 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
-  name: VnetProductionName
+resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
+  name: VnetName
 }
 
-resource subnetPRO 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existing = {
-  name: VnetProductionSubnetName
-  parent: vnetPRO
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existing = {
+  name: VnetSubnetName
+  parent: vnet
 }
 
-resource vnetDEV 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
-  name: VnetDevelopmentName
-}
 
-resource subnetDEV 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existing = {
-  name: VnetDevelopmentSubnetName
-  parent: vnetDEV
-}
 
-resource subnetNSGPRO 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
-  name: subnetPRO.name
-  parent: vnetPRO
+resource subnetNSG 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
+  name: subnet.name
+  parent: vnet
   properties: {
     networkSecurityGroup: {
       id:  NSGID
@@ -34,14 +25,5 @@ resource subnetNSGPRO 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
 
 }
 
-resource subnetNSGDEV 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
-  name: subnetDEV.name
-  parent: vnetDEV
-  properties: {
-    networkSecurityGroup: {
-      id:  NSGID
-    }
-  }
- 
-}
+
 
