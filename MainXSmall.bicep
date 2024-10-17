@@ -207,6 +207,7 @@ module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
   params: {
     VnetName: VnetProductionName
     VnetSubnetName: VnetProductionSubnetName
+    SUBaddressPrefix: VnetProductionSubnetAddressPrefix
     NSGID: NSG.outputs.NSG_ID
   }
   dependsOn: [
@@ -221,6 +222,7 @@ module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
   params: {
     VnetName: VnetDevelopmentName
     VnetSubnetName: VnetDevelopmentSubnetName
+    SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
     NSGID: NSG.outputs.NSG_ID
   }
   dependsOn: [

@@ -1,6 +1,7 @@
 param VnetName string
 param VnetSubnetName string
 param NSGID string
+param SUBaddressPrefix string
 
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
@@ -18,6 +19,7 @@ resource subnetNSG 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
   name: subnet.name
   parent: vnet
   properties: {
+    addressPrefix: SUBaddressPrefix
     networkSecurityGroup: {
       id:  NSGID
     }
