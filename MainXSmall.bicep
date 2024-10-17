@@ -193,10 +193,6 @@ module NSG 'Modules/NSGXSmall.bicep' = {
   params: {
     NSG_name: NSG_Name
     NSG_location: VnetLocation
-    VnetProductionName: VnetProductionName
-    VnetProductionSubnetName: VnetProductionSubnetName
-    VnetDevelopmentName: VnetDevelopmentName
-    VnetDevelopmentSubnetName: VnetDevelopmentSubnetName
   }
   dependsOn: [
     ResourceGroupCentralNetwork
@@ -204,3 +200,21 @@ module NSG 'Modules/NSGXSmall.bicep' = {
     VirtualNetworkProduction
   ]
 }
+
+module NSGAssociate 'Modules/NSGXSmallAssociate.bicep' = {
+  name: 'NSGAssociate-${deploymentTime}'
+  scope: resourceGroup(rgNameCentralNetwork)
+  params: {
+    VnetProductionName: VnetProductionName
+    VnetProductionSubnetName: VnetProductionSubnetName
+    VnetDevelopmentName: VnetDevelopmentName
+    VnetDevelopmentSubnetName: VnetDevelopmentSubnetName
+    NSGID: NSG.outputs.NSG_ID
+  }
+  dependsOn: [
+    NSG
+    VirtualNetworkDevelopment
+    VirtualNetworkProduction
+  ]
+}
+

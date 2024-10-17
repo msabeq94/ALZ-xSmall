@@ -28,6 +28,7 @@ resource VirtualNetworksVnet 'Microsoft.Network/virtualNetworks@2024-01-01' = {
           delegations: []
           privateEndpointNetworkPolicies: 'Disabled'
           privateLinkServiceNetworkPolicies: 'Enabled'
+          
         }
         type: 'Microsoft.Network/virtualNetworks/subnets'
       }
