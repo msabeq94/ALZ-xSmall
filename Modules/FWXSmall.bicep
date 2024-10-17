@@ -10,7 +10,7 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
   properties: {
     sku: {
       name: 'AZFW_VNet'
-      tier: 'Standard'
+      tier: 'Basic'
     }
     threatIntelMode: 'Alert'
     additionalProperties: {}

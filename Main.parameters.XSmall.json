@@ -68,6 +68,9 @@
     "FWName" : {
       "value": "ALZ-XSmall-FW"
     },
+    "NSG_Name" : {
+      "value": "ALZ-XSmall-NSG"
+    },
   "VnetLocation" : {
       "value": "customerLocation"
     }

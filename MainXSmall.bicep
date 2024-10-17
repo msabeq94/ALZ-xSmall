@@ -23,6 +23,7 @@ param VnetCentralNetworkid string
 param VnetLocation string
 param FWpublicIPAddName string
 param FWName string
+param NSG_Name string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -183,5 +184,23 @@ module FW 'Modules/FWXSmall.bicep' = {
   dependsOn: [
     FWpublicIP
     VirtualNetworkCentralNetwork
+  ]
+}
+
+module NSG 'Modules/NSGXSmall.bicep' = {
+  name: 'NSG-${deploymentTime}'
+  scope: resourceGroup(rgNameCentralNetwork)
+  params: {
+    NSG_name: NSG_Name
+    NSG_location: VnetLocation
+    VnetProductionName: VnetProductionName
+    VnetProductionSubnetName: VnetProductionSubnetName
+    VnetDevelopmentName: VnetDevelopmentName
+    VnetDevelopmentSubnetName: VnetDevelopmentSubnetName
+  }
+  dependsOn: [
+    ResourceGroupCentralNetwork
+    VirtualNetworkDevelopment
+    VirtualNetworkProduction
   ]
 }
