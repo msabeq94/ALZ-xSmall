@@ -22,6 +22,7 @@ param VnetCentralNetworkSubnetAddressPrefix string
 param VnetCentralNetworkid string
 param VnetLocation string
 param FWpublicIPAddName string
+param FWName string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -167,4 +168,20 @@ module FWpublicIP 'Modules/FWpubliceIP.bicep' = {
     ResourceGroupCentralNetwork
   ]
   
+}
+
+module FW 'Modules/FWXSmall.bicep' = {
+  name: 'FW-${deploymentTime}'
+  scope: resourceGroup(rgNameCentralNetwork)
+  params: {
+    FWName: FWName
+    FWLocation: VnetLocation
+    FWpublicIPAddName: FWpublicIPAddName
+    publicIPAddressID: FWpublicIP.outputs.publicIPAddressResourceId
+    subnetID: VirtualNetworkCentralNetwork.outputs.SubnetId
+  }
+  dependsOn: [
+    FWpublicIP
+    VirtualNetworkCentralNetwork
+  ]
 }

@@ -14,3 +14,5 @@ properties: {
     idleTimeoutInMinutes: 4
   }
 }
+output publicIPAddressResourceId string = publicIPAddressesFW.id
+

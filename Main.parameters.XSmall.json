@@ -65,6 +65,9 @@
     "FWpublicIPAddName" : {
       "value": "fw-public-ip"
     },
+    "FWName" : {
+      "value": "ALZ-XSmall-FW"
+    },
   "VnetLocation" : {
       "value": "customerLocation"
     }
