@@ -232,3 +232,9 @@ module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
   ]
 }
 
+module PolicyDefinitions 'Modules/PolicyDefinitionsXSmall.bicep' = {
+  name: 'PolicyDefinitions-${deploymentTime}'
+  scope: subscription()
+
+}
+

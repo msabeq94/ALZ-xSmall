@@ -1,42 +1,52 @@
+targetScope = 'subscription'
 var varCustomPolicyDefinitionsArrayXSmall = [
   {
     name: 'Audit-RDP-From-Internet'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Audit-RDP-From-Internet.json')
+    libDefinition: loadJsonContent('policy_definitions/Audit-RDP-From-Internet.json')
   }
+  
   {
     name: 'Audit-Subnet-Without-Nsg'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Audit-Subnet-Without-Nsg.json')
+    libDefinition: loadJsonContent('policy_definitions/Audit-Subnet-Without-Nsg.json')
   }
+  
   {
     name: 'Audit-Subnet-Without-Udr'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Audit-Subnet-Without-Udr.json')
+    libDefinition: loadJsonContent('policy_definitions/Audit-Subnet-Without-Udr.json')
   }
+  
   {
     name: 'Deny-Private-DNS-Zones'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Deny-Private-DNS-Zones.json')
+    libDefinition: loadJsonContent('policy_definitions/Deny-Private-DNS-Zones.json')
   }
+  
   {
     name: 'Deny-VNet-Peering'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Deny-VNet-Peering.json')
+    libDefinition: loadJsonContent('policy_definitions/Deny-VNet-Peering.json')
   }
+  
   {
     name: 'Deploy-Custom-Route-Table'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Deploy-Custom-Route-Table.json')
+    libDefinition: loadJsonContent('policy_definitions/Deploy-Custom-Route-Table.json')
   }
+  
   {
     name: 'Deploy-DDoSProtection'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Deploy-DDoSProtection.json')
+    libDefinition: loadJsonContent('policy_definitions/Deploy-DDoSProtection.json')
   }
+  
   {
     name: 'Deploy-FirewallPolicy'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Deploy-FirewallPolicy.json')
+    libDefinition: loadJsonContent('policy_definitions/Deploy-FirewallPolicy.json')
   }
+  
   {
     name: 'Deploy-VNET-HubSpoke'
-    libDefinition: loadJsonContent('Policys\lib\policy_definitions\Deploy-VNET-HubSpoke.json')
+    libDefinition: loadJsonContent('policy_definitions/Deploy-VNET-HubSpoke.json')
   }
-
 ]
+
+
 
 resource resPolicyDefinitions 'Microsoft.Authorization/policyDefinitions@2023-04-01' = [for policy in varCustomPolicyDefinitionsArrayXSmall: {
   name: policy.libDefinition.name
