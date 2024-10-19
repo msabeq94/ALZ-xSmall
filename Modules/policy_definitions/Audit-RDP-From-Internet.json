@@ -32,7 +32,9 @@
           "Deny",
           "Disabled"
         ],
+
         "defaultValue": "Deny"
+
       }
     },
     "policyRule": {
