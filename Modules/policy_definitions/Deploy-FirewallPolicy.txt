@@ -1,0 +1,11 @@
+This policy is designed to be assigned at the subscription level, not at the resource group level.
+
+In Summary
+-This policy enforces the deployment of an Azure Firewall Manager policy within a subscription.
+-It ensures that a firewall policy exists and that it’s configured according to the parameters you define (location, rules, and resource group).
+
+Required Parameters:
+fwPolicyRegion (String): Specifies the Azure region where the Firewall Policy will be deployed.
+fwPolicy (Object): Describes the details of the Azure Firewall Policy, including name, location, and rules.
+rgName (String): Name of the resource group where the firewall policy will be deployed.
+

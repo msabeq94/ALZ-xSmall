@@ -1,0 +1,27 @@
+This policy automates the deployment of a custom route table with user-defined routes in a specific region, ensuring that the correct routes are present in the table. It enforces network routing consistency by ensuring that VNets in the region have a specific routing configuration. However, after deployment, you will need to manually associate the route table with the relevant subnets.
+
+Required Parameters:
+
+1-requiredRoutes – Must provide routes to be created in the route table.
+
+-Description: An array of routes that must be defined in the route table. Each entry contains the route’s destination prefix, next hop type, and optionally the next hop IP address.
+-Why It's Required: The policy needs these routes to create the custom route table with the specified routing rules.
+-Action: You must provide at least one route in this array.
+
+2-routeTableName – Must specify a name for the route table.
+
+-Description: The name of the route table that will be deployed by the policy.
+-Why It's Required: The policy needs to know the name of the route table it should create.
+-Action: You must specify a name for the route table.
+
+3-vnetRegion – Must specify the region where the policy will evaluate and deploy resources.
+
+-Description: The Azure region where the virtual network (and the route table) will be deployed.
+-Why It's Required: The policy checks only the virtual networks in the specified region and deploys the route table there.
+-Action: You must provide the region where the policy should apply (e.g., "East US", "West Europe").
+=========================================================
+
+Optional Parameter:
+
+1-disableBgpPropagation – Optional, defaults to false (BGP propagation enabled).
+2-effect – Optional, defaults to DeployIfNotExists.

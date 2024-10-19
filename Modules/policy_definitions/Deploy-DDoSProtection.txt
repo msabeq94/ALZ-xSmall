@@ -1,0 +1,51 @@
+This policy automates the deployment of an Azure DDoS Protection Plan in a subscription, ensuring protection against DDoS attacks. If the protection plan doesn’t exist in the specified resource group, the policy will create it, ensuring network security for the virtual networks in the subscription.
+==========================================================
+Parameters:
+1-ddosName: The name of the DDoS Protection Plan to be deployed.
+2-ddosRegion: The Azure region where the DDoS Protection Plan will be deployed (e.g., "East US", "West Europe").
+3-rgName: The name of the resource group where the DDoS Protection Plan will be deployed.
+
+==========================================================
+
+you can modify the policy so that it works at the resource group level instead of the subscription level. The main changes involve adjusting the scope and conditions to make the policy applicable to individual resource groups. Here's how you can modify the policy:
+
+Steps to Modify the Policy:
+
+1-Change the "if" Condition:
+
+The current condition checks for the type "Microsoft.Resources/subscriptions", which applies at the subscription level. You need to modify this to check for the resource group instead.
+
+Change this line:
+===========================================
+{
+  "equals": "Microsoft.Resources/subscriptions",
+  "field": "type"
+}
+=========================================
+to
+=============================================
+{
+  "equals": "Microsoft.Resources/resourceGroups",
+  "field": "type"
+}
+===================================================
+
+2-Adjust the "deploymentScope":
+
+The current deploymentScope is set to "subscription", meaning it deploys resources at the subscription level. You need to change this to "resourceGroup" so that it deploys at the resource group level.
+
+Change this line:
+===========================================
+"deploymentScope": "subscription"
+==========================================
+to
+=======================================
+"deploymentScope": "resourceGroup"
+========================================
+
+3-Remove Subscription-Specific Fields:
+
+ou can remove any subscription-specific references, as the policy will now be scoped to a resource group. For instance, you can eliminate fields like "resourceGroupName" and "roleDefinitionIds" if they are subscription-related.
+
+============================
+
