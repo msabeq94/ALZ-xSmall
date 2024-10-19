@@ -1,9 +1,9 @@
 targetScope = 'subscription'
 var varCustomPolicyDefinitionsArrayXSmall = [
-  {
-    name: 'Audit-RDP-From-Internet'
-    libDefinition: loadJsonContent('policy_definitions/Audit-RDP-From-Internet.json')
-  }
+  // {
+  //   name: 'Audit-RDP-From-Internet'
+  //   libDefinition: loadJsonContent('policy_definitions/Audit-RDP-From-Internet.json')
+  // }
   
   {
     name: 'Audit-Subnet-Without-Nsg'
