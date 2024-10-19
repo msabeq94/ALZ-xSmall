@@ -17,7 +17,7 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
     ipConfigurations: [
       {
         name: FWpublicIPAddName
-        id: '/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/azureFirewalls/ALZ-XSmall-FW/azureFirewallIpConfigurations/fw-public-ip'
+        // id: '/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/azureFirewalls/ALZ-XSmall-FW/azureFirewallIpConfigurations/fw-public-ip'
         properties: {
           publicIPAddress: {
             id: publicIPAddressID
