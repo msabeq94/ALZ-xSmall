@@ -238,3 +238,7 @@ module PolicyDefinitions 'Modules/PolicyDefinitionsXSmall.bicep' = {
 
 }
 
+module PolicyAssignments 'Modules/PolicyassignmentsXSmal.bicep' = {
+  name: 'PolicyAssignments-${deploymentTime}'
+  scope: resourceGroup(rgNameInternalServicesHub)
+}
