@@ -1,3 +1,5 @@
+param parPolicyAssignmentIdentityType string = 'None'
+var varPolicyIdentity = parPolicyAssignmentIdentityType == 'SystemAssigned' ? 'SystemAssigned' : 'None'
 var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
  
   {
@@ -6,24 +8,104 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     description: 'This policy denies the creation of a subnet without a Network Security Group. NSG help to protect traffic across subnet-level.'
     enforcementMode: 'Default'
     source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/f881605a-7628-40a3-adb7-59bd2e6a9dcd/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Nsg'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Nsg'
 
   }
-
+{
+    name: 'Audit-Subnet-Without-Udr'
+    displayName: 'Subnets should have a User Defined Route'
+    description: 'This policy denies the creation of a subnet without a User Defined Route. UDRs help to control routing of traffic within a subnet.'
+    enforcementMode: 'Default'
+    source: 'https://github.com/Azure/Enterprise-Scale/'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Udr'
+}
+{
+    name: 'Deny-Private-DNS-Zones'
+    displayName: 'Deny the creation of private DNS'
+    description: 'This policy denies the creation of a private DNS in the current scope, used in combination with policies that create centralized private DNS in connectivity subscription'
+    enforcementMode: 'Default'
+    source: 'https://github.com/Azure/Enterprise-Scale/'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Private-DNS-Zones'
+}
+{
+    name: 'Deny-VNet-Peering'
+    displayName: 'Deny vNet peering'
+    description: 'This policy denies the creation of vNet Peerings under the assigned scope.'
+    enforcementMode: 'Default'
+    source: 'https://github.com/Azure/Enterprise-Scale/'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-VNet-Peering'
+}
 ]
-
-resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignment in varCustomPolicyassignmentsAuditDenyArrayXSmall: {
-  name: assignment.name
+resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignmentAD in varCustomPolicyassignmentsAuditDenyArrayXSmall: {
+  name: assignmentAD.name
   properties: {
-    displayName: assignment.displayName
-    description: assignment.description
-    enforcementMode: assignment.enforcementMode
+    displayName: assignmentAD.displayName
+    description: assignmentAD.description
+    enforcementMode: assignmentAD.enforcementMode
     metadata: {
-      source: assignment.source
+      source: assignmentAD.source
       version: '0.1.0'
     }
-    policyDefinitionId: assignment.policyDefinitionId
+    policyDefinitionId: assignmentAD.policyDefinitionId
   }
   
 }
+]
+
+
+var varCustomPolicyassignmentsAuditDeployXSmall = [
+ 
+  {
+    name: 'Deploy-Custom-Route-Table'
+    displayName: 'Deploy a route table with specific user defined routes'
+    description: 'Deploys a route table with specific user defined routes when one does not exist. The route table deployed by the policy must be manually associated to subnet(s)'
+    enforcementMode: 'Default'
+    source: 'https://github.com/Azure/Enterprise-Scale/'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-Custom-Route-Table'
+  }
+  {
+    name: 'Deploy-DDoSProtection'
+    displayName: 'Deploy an Azure DDoS Network Protection'
+    description: 'Deploys an Azure DDoS Network Protection'
+    enforcementMode: 'Default'
+    source: 'https://github.com/Azure/Enterprise-Scale/'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-DDoSProtection'
+  }
+  {
+    name: 'Deploy-FirewallPolicy'
+    displayName: 'Deploy Azure Firewall Manager policy in the subscription'
+    description: 'Deploys Azure Firewall Manager policy in subscription where the policy is assigned.'
+    enforcementMode: 'Default'
+    source: 'https://github.com/Azure/Enterprise-Scale/'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-FirewallPolicy'
+  }
+  {
+    name: 'Deploy-VNET-HubSpoke'
+    displayName: 'Deploy Virtual Network with peering to the hub'
+    description: 'This policy deploys virtual network and peer to the hub'
+    enforcementMode: 'Default'
+    source: 'https://github.com/Azure/Enterprise-Scale/'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-VNET-HubSpoke'
+  }
+
+
+]
+resource assignmentDeploy 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignmentDY in varCustomPolicyassignmentsAuditDeployXSmall: {
+  name: assignmentDY.name
+  properties: {
+    displayName: assignmentDY.displayName
+    description: assignmentDY.description
+    enforcementMode: assignmentDY.enforcementMode
+    metadata: {
+      source: assignmentDY.source
+      version: '0.1.0'
+    }
+    policyDefinitionId: assignmentDY.policyDefinitionId
+  }
+  identity: {
+    type: varPolicyIdentity
+  }
+ 
+}
+
 ]

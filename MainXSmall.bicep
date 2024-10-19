@@ -243,6 +243,7 @@ module PolicyAssignments 'Modules/PolicyassignmentsXSmal.bicep' = {
   scope: resourceGroup(rgNameInternalServicesHub)
   dependsOn: [
     PolicyDefinitions
+    ResourceGroupInternalServicesHub
   ]
 }
 

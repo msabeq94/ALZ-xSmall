@@ -2,7 +2,7 @@
   "name": "Deny-VNet-Peering",
   "properties": {
     "description": "This policy denies the creation of vNet Peerings under the assigned scope.",
-    "displayName": "Deny vNet peering ",
+    "displayName": "Deny vNet peering",
     "metadata": {
       "alzCloudEnvironments": [
         "AzureCloud",
