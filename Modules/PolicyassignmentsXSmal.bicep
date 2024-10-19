@@ -53,59 +53,59 @@ resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-
 ]
 
 
-var varCustomPolicyassignmentsAuditDeployXSmall = [
+// var varCustomPolicyassignmentsAuditDeployXSmall = [
  
-  {
-    name: 'Deploy-Custom-Route-Table'
-    displayName: 'Deploy a route table with specific user defined routes'
-    description: 'Deploys a route table with specific user defined routes when one does not exist. The route table deployed by the policy must be manually associated to subnet(s)'
-    enforcementMode: 'Default'
-    source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-Custom-Route-Table'
-  }
-  {
-    name: 'Deploy-DDoSProtection'
-    displayName: 'Deploy an Azure DDoS Network Protection'
-    description: 'Deploys an Azure DDoS Network Protection'
-    enforcementMode: 'Default'
-    source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-DDoSProtection'
-  }
-  {
-    name: 'Deploy-FirewallPolicy'
-    displayName: 'Deploy Azure Firewall Manager policy in the subscription'
-    description: 'Deploys Azure Firewall Manager policy in subscription where the policy is assigned.'
-    enforcementMode: 'Default'
-    source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-FirewallPolicy'
-  }
-  {
-    name: 'Deploy-VNET-HubSpoke'
-    displayName: 'Deploy Virtual Network with peering to the hub'
-    description: 'This policy deploys virtual network and peer to the hub'
-    enforcementMode: 'Default'
-    source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-VNET-HubSpoke'
-  }
+//   {
+//     name: 'Deploy-Custom-Route-Table'
+//     displayName: 'Deploy a route table with specific user defined routes'
+//     description: 'Deploys a route table with specific user defined routes when one does not exist. The route table deployed by the policy must be manually associated to subnet(s)'
+//     enforcementMode: 'Default'
+//     source: 'https://github.com/Azure/Enterprise-Scale/'
+//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-Custom-Route-Table'
+//   }
+//   {
+//     name: 'Deploy-DDoSProtection'
+//     displayName: 'Deploy an Azure DDoS Network Protection'
+//     description: 'Deploys an Azure DDoS Network Protection'
+//     enforcementMode: 'Default'
+//     source: 'https://github.com/Azure/Enterprise-Scale/'
+//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-DDoSProtection'
+//   }
+//   {
+//     name: 'Deploy-FirewallPolicy'
+//     displayName: 'Deploy Azure Firewall Manager policy in the subscription'
+//     description: 'Deploys Azure Firewall Manager policy in subscription where the policy is assigned.'
+//     enforcementMode: 'Default'
+//     source: 'https://github.com/Azure/Enterprise-Scale/'
+//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-FirewallPolicy'
+//   }
+//   {
+//     name: 'Deploy-VNET-HubSpoke'
+//     displayName: 'Deploy Virtual Network with peering to the hub'
+//     description: 'This policy deploys virtual network and peer to the hub'
+//     enforcementMode: 'Default'
+//     source: 'https://github.com/Azure/Enterprise-Scale/'
+//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-VNET-HubSpoke'
+//   }
 
 
-]
-resource assignmentDeploy 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignmentDY in varCustomPolicyassignmentsAuditDeployXSmall: {
-  name: assignmentDY.name
-  properties: {
-    displayName: assignmentDY.displayName
-    description: assignmentDY.description
-    enforcementMode: assignmentDY.enforcementMode
-    metadata: {
-      source: assignmentDY.source
-      version: '0.1.0'
-    }
-    policyDefinitionId: assignmentDY.policyDefinitionId
-  }
-  identity: {
-    type: varPolicyIdentity
-  }
+// ]
+// resource assignmentDeploy 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignmentDY in varCustomPolicyassignmentsAuditDeployXSmall: {
+//   name: assignmentDY.name
+//   properties: {
+//     displayName: assignmentDY.displayName
+//     description: assignmentDY.description
+//     enforcementMode: assignmentDY.enforcementMode
+//     metadata: {
+//       source: assignmentDY.source
+//       version: '0.1.0'
+//     }
+//     policyDefinitionId: assignmentDY.policyDefinitionId
+//   }
+//   identity: {
+//     type: varPolicyIdentity
+//   }
  
-}
+// }
 
-]
+// ]
