@@ -95,7 +95,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
         }
         // Outbound Rules
         {
-          name: 'Allow_AzureFW_to_dev_Subnet_Inbound'
+          name: 'Allow_AzureFW_to_dev_Subnet_Outbound'
           properties: {
             access: 'Allow'
             direction: 'outbound'
@@ -276,7 +276,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
 
         // Outbound Rules 
         {
-          name: 'Allow_AzureFW_to_Prod_Subnet_Inbound'
+          name: 'Allow_AzureFW_to_Prod_Subnet_Outbound'
           properties: {
             access: 'Allow'
             direction: 'outbound'
