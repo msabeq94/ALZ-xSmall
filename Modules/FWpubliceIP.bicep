@@ -16,3 +16,4 @@ properties: {
 }
 output publicIPAddressResourceId string = publicIPAddressesFW.id
 
+output publicIPAddress string = publicIPAddressesFW.properties.ipAddress

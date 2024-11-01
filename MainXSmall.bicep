@@ -271,7 +271,7 @@ module RouteTable 'Modules/RouteTable.bicep' = {
   params: {
     HubRouteTableName: HubRouteTableName
     RTLocation: VnetLocation
-    FWIP: FWpublicIP.outputs.publicIPAddressResourceId
+    FWIP: FWpublicIP.outputs.publicIPAddress
   }
   dependsOn: [
     FW
