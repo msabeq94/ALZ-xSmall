@@ -17,7 +17,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 50
+            priority: 100
             sourceAddressPrefix: '10.10.254.0/24'
             destinationAddressPrefix: '10.2.0.0/16'
             protocol: 'Tcp'
@@ -30,7 +30,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 120
+            priority: 110
             sourceAddressPrefix: 'Internet'
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
@@ -43,7 +43,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 130
+            priority: 120
             sourceAddressPrefix: 'GatewayManager'
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
@@ -56,7 +56,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 140
+            priority: 130
             sourceAddressPrefix: 'AzureLoadBalancer'
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
@@ -69,7 +69,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 150
+            priority: 140
             sourceAddressPrefix: 'VirtualNetwork'
             destinationAddressPrefix: 'VirtualNetwork'
             protocol: 'Tcp'
@@ -99,7 +99,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'outbound'
-            priority: 50
+            priority: 100
             sourceAddressPrefix: '10.10.254.0/24'
             destinationAddressPrefix: '10.2.0.0/16'
             protocol: 'Tcp'
@@ -112,7 +112,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 100
+            priority: 110
             sourceAddressPrefix: '*'
             destinationAddressPrefix: 'VirtualNetwork'
             protocol: '*'
@@ -125,7 +125,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 110
+            priority: 120
             sourceAddressPrefix: '*'
             destinationAddressPrefix: 'AzureCloud'
             protocol: 'Tcp'
@@ -138,7 +138,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 120
+            priority: 130
             sourceAddressPrefix: 'VirtualNetwork'
             destinationAddressPrefix: 'VirtualNetwork'
             protocol: '*'
@@ -154,7 +154,7 @@ resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 130
+            priority: 140
             sourceAddressPrefix: '*'
             destinationAddressPrefix: 'Internet'
             protocol: '*'
@@ -196,7 +196,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 50
+            priority: 100
             sourceAddressPrefix: '10.10.254.0/24'
             destinationAddressPrefix: '10.1.0.0/24'
             protocol: 'Tcp'
@@ -210,7 +210,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 120
+            priority: 110
             sourceAddressPrefix: 'Internet'
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
@@ -223,7 +223,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 130
+            priority: 120
             sourceAddressPrefix: 'GatewayManager'
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
@@ -236,7 +236,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 140
+            priority: 130
             sourceAddressPrefix: 'AzureLoadBalancer'
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
@@ -249,7 +249,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Inbound'
-            priority: 150
+            priority: 140
             sourceAddressPrefix: 'VirtualNetwork'
             destinationAddressPrefix: 'VirtualNetwork'
             protocol: 'Tcp'
@@ -280,7 +280,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'outbound'
-            priority: 50
+            priority: 100
             sourceAddressPrefix: '10.10.254.0/24'
             destinationAddressPrefix: '10.1.0.0/24'
             protocol: 'Tcp'
@@ -294,7 +294,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 100
+            priority: 110
             sourceAddressPrefix: '*'
             destinationAddressPrefix: 'VirtualNetwork'
             protocol: '*'
@@ -307,7 +307,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 110
+            priority: 120
             sourceAddressPrefix: '*'
             destinationAddressPrefix: 'AzureCloud'
             protocol: 'Tcp'
@@ -320,7 +320,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 120
+            priority: 130
             sourceAddressPrefix: 'VirtualNetwork'
             destinationAddressPrefix: 'VirtualNetwork'
             protocol: '*'
@@ -336,7 +336,7 @@ resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if 
           properties: {
             access: 'Allow'
             direction: 'Outbound'
-            priority: 130
+            priority: 140
             sourceAddressPrefix: '*'
             destinationAddressPrefix: 'Internet'
             protocol: '*'
