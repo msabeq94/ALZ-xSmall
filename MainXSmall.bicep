@@ -26,6 +26,7 @@ param FWName string
 param devspoke_NSG_name string
 param ProSpoke_NSG_name string
 param HubRouteTableName string
+param routtableID string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -69,7 +70,7 @@ module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetProductionAddressPrefix
     VnetSubnetName: VnetProductionSubnetName
     VnetSubnetAddressPrefix: VnetProductionSubnetAddressPrefix
-    routtableID: RouteTable.outputs.routtableID
+    routtableID: routtableID
   }
   dependsOn: [
     ResourceGroupProductionSpoke
@@ -86,7 +87,7 @@ module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetDevelopmentAddressPrefix
     VnetSubnetName: VnetDevelopmentSubnetName
     VnetSubnetAddressPrefix: VnetDevelopmentSubnetAddressPrefix
-    routtableID: RouteTable.outputs.routtableID
+    routtableID: routtableID
   }
   dependsOn: [
     ResourceGroupDevelopmentSpoke
@@ -102,7 +103,7 @@ module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetCentralNetworkAddressPrefix
     VnetSubnetName: VnetCentralNetworkSubnetName
     VnetSubnetAddressPrefix: VnetCentralNetworkSubnetAddressPrefix
-    routtableID: RouteTable.outputs.routtableID
+    routtableID: routtableID
   }
   dependsOn: [
     ResourceGroupCentralNetwork

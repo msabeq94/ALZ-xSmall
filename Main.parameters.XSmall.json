@@ -79,6 +79,9 @@
     },
   "VnetLocation" : {
       "value": "customerLocation"
+    },
+    "routtabl"  :{
+      "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable"
     }
   }
 }
