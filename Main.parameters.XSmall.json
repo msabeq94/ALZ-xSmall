@@ -80,7 +80,7 @@
   "VnetLocation" : {
       "value": "customerLocation"
     },
-    "routtabl"  :{
+    "routtableID"  :{
       "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable"
     }
   }
