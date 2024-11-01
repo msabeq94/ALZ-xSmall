@@ -105,7 +105,8 @@ module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetCentralNetworkAddressPrefix
     VnetSubnetName: VnetCentralNetworkSubnetName
     VnetSubnetAddressPrefix: VnetCentralNetworkSubnetAddressPrefix
-    routtableID: routtableID
+    routeTableResourceGroup: rgNameCentralNetwork
+    routeTableName: HubRouteTableName
   }
   dependsOn: [
     ResourceGroupCentralNetwork
