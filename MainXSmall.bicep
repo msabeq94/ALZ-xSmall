@@ -69,9 +69,11 @@ module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetProductionAddressPrefix
     VnetSubnetName: VnetProductionSubnetName
     VnetSubnetAddressPrefix: VnetProductionSubnetAddressPrefix
+    routtableID: RouteTable.outputs.routtableID
   }
   dependsOn: [
     ResourceGroupProductionSpoke
+    RouteTable
   ]
 }
 
@@ -84,6 +86,7 @@ module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetDevelopmentAddressPrefix
     VnetSubnetName: VnetDevelopmentSubnetName
     VnetSubnetAddressPrefix: VnetDevelopmentSubnetAddressPrefix
+    routtableID: RouteTable.outputs.routtableID
   }
   dependsOn: [
     ResourceGroupDevelopmentSpoke
@@ -99,6 +102,7 @@ module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetCentralNetworkAddressPrefix
     VnetSubnetName: VnetCentralNetworkSubnetName
     VnetSubnetAddressPrefix: VnetCentralNetworkSubnetAddressPrefix
+    routtableID: RouteTable.outputs.routtableID
   }
   dependsOn: [
     ResourceGroupCentralNetwork
@@ -274,7 +278,8 @@ module RouteTable 'Modules/RouteTable.bicep' = {
     FWIP: FWpublicIP.outputs.publicIPAddress
   }
   dependsOn: [
-    FW
+    ResourceGroupCentralNetwork
+    FWpublicIP
    
   ]
 }

@@ -21,3 +21,5 @@ resource resHubRouteTable 'Microsoft.Network/routeTables@2024-01-01' =  {
     disableBgpRoutePropagation: parDisableBgpRoutePropagation
   }
 }
+
+output routtableID string = resHubRouteTable.id
