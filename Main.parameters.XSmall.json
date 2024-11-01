@@ -74,6 +74,9 @@
     "ProSpoke_NSG_name" : {
       "value": "nsg-production-subnet"
     },
+    "HubRouteTableName" : {
+      "value": "ALZ-hub-routetable"
+    },
   "VnetLocation" : {
       "value": "customerLocation"
     }

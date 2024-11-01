@@ -25,6 +25,7 @@ param FWpublicIPAddName string
 param FWName string
 param devspoke_NSG_name string
 param ProSpoke_NSG_name string
+param HubRouteTableName string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -261,6 +262,20 @@ module PolicyAssignments 'Modules/PolicyassignmentsXSmal.bicep' = {
   dependsOn: [
     PolicyDefinitions
     ResourceGroupInternalServicesHub
+  ]
+}
+
+module RouteTable 'Modules/RouteTable.bicep' = {
+  name: 'RouteTable-${deploymentTime}'
+  scope: resourceGroup(rgNameCentralNetwork)
+  params: {
+    HubRouteTableName: HubRouteTableName
+    RTLocation: VnetLocation
+    FWIP: FWpublicIP.outputs.publicIPAddressResourceId
+  }
+  dependsOn: [
+    FW
+   
   ]
 }
 
