@@ -9,3 +9,7 @@ fwPolicyRegion (String): Specifies the Azure region where the Firewall Policy wi
 fwPolicy (Object): Describes the details of the Azure Firewall Policy, including name, location, and rules.
 rgName (String): Name of the resource group where the firewall policy will be deployed.
 
+
+
+
+no need canceled 
