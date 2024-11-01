@@ -45,13 +45,13 @@
       "value": "vf-core-CentralNetwork-central-NW-hub-vnet"
     },
     "VnetCentralNetworkAddressPrefix" : {
-      "value": "10.0.0.0/16" 
+      "value": "10.10.0.0/16" 
     },
     "VnetCentralNetworkSubnetName" : {
       "value": "AzureFirewallSubnet"
     },
     "VnetCentralNetworkSubnetAddressPrefix" : {
-      "value": "10.0.0.0/24"
+      "value": "10.10.254.0/24"
     },
     "VnetCentralNetworkid" : {
       "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/virtualNetworks/vf-core-CentralNetwork-central-NW-hub-vnet"
@@ -68,8 +68,11 @@
     "FWName" : {
       "value": "ALZ-XSmall-FW"
     },
-    "NSG_Name" : {
-      "value": "ALZ-XSmall-NSG"
+    "devspoke_NSG_name" : {
+      "value": "nsg-development-subnet"
+    },
+    "ProSpoke_NSG_name" : {
+      "value": "nsg-production-subnet"
     },
   "VnetLocation" : {
       "value": "customerLocation"

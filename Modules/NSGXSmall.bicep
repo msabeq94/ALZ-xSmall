@@ -1,125 +1,366 @@
-param NSG_name string
+param devspoke_NSG_name string
 param NSG_location string
+param parBastionOutboundSshRdpPorts array = [ '22', '3389' ]
+param ProSpoke_NSG_name string
+param evn string
 
-
-resource NSGresource 'Microsoft.Network/networkSecurityGroups@2024-01-01' = {
-  name: NSG_name
+resource devspoke_Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if (evn == 'dev') {
+  name: devspoke_NSG_name
   location: NSG_location
-  properties: {}
-}
-
-
-resource NSG_Allow_AzureFW_to_Dev_Subnet_Inbound 'Microsoft.Network/networkSecurityGroups/securityRules@2024-01-01' = {
-  name: '${NSG_name}/Allow_AzureFW_to_Dev_Subnet_Inbound'
   properties: {
-    protocol: 'TCP'
-    sourcePortRange: '*'
-    sourceAddressPrefix: '172.173.156.82'
-    destinationAddressPrefix: '10.2.0.0/24'
-    access: 'Allow'
-    priority: 200
-    direction: 'Inbound'
-    sourcePortRanges: []
-    destinationPortRanges: [
-      '80'
-      '443'
-    ]
-    sourceAddressPrefixes: []
-    destinationAddressPrefixes: []
-  }
-  dependsOn: [
-    NSGresource
-  ]
-}
+    
+      securityRules: [
+        // Inbound Rules
 
-resource NSG_Allow_AzureFW_to_Prod_Subnet_Inbound 'Microsoft.Network/networkSecurityGroups/securityRules@2024-01-01' = {
-  name: '${NSG_name}/Allow_AzureFW_to_Prod_Subnet_Inbound'
+        {
+          name: 'Allow_AzureFW_to_dev_Subnet_Inbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 50
+            sourceAddressPrefix: '10.10.254.0/24'
+            destinationAddressPrefix: '10.2.0.0/16'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
+        {
+          name: 'AllowHttpsInbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 120
+            sourceAddressPrefix: 'Internet'
+            destinationAddressPrefix: '*'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowGatewayManagerInbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 130
+            sourceAddressPrefix: 'GatewayManager'
+            destinationAddressPrefix: '*'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowAzureLoadBalancerInbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 140
+            sourceAddressPrefix: 'AzureLoadBalancer'
+            destinationAddressPrefix: '*'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowBastionHostCommunication'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 150
+            sourceAddressPrefix: 'VirtualNetwork'
+            destinationAddressPrefix: 'VirtualNetwork'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRanges: [
+              '8080'
+              '5701'
+            ]
+          }
+        }
+        {
+          name: 'DenyAllInbound'
+          properties: {
+            access: 'Deny'
+            direction: 'Inbound'
+            priority: 4096
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: '*'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
+        // Outbound Rules
+        {
+          name: 'Allow_AzureFW_to_dev_Subnet_Inbound'
+          properties: {
+            access: 'Allow'
+            direction: 'outbound'
+            priority: 50
+            sourceAddressPrefix: '10.10.254.0/24'
+            destinationAddressPrefix: '10.2.0.0/16'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
+        {
+          name: 'AllowSshRdpOutbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 100
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: 'VirtualNetwork'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRanges: parBastionOutboundSshRdpPorts
+          }
+        }
+        {
+          name: 'AllowAzureCloudOutbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 110
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: 'AzureCloud'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowBastionCommunication'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 120
+            sourceAddressPrefix: 'VirtualNetwork'
+            destinationAddressPrefix: 'VirtualNetwork'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRanges: [
+              '8080'
+              '5701'
+            ]
+          }
+        }
+        {
+          name: 'AllowGetSessionInformation'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 130
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: 'Internet'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRange: '80'
+          }
+        }
+        {
+          name: 'DenyAllOutbound'
+          properties: {
+            access: 'Deny'
+            direction: 'Outbound'
+            priority: 4096
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: '*'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
+      ]
+    }
+  }
+  
+
+
+output devNsgId string = devspoke_Nsg.id
+
+
+resource ProSpokeNsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  = if (evn == 'prod') {
+  name: ProSpoke_NSG_name
+  location: NSG_location
   properties: {
-    protocol: 'TCP'
-    sourcePortRange: '*'
-    sourceAddressPrefix: '172.173.156.82'
-    destinationAddressPrefix: '10.1.0.0/24'
-    access: 'Allow'
-    priority: 100
-    direction: 'Inbound'
-    sourcePortRanges: []
-    destinationPortRanges: [
-      '80'
-      '443'
-    ]
-    sourceAddressPrefixes: []
-    destinationAddressPrefixes: []
-  }
-  dependsOn: [
-    NSGresource
-  ]
-}
+    
+      securityRules: [
+        // Inbound Rules
+        {
+          name: 'Allow_AzureFW_to_Prod_Subnet_Inbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 50
+            sourceAddressPrefix: '10.10.254.0/24'
+            destinationAddressPrefix: '10.1.0.0/24'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
 
-resource NSG_Allow_Dev_Subnet_Outbound_via_AzureFW 'Microsoft.Network/networkSecurityGroups/securityRules@2024-01-01' = {
-  name: '${NSG_name}/Allow_Dev_Subnet_Outbound_via_AzureFW'
-  properties: {
-    protocol: '*'
-    sourcePortRange: '*'
-    sourceAddressPrefix: '10.2.0.0/24'
-    destinationAddressPrefix: 'Internet'
-    access: 'Allow'
-    priority: 400
-    direction: 'Outbound'
-    sourcePortRanges: []
-    destinationPortRanges: [
-      '80'
-      '443'
-    ]
-    sourceAddressPrefixes: []
-    destinationAddressPrefixes: []
-  }
-  dependsOn: [
-    NSGresource
-  ]
-}
+        {
+          name: 'AllowHttpsInbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 120
+            sourceAddressPrefix: 'Internet'
+            destinationAddressPrefix: '*'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowGatewayManagerInbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 130
+            sourceAddressPrefix: 'GatewayManager'
+            destinationAddressPrefix: '*'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowAzureLoadBalancerInbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 140
+            sourceAddressPrefix: 'AzureLoadBalancer'
+            destinationAddressPrefix: '*'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowBastionHostCommunication'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 150
+            sourceAddressPrefix: 'VirtualNetwork'
+            destinationAddressPrefix: 'VirtualNetwork'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRanges: [
+              '8080'
+              '5701'
+            ]
+          }
+        }
+        {
+          name: 'DenyAllInbound'
+          properties: {
+            access: 'Deny'
+            direction: 'Inbound'
+            priority: 4096
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: '*'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
 
-resource NSG_Allow_Prod_Subnet_Outbound_via_AzureFW 'Microsoft.Network/networkSecurityGroups/securityRules@2024-01-01' = {
-  name: '${NSG_name}/Allow_Prod_Subnet_Outbound_via_AzureFW'
-  properties: {
-    protocol: 'TCP'
-    sourcePortRange: '*'
-    sourceAddressPrefix: '10.1.0.0/24'
-    destinationAddressPrefix: 'Internet'
-    access: 'Allow'
-    priority: 200
-    direction: 'Outbound'
-    sourcePortRanges: []
-    destinationPortRanges: [
-      '80'
-      '443'
-    ]
-    sourceAddressPrefixes: []
-    destinationAddressPrefixes: []
-  }
-  dependsOn: [
-    NSGresource
-  ]
-}
+        // Outbound Rules 
+        {
+          name: 'Allow_AzureFW_to_Prod_Subnet_Inbound'
+          properties: {
+            access: 'Allow'
+            direction: 'outbound'
+            priority: 50
+            sourceAddressPrefix: '10.10.254.0/24'
+            destinationAddressPrefix: '10.1.0.0/24'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
 
-resource NSG_Deny_All_Inbound_Traffic 'Microsoft.Network/networkSecurityGroups/securityRules@2024-01-01' = {
-  name: '${NSG_name}/Deny_All_Inbound_Traffic'
-  properties: {
-    protocol: '*'
-    sourcePortRange: '*'
-    destinationPortRange: '*'
-    sourceAddressPrefix: '*'
-    destinationAddressPrefix: '*'
-    access: 'Deny'
-    priority: 4096
-    direction: 'Inbound'
-    sourcePortRanges: []
-    destinationPortRanges: []
-    sourceAddressPrefixes: []
-    destinationAddressPrefixes: []
+        {
+          name: 'AllowSshRdpOutbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 100
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: 'VirtualNetwork'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRanges: parBastionOutboundSshRdpPorts
+          }
+        }
+        {
+          name: 'AllowAzureCloudOutbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 110
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: 'AzureCloud'
+            protocol: 'Tcp'
+            sourcePortRange: '*'
+            destinationPortRange: '443'
+          }
+        }
+        {
+          name: 'AllowBastionCommunication'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 120
+            sourceAddressPrefix: 'VirtualNetwork'
+            destinationAddressPrefix: 'VirtualNetwork'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRanges: [
+              '8080'
+              '5701'
+            ]
+          }
+        }
+        {
+          name: 'AllowGetSessionInformation'
+          properties: {
+            access: 'Allow'
+            direction: 'Outbound'
+            priority: 130
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: 'Internet'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRange: '80'
+          }
+        }
+        {
+          name: 'DenyAllOutbound'
+          properties: {
+            access: 'Deny'
+            direction: 'Outbound'
+            priority: 4096
+            sourceAddressPrefix: '*'
+            destinationAddressPrefix: '*'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRange: '*'
+          }
+        }
+      ]
+    }
   }
-  dependsOn: [
-    NSGresource
-  ]
-}
 
-output NSG_ID string = NSGresource.id
+output ProSpokeNsgId string = ProSpokeNsg.id
+
+
