@@ -88,7 +88,8 @@ module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetDevelopmentAddressPrefix
     VnetSubnetName: VnetDevelopmentSubnetName
     VnetSubnetAddressPrefix: VnetDevelopmentSubnetAddressPrefix
-    routtableID: routtableID
+    routeTableResourceGroup: rgNameCentralNetwork
+    routeTableName: HubRouteTableName
   }
   dependsOn: [
     ResourceGroupDevelopmentSpoke
