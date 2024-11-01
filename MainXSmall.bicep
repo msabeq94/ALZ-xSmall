@@ -70,7 +70,8 @@ module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetProductionAddressPrefix
     VnetSubnetName: VnetProductionSubnetName
     VnetSubnetAddressPrefix: VnetProductionSubnetAddressPrefix
-    routtableID: routtableID
+    routeTableResourceGroup: rgNameCentralNetwork
+    routeTableName: HubRouteTableName
   }
   dependsOn: [
     ResourceGroupProductionSpoke
