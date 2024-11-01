@@ -195,7 +195,7 @@ module NSGPro 'Modules/NSGXSmall.bicep' = {
     devspoke_NSG_name : devspoke_NSG_name
     NSG_location: VnetLocation
     ProSpoke_NSG_name: ProSpoke_NSG_name
-    evn:  'PRO'
+    evn:  'prod'
 
   }
   dependsOn: [

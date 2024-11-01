@@ -28,3 +28,7 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
         }
       }
     ]}}
+
+    
+
+    
