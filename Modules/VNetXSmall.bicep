@@ -4,8 +4,8 @@ param VnetAddressPrefix string
 param VnetSubnetName string
 param VnetSubnetAddressPrefix string
 
-param routeTableResourceGroup string
-param routeTableName string
+// param routeTableResourceGroup string
+// param routeTableName string
 
 
 resource VirtualNetworksCENTVnet 'Microsoft.Network/virtualNetworks@2024-01-01' = if (VnetName == 'vf-core-CentralNetwork-central-NW-hub-vnet') {
@@ -62,7 +62,7 @@ resource VirtualNetworksVnet 'Microsoft.Network/virtualNetworks@2024-01-01' = if
             VnetSubnetAddressPrefix
           ]
           routeTable: {
-            id: resourceId(routeTableResourceGroup, 'Microsoft.Network/routeTables', routeTableName)
+            id: '/subscriptions/f881605a-7628-40a3-adb7-59bd2e6a9dcd/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable'
           }
           delegations: []
           privateEndpointNetworkPolicies: 'Disabled'
