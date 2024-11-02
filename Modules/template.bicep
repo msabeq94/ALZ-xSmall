@@ -1,54 +1,8 @@
-param FWName string
-param FWLocation string
-param FWpublicIPAddName string
-param publicIPAddressID string
-param subnetID string
+param firewallPolicies_azfwpolicy_name string = 'azfwpolicy'
 
-resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
-  name: FWName 
-  location: FWLocation
-  properties: {
-    sku: {
-      name: 'AZFW_VNet'
-      tier: 'Standard'
-    }
-    threatIntelMode: 'Alert'
-    additionalProperties: {}
-    ipConfigurations: [
-      {
-        name: FWpublicIPAddName
-        properties: {
-          publicIPAddress: {
-            id: publicIPAddressID
-          }
-          subnet: {
-            id: subnetID
-          }
-        }
-      }
-    ]
-    networkRuleCollections: [
-    
-     ]
- 
-    firewallPolicy: {
-      id: resFirewallPolicies.id
-  
-  }
-  
-  }
-dependsOn: [
-
-  firewallPoliciesCollectionGroup 
-]
-}
-
-
-
-resource resFirewallPolicies 'Microsoft.Network/firewallPolicies@2024-01-01' = {
-  name: 'azfwpolicy'
-  location:FWLocation
-  
+resource firewallPolicies_azfwpolicy_name_resource 'Microsoft.Network/firewallPolicies@2024-01-01' = {
+  name: firewallPolicies_azfwpolicy_name
+  location: 'eastus'
   properties: {
     sku: {
       tier: 'Standard'
@@ -61,10 +15,10 @@ resource resFirewallPolicies 'Microsoft.Network/firewallPolicies@2024-01-01' = {
   }
 }
 
-resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2024-01-01' = {
-  parent: resFirewallPolicies
+resource firewallPolicies_azfwpolicy_name_DefaultNetworkRuleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2024-01-01' = {
+  parent: firewallPolicies_azfwpolicy_name_resource
   name: 'DefaultNetworkRuleCollectionGroup'
-  location: FWLocation
+  location: 'eastus'
   properties: {
     priority: 200
     ruleCollections: [
@@ -332,5 +286,3 @@ resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/rul
     ]
   }
 }
-
-    
