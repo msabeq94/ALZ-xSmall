@@ -70,8 +70,7 @@ module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetProductionAddressPrefix
     VnetSubnetName: VnetProductionSubnetName
     VnetSubnetAddressPrefix: VnetProductionSubnetAddressPrefix
-    // routeTableResourceGroup: rgNameCentralNetwork
-    // routeTableName: HubRouteTableName
+   
   }
   dependsOn: [
     ResourceGroupProductionSpoke
@@ -88,8 +87,7 @@ module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetDevelopmentAddressPrefix
     VnetSubnetName: VnetDevelopmentSubnetName
     VnetSubnetAddressPrefix: VnetDevelopmentSubnetAddressPrefix
-    // routeTableResourceGroup: rgNameCentralNetwork
-    // routeTableName: HubRouteTableName
+   
   }
   dependsOn: [
     ResourceGroupDevelopmentSpoke
@@ -106,8 +104,7 @@ module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
     VnetAddressPrefix: VnetCentralNetworkAddressPrefix
     VnetSubnetName: VnetCentralNetworkSubnetName
     VnetSubnetAddressPrefix: VnetCentralNetworkSubnetAddressPrefix
-    // routeTableResourceGroup: rgNameCentralNetwork
-    // routeTableName: HubRouteTableName
+   
   }
   dependsOn: [
     ResourceGroupCentralNetwork
