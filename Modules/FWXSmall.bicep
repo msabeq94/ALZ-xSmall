@@ -29,163 +29,163 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
       }
     ]
     networkRuleCollections: [
-      {
-        name: 'ProDevNetworkAccessRules'
-        // id: '${azureFirewalls_ALZ_XSmall_FW_name_resource.id}/networkRuleCollections/ProDevNetworkAccessRules'
-        properties: {
-          priority: 100
-          action: {
-            type: 'Allow'
-          }
-          rules: [
-            {
-              name: 'Pro HTTP Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.1.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '80'
-              ]
-            }
-            {
-              name: 'Pro HTTPS Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.1.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '443'
-              ]
-            }
-            {
-              name: 'Dev HTTP Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.2.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '80'
-              ]
-            }
-            {
-              name: 'Dev HTTPS Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.2.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '443'
-              ]
-            }
-            {
-              name: 'Pro SSH Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.1.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '22'
-              ]
-            }
-            {
-              name: 'Pro RDP Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.1.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '3389'
-              ]
-            }
-            {
-              name: 'Dev SSH Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.2.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '22'
-              ]
-            }
-            {
-              name: 'Dev RDP Access'
-              protocols: [
-                'Any'
-              ]
-              sourceAddresses: [
-                '*'
-              ]
-              destinationAddresses: [
-                '10.2.0.0/16'
-              ]
-              sourceIpGroups: []
-              destinationIpGroups: []
-              destinationFqdns: []
-              destinationPorts: [
-                '3389'
-              ]
-            }
-          ]
-        }
-      }
-    ]
+    //   {
+    //     name: 'ProDevNetworkAccessRules'
+    //     // id: '${azureFirewalls_ALZ_XSmall_FW_name_resource.id}/networkRuleCollections/ProDevNetworkAccessRules'
+    //     properties: {
+    //       priority: 100
+    //       action: {
+    //         type: 'Allow'
+    //       }
+    //       rules: [
+    //         {
+    //           name: 'Pro HTTP Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.1.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '80'
+    //           ]
+    //         }
+    //         {
+    //           name: 'Pro HTTPS Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.1.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '443'
+    //           ]
+    //         }
+    //         {
+    //           name: 'Dev HTTP Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.2.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '80'
+    //           ]
+    //         }
+    //         {
+    //           name: 'Dev HTTPS Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.2.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '443'
+    //           ]
+    //         }
+    //         {
+    //           name: 'Pro SSH Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.1.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '22'
+    //           ]
+    //         }
+    //         {
+    //           name: 'Pro RDP Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.1.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '3389'
+    //           ]
+    //         }
+    //         {
+    //           name: 'Dev SSH Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.2.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '22'
+    //           ]
+    //         }
+    //         {
+    //           name: 'Dev RDP Access'
+    //           protocols: [
+    //             'Any'
+    //           ]
+    //           sourceAddresses: [
+    //             '*'
+    //           ]
+    //           destinationAddresses: [
+    //             '10.2.0.0/16'
+    //           ]
+    //           sourceIpGroups: []
+    //           destinationIpGroups: []
+    //           destinationFqdns: []
+    //           destinationPorts: [
+    //             '3389'
+    //           ]
+    //         }
+    //       ]
+    //     }
+    //   }
+     ]
  
     firewallPolicy: {
       id: resFirewallPolicies.id
