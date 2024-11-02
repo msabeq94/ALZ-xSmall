@@ -16,3 +16,6 @@
     }
   }
 }
+
+
+az deployment sub create --name ${NAME:0:63}  --location $LOCATION --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
