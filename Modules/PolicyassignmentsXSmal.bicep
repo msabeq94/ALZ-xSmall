@@ -46,21 +46,21 @@ resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-
 }
 ]
 
-param assignmentName string = 'CISMicrosoftAzureFoundationsBenchmarkAssignment'
-param policySetDefinitionId string = '/providers/Microsoft.Authorization/policySetDefinitions/06f19060-9e68-4070-92ca-f15cc126059e'
-param parameters object = {
-  maximumDaysToRotate: {
-    value: 90
-  }
-}
+// param assignmentName string = 'CISMicrosoftAzureFoundationsBenchmarkAssignment'
+// param policySetDefinitionId string = '/providers/Microsoft.Authorization/policySetDefinitions/06f19060-9e68-4070-92ca-f15cc126059e'
+// param parameters object = {
+//   maximumDaysToRotate: {
+//     value: 90
+//   }
+// }
 
-resource policyAssignmentCIS 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-  name: assignmentName
+// resource policyAssignmentCIS 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
+//   name: assignmentName
 
-  properties: {
-    displayName: 'CIS Microsoft Azure Foundations Benchmark v2.0.0 Assignment'
-    policyDefinitionId: policySetDefinitionId
-    parameters: parameters
-    enforcementMode: 'Default'
-  }
-}
+//   properties: {
+//     displayName: 'CIS Microsoft Azure Foundations Benchmark v2.0.0 Assignment'
+//     policyDefinitionId: policySetDefinitionId
+//     parameters: parameters
+//     enforcementMode: 'Default'
+//   }
+// }
