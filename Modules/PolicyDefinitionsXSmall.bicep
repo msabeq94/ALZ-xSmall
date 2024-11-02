@@ -14,36 +14,7 @@ var varCustomPolicyDefinitionsArrayXSmall = [
     name: 'Audit-Subnet-Without-Udr'
     libDefinition: loadJsonContent('policy_definitions/Audit-Subnet-Without-Udr.json')
   }
-  
-  {
-    name: 'Deny-Private-DNS-Zones'
-    libDefinition: loadJsonContent('policy_definitions/Deny-Private-DNS-Zones.json')
-  }
-  
-  {
-    name: 'Deny-VNet-Peering'
-    libDefinition: loadJsonContent('policy_definitions/Deny-VNet-Peering.json')
-  }
-  
-  {
-    name: 'Deploy-Custom-Route-Table'
-    libDefinition: loadJsonContent('policy_definitions/Deploy-Custom-Route-Table.json')
-  }
-  
-  {
-    name: 'Deploy-DDoSProtection'
-    libDefinition: loadJsonContent('policy_definitions/Deploy-DDoSProtection.json')
-  }
-  
-  {
-    name: 'Deploy-FirewallPolicy'
-    libDefinition: loadJsonContent('policy_definitions/Deploy-FirewallPolicy.json')
-  }
-  
-  {
-    name: 'Deploy-VNET-HubSpoke'
-    libDefinition: loadJsonContent('policy_definitions/Deploy-VNET-HubSpoke.json')
-  }
+
 ]
 
 
