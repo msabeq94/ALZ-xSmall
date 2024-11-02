@@ -187,10 +187,57 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
       }
     ]
  
+    firewallPolicy: {
+      id: resFirewallPolicies.id
   
+  }
   
-  }}
+  }
+dependsOn: [
+  resFirewallPolicies
+]
+}
 
-    
+  @description('Private IP addresses/IP ranges to which traffic will not be SNAT.')
+  param parAzFirewallPoliciesPrivateRanges array = []
 
+  @description('The operation mode for automatically learning private ranges to not be SNAT.')
+param parAzFirewallPoliciesAutoLearn string = 'Disabled'
+
+@sys.description('Switch to enable/disable Azure Firewall DNS Proxy.')
+param parAzFirewallDnsProxyEnabled bool = true
+
+@sys.description('Array of custom DNS servers used by Azure Firewall')
+param parAzFirewallDnsServers array = []
+
+param parAzFirewallTier string = 'Standard'
+
+param parAzFirewallIntelMode string = 'Alert'
+
+resource resFirewallPolicies 'Microsoft.Network/firewallPolicies@2024-01-01' = {
+  name: 'azfwpolicy'
+  location:FWLocation
+  
+  properties: (parAzFirewallTier == 'Basic') ? {
+    sku: {
+      tier: parAzFirewallTier
+    }
+    snat: !empty(parAzFirewallPoliciesPrivateRanges)
+    ? {
+      autoLearnPrivateRanges: parAzFirewallPoliciesAutoLearn
+      privateRanges: parAzFirewallPoliciesPrivateRanges
+      }
+    : null
+    threatIntelMode: 'Alert'
+  } : {
+    dnsSettings: {
+      enableProxy: parAzFirewallDnsProxyEnabled
+      servers: parAzFirewallDnsServers
+    }
+    sku: {
+      tier: parAzFirewallTier
+    }
+    threatIntelMode: parAzFirewallIntelMode
+  }
+}
     
