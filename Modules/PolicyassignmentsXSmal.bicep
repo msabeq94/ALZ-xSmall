@@ -19,14 +19,14 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     source: 'https://github.com/Azure/Enterprise-Scale/'
     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Udr'
 }
-{
-   Name: 'Audit-RDP-From-Internet'
-    displayName: 'RDP should not be allowed from the Internet'
-    description: 'This policy denies the creation of a security rule that allows RDP traffic from the Internet. RDP should be restricted to specific IP ranges.'
-    enforcementMode: 'Default'
-    source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-RDP-From-Internet'
-  }
+// {
+//    Name: 'Audit-RDP-From-Internet'
+//     displayName: 'RDP should not be allowed from the Internet'
+//     description: 'This policy denies the creation of a security rule that allows RDP traffic from the Internet. RDP should be restricted to specific IP ranges.'
+//     enforcementMode: 'Default'
+//     source: 'https://github.com/Azure/Enterprise-Scale/'
+//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-RDP-From-Internet'
+//   }
 ]
 resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignmentAD in varCustomPolicyassignmentsAuditDenyArrayXSmall: {
   name: assignmentAD.name
