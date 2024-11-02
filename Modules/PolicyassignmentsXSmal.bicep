@@ -9,6 +9,7 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     enforcementMode: 'Default'
     source: 'https://github.com/Azure/Enterprise-Scale/'
     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Nsg'
+    
 
   }
 {
@@ -18,7 +19,21 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     enforcementMode: 'Default'
     source: 'https://github.com/Azure/Enterprise-Scale/'
     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Udr'
+   
 }
+// {
+//     name: 'Deploy-FirewallPolicy'
+//     displayName: 'Deploy Firewall Policy'
+//     description: 'This policy deploys a firewall policy to the specified scope.'
+//     enforcementMode: 'Default'
+//     source: 'https://github.com/Azure/Enterprise-Scale/'
+//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-FirewallPolicy'
+//     parameters:{
+//       firewallPolicyName: {
+//         value: 'azfwpolicy'
+//       }
+//     }
+//   }
 
 
 // {
@@ -41,6 +56,7 @@ resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-
       version: '0.1.0'
     }
     policyDefinitionId: assignmentAD.policyDefinitionId
+    
   }
   
 }
