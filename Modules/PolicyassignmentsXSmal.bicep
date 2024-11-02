@@ -20,21 +20,13 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Udr'
 }
 {
-    name: 'Deny-Private-DNS-Zones'
-    displayName: 'Deny the creation of private DNS'
-    description: 'This policy denies the creation of a private DNS in the current scope, used in combination with policies that create centralized private DNS in connectivity subscription'
+   Name: 'Audit-RDP-From-Internet'
+    displayName: 'RDP should not be allowed from the Internet'
+    description: 'This policy denies the creation of a security rule that allows RDP traffic from the Internet. RDP should be restricted to specific IP ranges.'
     enforcementMode: 'Default'
     source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Private-DNS-Zones'
-}
-{
-    name: 'Deny-VNet-Peering'
-    displayName: 'Deny vNet peering'
-    description: 'This policy denies the creation of vNet Peerings under the assigned scope.'
-    enforcementMode: 'Default'
-    source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-VNet-Peering'
-}
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-RDP-From-Internet'
+  }
 ]
 resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignmentAD in varCustomPolicyassignmentsAuditDenyArrayXSmall: {
   name: assignmentAD.name
