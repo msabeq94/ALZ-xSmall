@@ -78,7 +78,7 @@ resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/rul
         rules: [
           {
             ruleType: 'NetworkRule'
-            name: 'Pro HTTP Access'
+            name: 'Pro HTTP/HTTPS Access'
             ipProtocols: [
               'Any'
             ]
@@ -92,32 +92,14 @@ resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/rul
             destinationIpGroups: []
             destinationFqdns: []
             destinationPorts: [
-              '80'
+              '80','443'
             ]
           }
-          {
-            ruleType: 'NetworkRule'
-            name: 'Pro HTTPS Access'
-            ipProtocols: [
-              'Any'
-            ]
-            sourceAddresses: [
-              '*'
-            ]
-            sourceIpGroups: []
-            destinationAddresses: [
-              '10.1.0.0/16'
-            ]
-            destinationIpGroups: []
-            destinationFqdns: []
-            destinationPorts: [
-              '443'
-            ]
-          }
+         
           {ruleType: 'NetworkRule'
           name: 'Pro SSH Access'
           ipProtocols: [
-            'Any'
+            'TCP'
           ]
           sourceAddresses: [
             '*'
@@ -185,7 +167,7 @@ resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/rul
         rules: [
           {
             ruleType: 'NetworkRule'
-            name: 'Dev HTTP Access'
+            name: 'Dev HTTP/HTTPS Access'
             ipProtocols: [
               'Any'
             ]
@@ -199,32 +181,14 @@ resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/rul
             destinationIpGroups: []
             destinationFqdns: []
             destinationPorts: [
-              '80'
+              '80','443'
             ]
           }
-          {
-            ruleType: 'NetworkRule'
-            name: 'Dev HTTPS Access'
-            ipProtocols: [
-              'Any'
-            ]
-            sourceAddresses: [
-              '*'
-            ]
-            sourceIpGroups: []
-            destinationAddresses: [
-              '10.2.0.0/16'
-            ]
-            destinationIpGroups: []
-            destinationFqdns: []
-            destinationPorts: [
-              '443'
-            ]
-          }
+          
           {ruleType: 'NetworkRule'
           name: 'Dev SSH Access'
           ipProtocols: [
-            'Any'
+            'TCP'
           ]
           sourceAddresses: [
             '*'
