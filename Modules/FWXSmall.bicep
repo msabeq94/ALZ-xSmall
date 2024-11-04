@@ -10,7 +10,7 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
   properties: {
     sku: {
       name: 'AZFW_VNet'
-      tier: 'Standard'
+      tier: 'basic'
     }
     threatIntelMode: 'Alert'
     additionalProperties: {}
@@ -63,13 +63,15 @@ resource resFirewallPolicies 'Microsoft.Network/firewallPolicies@2024-01-01' = {
 
 resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2024-01-01' = {
   parent: resFirewallPolicies
-  name: 'DefaultNetworkRuleCollectionGroup'
+  name: 'vf-core-alz-fwPolicy-rule-collection'
   location: FWLocation
   properties: {
     priority: 200
     ruleCollections: [
       {
         ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+        name: 'ProVnetRules'
+        priority: 100
         action: {
           type: 'Allow'
         }
@@ -170,12 +172,13 @@ resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/rul
             ]
         }
         ]
-        name: 'ProVnetRules'
-        priority: 100
+       
       }
 
       {
         ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+        name: 'DevVnetRules'
+        priority: 200
         action: {
           type: 'Allow'
         }
@@ -276,59 +279,10 @@ resource firewallPoliciesCollectionGroup 'Microsoft.Network/firewallPolicies/rul
             ]
         }
         ]
-        name: 'DevVnetRules'
-        priority: 200
+      
       }
 
-      {
-        ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
-        action: {
-          type: 'Deny'
-        }
-        rules: [
-          {
-            ruleType: 'NetworkRule'
-            name: 'Dev DenyAllI'
-            ipProtocols: [
-              'Any'
-            ]
-            sourceAddresses: [
-              '*'
-            ]
-            sourceIpGroups: []
-            destinationAddresses: [
-              '10.2.0.0/16'
-            ]
-            destinationIpGroups: []
-            destinationFqdns: []
-            destinationPorts: [
-              '*'
-            ]
-          }
-          {
-            ruleType: 'NetworkRule'
-            name: 'Pro DenyAllI'
-            ipProtocols: [
-              'Any'
-            ]
-            sourceAddresses: [
-              '*'
-            ]
-            sourceIpGroups: []
-            destinationAddresses: [
-              '10.1.0.0/16'
-            ]
-            destinationIpGroups: []
-            destinationFqdns: []
-            destinationPorts: [
-              '*'
-            ]
-          }
-
-                  ]
-        name: 'DenyAllRules'
-        priority: 4096
-      }
+      
     ]
   }
 }
