@@ -68,12 +68,10 @@
     "FWName" : {
       "value": "vf-core-alz-fw-customerLocation"
     },
-    "devspoke_NSG_name" : {
-      "value": "nsg-development-subnet"
+    "NSG_name" : {
+      "value": "vf-core-alz-nsg"
     },
-    "ProSpoke_NSG_name" : {
-      "value": "nsg-production-subnet"
-    },
+  
     "HubRouteTableName" : {
       "value": "ALZ-hub-routetable"
     },

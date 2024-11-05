@@ -23,8 +23,7 @@ param VnetCentralNetworkid string
 param VnetLocation string
 param FWpublicIPAddName string
 param FWName string
-param devspoke_NSG_name string
-param ProSpoke_NSG_name string
+param NSG_name string
 param HubRouteTableName string
 param routtableID string
 param deploymentTime string = utcNow()
@@ -196,14 +195,14 @@ module FW 'Modules/FWXSmall.bicep' = {
   ]
 }
 
-module NSGPro 'Modules/NSGXSmall.bicep' = {
+module NSG 'Modules/NSGXSmall.bicep' = {
   name: 'NSG-${deploymentTime}'
   scope: resourceGroup(rgNameProductionSpoke)
   params: {
-    devspoke_NSG_name : devspoke_NSG_name
+    NSG_name : NSG_name
     NSG_location: VnetLocation
-    ProSpoke_NSG_name: ProSpoke_NSG_name
-    evn:  'prod'
+    
+   
 
   }
   dependsOn: [
@@ -212,20 +211,7 @@ module NSGPro 'Modules/NSGXSmall.bicep' = {
   ]
 }
 
-module NSGdev 'Modules/NSGXSmall.bicep' = {
-  name: 'NSG-${deploymentTime}'
-  scope: resourceGroup(rgNameDevelopmentSpoke)
-  params: {
-    devspoke_NSG_name : devspoke_NSG_name
-    NSG_location: VnetLocation
-    ProSpoke_NSG_name: ProSpoke_NSG_name
-    evn:  'dev'
 
-  }
-  dependsOn: [
-    VirtualNetworkDevelopment
-  ]
-}
 
 module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
   name: 'NSGAssociate-${deploymentTime}'
@@ -234,10 +220,10 @@ module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
     VnetName: VnetProductionName
     VnetSubnetName: VnetProductionSubnetName
     SUBaddressPrefix: VnetProductionSubnetAddressPrefix
-    NSGID: NSGPro.outputs.ProSpokeNsgId
+    NSGID: NSG.outputs.NsgId
   }
   dependsOn: [
-    NSGPro
+    NSG
     VirtualNetworkProduction
   ]
 }
@@ -249,10 +235,10 @@ module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
     VnetName: VnetDevelopmentName
     VnetSubnetName: VnetDevelopmentSubnetName
     SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
-    NSGID: NSGdev.outputs.devNsgId
+    NSGID: NSG.outputs.NsgId
   }
   dependsOn: [
-    NSGdev
+    NSG
     VirtualNetworkDevelopment
   ]
 }
