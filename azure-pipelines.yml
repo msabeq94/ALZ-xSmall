@@ -5,18 +5,43 @@
 
 trigger: none
 
-pool:
-  vmImage: 'ubuntu-latest'
+pool: default
 
-jobs:
-  - job: managementGroups
-    displayName: 'Management Groups Deployment'
+parameters:
+  - name: customer_client_id
+    displayName: "Customer Client ID"
+    type: object
+    default: "f084242d-5811-4cac-accc-4377318b9e39"
+
+  - name: customer_client_secret
+    displayName: "Customer Client Secret"
+    type: object
+    default: "g9w8Q~zt.EResb09c_icBvcLrWILVHuZ.-k0NbeS"
+  
+  - name: customer_tenant_id
+    displayName: "Customer Tenant ID"
+    type: object
+    default: "87431d80-c13c-4f97-8d52-4bd5ec6e617e"
+
+  - name: customer_subscription_id
+    displayName: "Customer Subscription ID"
+    type: object
+    default: "102170e2-9371-4b66-95de-d4530f8bf56e"
+
+stages:
+- stage: Stage1
+  jobs:
+  - job: login
     steps:
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: 'ALZ-XSmall SUB'
-          scriptType: 'bash'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-            git clone https://github.com/msabeq94/ALZ-XSmall
-            
+    - script: az login --service-principal --username ${{ parameters.customer_client_id}} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
+      displayName: 'Run Command 1'
+
+- stage: Stage2
+  dependsOn: Stage1
+  jobs:
+  - job: Job2
+    steps:
+    - script: az group list --output table
+      displayName: 'Run Command 2'
+
+
