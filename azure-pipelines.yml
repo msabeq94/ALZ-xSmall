@@ -34,14 +34,25 @@ stages:
   - job: login
     steps:
     - script: az login --service-principal --username ${{ parameters.customer_client_id}} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
-      displayName: 'Run Command 1'
+      displayName: 'login'
 
 - stage: Stage2
   dependsOn: Stage1
   jobs:
-  - job: Job2
+  - job: git
     steps:
-    - script: az group list --output table
-      displayName: 'Run Command 2'
+    - script: git clone https://github.com/msabeq94/ALZ-XSmall
+      displayName: 'git'
+
+- stage: Stage3
+  dependsOn: Stage2
+  jobs:
+  - job: cd
+    steps:
+    - script: cd ALZ-XSmall
+      displayName: 'cd'
+
+
+
 
 
