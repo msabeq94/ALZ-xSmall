@@ -3,17 +3,22 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-trigger:
-- XSmallV4
+trigger: none
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+  - job: managementGroups
+    steps:
+      - 
+- task: AzureResourceManagerTemplateDeployment@3
+  inputs:
+    deploymentScope: 'Management Group'
+    azureResourceManagerConnection: 'ALZ-XSmall SUB'
+    location: 'East US 2'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://github.com/msabeq94/ALZ-XSmall/blob/XSmallV4/MainXSmall.bicep'
+    csmParametersFileLink: 'https://github.com/msabeq94/ALZ-XSmall/blob/XSmallV4/Main.parameters.XSmall.json'
+    deploymentMode: 'Incremental'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
