@@ -6,19 +6,17 @@
 trigger: none
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
 jobs:
   - job: managementGroups
+    displayName: 'Management Groups Deployment'
     steps:
-      - 
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Management Group'
-    azureResourceManagerConnection: 'ALZ-XSmall SUB'
-    location: 'East US 2'
-    templateLocation: 'URL of the file'
-    csmFileLink: 'https://github.com/msabeq94/ALZ-XSmall/blob/XSmallV4/MainXSmall.bicep'
-    csmParametersFileLink: 'https://github.com/msabeq94/ALZ-XSmall/blob/XSmallV4/Main.parameters.XSmall.json'
-    deploymentMode: 'Incremental'
-
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: 'ALZ-XSmall SUB'
+          scriptType: 'bash'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            git clone https://github.com/msabeq94/ALZ-XSmall
+            

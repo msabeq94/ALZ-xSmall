@@ -73,7 +73,7 @@
     },
   
     "HubRouteTableName" : {
-      "value": "ALZ-hub-routetable"
+      "value": "vf-core-alz-rt"
     },
   "VnetLocation" : {
       "value": "customerLocation"
