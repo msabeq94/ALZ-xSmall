@@ -28,6 +28,18 @@ parameters:
     type: object
     default: "102170e2-9371-4b66-95de-d4530f8bf56e"
 
+  - name: customer_name
+    displayName: "Customer Name"
+    type: object
+    default: "mos"
+
+  - name: customer_location
+    displayName: "Customer location"
+    type: object
+    default: "eastus"
+
+
+
 stages:
 - stage: Stage1
   jobs:
@@ -39,20 +51,22 @@ stages:
 - stage: Stage2
   dependsOn: Stage1
   jobs:
-  - job: git
+  - job: update_bicep_file
     steps:
-    - script: git clone https://github.com/msabeq94/ALZ-XSmall
-      displayName: 'git'
+    - script: | 
+        sed -i "s/customerLocation/${customer_location}/g" Main.parameters.XSmall.json
 
-- stage: Stage3
-  dependsOn: Stage2
-  jobs:
-  - job: cd
-    steps:
-    - script: cd ALZ-XSmall
-      displayName: 'cd'
+      displayName: 'update_bicep_file'
 
 
 
 
 
+
+
+
+
+
+
+
+      
