@@ -55,9 +55,21 @@ stages:
     steps:
     - script: | 
         sed -i "s/customerLocation/${customer_location}/g" Main.parameters.XSmall.json
+        sed -i "s/customerName/${customerName}/g" managementGroups.parameters.XSmall.json
+        sed -i "s/mgmtSubID/${mgmtSubID}/g" Main.parameters.XSmall.json
+        sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/FWXSmall.bicep
+        sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/PolicyassignmentsXSmal.bicep
 
       displayName: 'update_bicep_file'
 
+- stage: Stage3
+  dependsOn: Stage2
+  jobs:
+    - job: Run_bicep_file_MG
+      steps:
+      - script: az deployment tenan --temteate-filea"managementGroupsXSmall.bicep"  --parameters "mana"managementGroupsXSmall.bicep"  --parameters "managementGroups.parameters.XSmall.json"
+        
+        displayName: 'Run_bicep_MG_file'
 
 
 
