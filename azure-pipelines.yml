@@ -59,7 +59,7 @@ stages:
         sed -i "s/mgmtSubID/${customer_subscription_id}/g" Main.parameters.XSmall.json
         sed -i "s/mgmtSubID/${customer_subscription_id}/g" Modules/FWXSmall.bicep
         sed -i "s/mgmtSubID/${customer_subscription_id}/g" Modules/PolicyassignmentsXSmal.bicep
-
+        cat Main.parameters.XSmall.json
       displayName: 'update_bicep_file'
 
 - stage: Stage3
