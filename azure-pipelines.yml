@@ -38,14 +38,17 @@ parameters:
     type: object
     default: "eastus"
 
-    variables:
-      - name: dateYMD
-        value: $(date +%Y%m%dT%H%M%S%NZ) 
-      - name: NAME
-        value: "alz-MgDeployment-${dateYMD}"
-      - name: MGID
-        value: "alz"
-      
+  - name: dateYMD
+    displayName: "dateYMD"
+    type: object
+    default: "$(date +%Y%m%dT%H%M%S%NZ)"
+
+  - name: NAME
+    displayName: "NAME"
+    type: object
+    default: "alz-MgDeployment-${{parameters.dateYMD}}"
+
+
 stages:
 - stage: Stage1
   jobs:
@@ -73,7 +76,7 @@ stages:
   jobs:
     - job: Run_bicep_file_MAIN
       steps:
-      - script: az deployment sub create --name ${{variables.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
+      - script: az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
         
         displayName: 'Run_bicep_MAIN_file'
 
