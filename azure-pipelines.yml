@@ -70,15 +70,19 @@ stages:
         sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmal.bicep
         cat Main.parameters.XSmall.json
       displayName: 'update_bicep_file'
+  - job: Run_bicep_file
+    steps:
+    - script: az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
+      displayName: 'Run_bicep_file'
 
-- stage: Stage3
-  dependsOn: Stage2
-  jobs:
-    - job: Run_bicep_file_MAIN
-      steps:
-      - script: az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
+# - stage: Stage3
+#   dependsOn: Stage2
+#   jobs:
+#     - job: Run_bicep_file_MAIN
+#       steps:
+#       - script: az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
         
-        displayName: 'Run_bicep_MAIN_file'
+#         displayName: 'Run_bicep_MAIN_file'
 
 
 
