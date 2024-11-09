@@ -46,7 +46,7 @@ parameters:
   - name: NAME
     displayName: "NAME"
     type: object
-    default: "alz-MgDeployment-${{parameters.dateYMD}}"
+    default: "alz-MgDeployment-mos"
 
 
 stages:
