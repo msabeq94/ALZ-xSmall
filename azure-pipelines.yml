@@ -56,47 +56,35 @@ stages:
     steps:
     - script: az login --service-principal --username ${{ parameters.customer_client_id}} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
       displayName: 'login'
-
+      
 - stage: Stage2
   dependsOn: Stage1
   jobs:
-  - job: update_bicep_file
+  - job: Run_bicep_file_MG
     steps:
     - script: | 
-        sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
         sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
-        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
-        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
-        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmal.bicep
-        cat Main.parameters.XSmall.json
-      displayName: 'update_bicep_file'
-      # Publish the updated files as an artifact to share with the next stage
-    - task: PublishBuildArtifacts@1
-      inputs:
-        pathToPublish: '$(System.DefaultWorkingDirectory)'
-        artifactName: 'updated-bicep-files'
-      displayName: 'Publish updated Bicep files as artifact'
+        az deployment tenant create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep"  --parameters "managementGroups.parameters.XSmall.json"
+      displayName: 'Run_bicep_file_MG'
+
 
 - stage: Stage3
   dependsOn: Stage2
   jobs:
         - job: Run_bicep_file_MAIN
           steps:
-          # Download the artifact from the previous stage
-          - task: DownloadBuildArtifacts@0
-            inputs:
-              artifactName: 'updated-bicep-files'
-              downloadPath: '$(System.DefaultWorkingDirectory)'
-            displayName: 'Download updated Bicep files'
-    
-          - script: az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
-            displayName: 'Run Bicep MAIN file'    
+          - script: |
+              sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
+              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
+              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
+              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmal.bicep
+              az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
+          displayName: 'Run Bicep MAIN file'    
 
 
 
 
         
-
 
 
 
