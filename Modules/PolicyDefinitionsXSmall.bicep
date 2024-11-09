@@ -4,10 +4,10 @@ var varCustomPolicyDefinitionsArrayXSmall = [
   //   name: 'Audit-RDP-From-Internet'
   //   libDefinition: loadJsonContent('policy_definitions/Audit-RDP-From-Internet.json')
   // }
-  {
-    name: 'Deploy-FirewallPolicy'
-    libDefinition: loadJsonContent('policy_definitions/Deploy-FirewallPolicy.json')
-  }
+  // {
+  //   name: 'Deploy-FirewallPolicy'
+  //   libDefinition: loadJsonContent('policy_definitions/Deploy-FirewallPolicy.json')
+  // }
   {
     name: 'Audit-Subnet-Without-Nsg'
     libDefinition: loadJsonContent('policy_definitions/Audit-Subnet-Without-Nsg.json')
