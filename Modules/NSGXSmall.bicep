@@ -32,12 +32,12 @@ resource Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  =  {
             priority: 110
             sourceAddressPrefix: 'Internet'
             destinationAddressPrefix: '*'
-            protocol: 'Tcp'
+            protocol: '*'
             sourcePortRange: '*'
             destinationPortRanges: [
+              '443'
               '80'
-             '443'
-            ] 
+            ]
           }
         }
         {
