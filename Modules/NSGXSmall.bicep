@@ -24,22 +24,22 @@ resource Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  =  {
             destinationPortRange: '*'
           }
         }
-        // {
-        //   name: 'AllowHttp_HttpsInbound'
-        //   properties: {
-        //     access: 'Allow'
-        //     direction: 'Inbound'
-        //     priority: 110
-        //     sourceAddressPrefix: 'Internet'
-        //     destinationAddressPrefix: '*'
-        //     protocol: '*'
-        //     sourcePortRange: '*'
-        //     destinationPortRanges: [
-        //       '443'
-        //       '80'
-        //     ]
-        //   }
-        // }
+        {
+          name: 'AllowHttp_HttpsInbound'
+          properties: {
+            access: 'Allow'
+            direction: 'Inbound'
+            priority: 110
+            sourceAddressPrefix: 'Internet'
+            destinationAddressPrefix: '*'
+            protocol: '*'
+            sourcePortRange: '*'
+            destinationPortRanges: [
+              '443'
+              '80'
+            ]
+          }
+        }
         {
           name: 'AllowGatewayManagerInbound'
           properties: {
@@ -76,7 +76,7 @@ resource Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  =  {
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
             sourcePortRange: '*'
-            destinationPortRanges:'22'
+            destinationPortRange:'22'
           }
         }
         {
@@ -89,7 +89,7 @@ resource Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  =  {
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
             sourcePortRange: '*'
-            destinationPortRanges: '3389'
+            destinationPortRange: '3389'
           }
         }
 
