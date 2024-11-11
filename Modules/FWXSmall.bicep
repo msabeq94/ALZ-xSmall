@@ -3,6 +3,24 @@ param FWLocation string
 param FWpublicIPAddName string
 param publicIPAddressID string
 param subnetID string
+param VnetCentname string
+param FWManagemSubnetName string
+param FWManagemSubnetIP string
+
+resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
+  name: VnetCentname
+}
+
+resource subnetFWManag 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
+  name: FWManagemSubnetName
+  parent: vnet
+  properties: {
+    addressPrefix: FWManagemSubnetIP
+   
+  }
+
+}
+
 
 resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
   name: FWName 
@@ -39,7 +57,9 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
   }
 dependsOn: [
 
-  firewallPoliciesCollectionGroup 
+  firewallPoliciesCollectionGroup
+  subnetFWManag
+
 ]
 }
 

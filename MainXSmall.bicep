@@ -26,6 +26,8 @@ param FWName string
 param NSG_name string
 param HubRouteTableName string
 param routtableID string
+param FWManagemSubnetName string
+param FWManagemSubnetAddressPrefix string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -188,6 +190,9 @@ module FW 'Modules/FWXSmall.bicep' = {
     FWpublicIPAddName: FWpublicIPAddName
     publicIPAddressID: FWpublicIP.outputs.publicIPAddressResourceId
     subnetID: VirtualNetworkCentralNetwork.outputs.SubnetId
+    VnetCentname: VnetCentralNetworktName
+    FWManagemSubnetName: FWManagemSubnetName
+    FWManagemSubnetIP : FWManagemSubnetAddressPrefix
   }
   dependsOn: [
     FWpublicIP

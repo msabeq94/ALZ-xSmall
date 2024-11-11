@@ -34,7 +34,7 @@ resource Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  =  {
             destinationAddressPrefix: '*'
             protocol: 'Tcp'
             sourcePortRange: '*'
-            destinationPortRange: [
+            destinationPortRanges: [
               '80'
              '443'
             ] 
