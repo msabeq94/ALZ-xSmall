@@ -4,10 +4,6 @@ param FWpublicIPAddName string
 param publicIPAddressID string
 param subnetID string
 
-
-
-
-
 resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
   name: FWName 
   location: FWLocation
@@ -61,12 +57,7 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
      ]
     }
 
-  
-      
-
-
 }
     ]
   }
 }
-

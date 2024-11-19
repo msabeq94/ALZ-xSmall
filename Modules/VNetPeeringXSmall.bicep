@@ -2,7 +2,6 @@ param VnetPeeringName string
 param RemoteVnetID string
 param RemoteNetworkAddressPrefix string
 
-
 resource VnetPeering'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2024-01-01' = {
   name: VnetPeeringName
   properties: {
@@ -30,4 +29,3 @@ resource VnetPeering'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@20
   }
  
 }
-

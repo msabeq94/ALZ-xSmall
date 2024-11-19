@@ -2,8 +2,6 @@ param NSG_name string
 param NSG_location string
 param NSG_addressPrefix_FWIP string
 
-
-
 resource Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  =  {
   name: NSG_name
   location: NSG_location
@@ -30,10 +28,4 @@ resource Nsg 'Microsoft.Network/networkSecurityGroups@2024-01-01'  =  {
 
 }
   
-
-
 output NsgId string = Nsg.id
-
-
-
-

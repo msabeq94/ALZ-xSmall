@@ -40,7 +40,7 @@ read mgmtSubID
 # Feed file
 # sed -i "s/mgmtSubID/${mgmtSubID}/g" Main.parameters.XSmall.json
 # sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/FWXSmall.bicep
-sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/PolicyassignmentsXSmal.bicep
+sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/PolicyassignmentsXSmall.bicep
 # RouteTableID="/subscriptions/${mgmtSubID}/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable"
 #sed -i "s/mgmtSubID/${mgmtSubID}/g" VNetCentralNetworkHub.parameters.XSmall.json
 

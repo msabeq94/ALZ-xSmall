@@ -10,6 +10,3 @@ resource rgXSmall 'Microsoft.Resources/resourceGroups@2024-03-01' = {
 }
 
 output rgXSmallId string = rgXSmall.id
-
-
-

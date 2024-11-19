@@ -4,9 +4,6 @@ param VnetAddressPrefix string
 param VnetSubnetName string
 param VnetSubnetAddressPrefix string
 
-
-
-
 resource VirtualNetworksVnet 'Microsoft.Network/virtualNetworks@2024-01-01' =  {
   name: VnetName
   location: VnetLocation
@@ -39,5 +36,6 @@ resource VirtualNetworksVnet 'Microsoft.Network/virtualNetworks@2024-01-01' =  {
     enableDdosProtection: false
   }
 }
+
 output VnetId string = VirtualNetworksVnet.id
 output SubnetId string =  VirtualNetworksVnet.properties.subnets[0].id
