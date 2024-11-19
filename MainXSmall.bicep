@@ -250,7 +250,7 @@ module RouteTableXSmall 'Modules/RouteTableXSmall.bicep' = {
   ]
 }
 
-module RouteTableAssociatePRO 'Modules/NSG_RT_Associate.bicep' = {
+module RouteTableAssociatePRO 'Modules/NSG_RT_AssociateXSmall.bicep' = {
   name: 'RouteTableAssociate-${deploymentTime}'
   scope: resourceGroup(rgNameProductionSpoke)
   params: {
@@ -265,7 +265,7 @@ module RouteTableAssociatePRO 'Modules/NSG_RT_Associate.bicep' = {
   ]
 }
 
-module RouteTableAssociateDEV 'Modules/NSG_RT_Associate.bicep' = {
+module RouteTableAssociateDEV 'Modules/NSG_RT_AssociateXSmall.bicep' = {
   name: 'RouteTableAssociate-${deploymentTime}'
   scope: resourceGroup(rgNameDevelopmentSpoke)
   params: {
