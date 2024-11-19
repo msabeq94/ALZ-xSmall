@@ -294,8 +294,9 @@ module RouteTableAssociatePRO 'Modules/RoutheTabelAssociate.bicep' = {
   params: {
     VnetName: VnetProductionName
     VnetSubnetName: VnetProductionSubnetName
-    // routeTablesID: RouteTable.outputs.resHubRouteTableId
+    routeTablesID: RouteTable.outputs.resHubRouteTableId
     SUBaddressPrefix: VnetProductionSubnetAddressPrefix
+    networkSecurityGroups_vf_core_alz_nsg_PROD_externalid: NSGPROD.outputs.NsgId
   }
   dependsOn: [
     RouteTable
@@ -308,8 +309,9 @@ module RouteTableAssociateDEV 'Modules/RoutheTabelAssociate.bicep' = {
   params: {
     VnetName: VnetDevelopmentName
     VnetSubnetName: VnetDevelopmentSubnetName
-    // routeTablesID: RouteTable.outputs.resHubRouteTableId
+    routeTablesID: RouteTable.outputs.resHubRouteTableId
     SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
+    networkSecurityGroups_vf_core_alz_nsg_PROD_externalid: NSGDEV.outputs.NsgId
   }
   dependsOn: [
     RouteTable

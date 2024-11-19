@@ -1,7 +1,8 @@
 param VnetName string
 param VnetSubnetName string
-// param routeTablesID string
+param routeTablesID string
 param SUBaddressPrefix string
+param networkSecurityGroups_vf_core_alz_nsg_PROD_externalid string
 
 
 resource vnet 'Microsoft.Network/virtualNetworks@2023-09-01' existing = {
@@ -20,9 +21,15 @@ resource subnetNSG 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
   parent: vnet
   properties: {
     addressPrefix: SUBaddressPrefix
-    routeTable: {
-      id: '/subscriptions/102170e2-9371-4b66-95de-d4530f8bf56e/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/vf-core-alz-rt'
+    networkSecurityGroup: {
+      id: networkSecurityGroups_vf_core_alz_nsg_PROD_externalid
     }
+    routeTable: {
+      id: routeTablesID
+    }
+    delegations: []
+          privateEndpointNetworkPolicies: 'Disabled'
+          privateLinkServiceNetworkPolicies: 'Enabled'
   }
 
 }
