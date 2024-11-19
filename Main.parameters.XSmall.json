@@ -68,8 +68,11 @@
     "FWName" : {
       "value": "vf-core-alz-fw-customerLocation"
     },
-    "NSG_name" : {
-      "value": "vf-core-alz-nsg"
+    "NSG_name_DEV" : {
+      "value": "vf-core-alz-nsg-DEV"
+    },
+    "NSG_name_PROD" : {
+      "value": "vf-core-alz-nsg-PROD"
     },
   
     "HubRouteTableName" : {

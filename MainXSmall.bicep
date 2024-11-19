@@ -23,11 +23,13 @@ param VnetCentralNetworkid string
 param VnetLocation string
 param FWpublicIPAddName string
 param FWName string
-param NSG_name string
+param NSG_name_DEV string
+param NSG_name_PROD string
 param HubRouteTableName string
 param routtableID string
 param FWManagemSubnetName string
 param FWManagemSubnetAddressPrefix string
+param NSG_addressPrefix_FWIP string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -190,9 +192,7 @@ module FW 'Modules/FWXSmall.bicep' = {
     FWpublicIPAddName: FWpublicIPAddName
     publicIPAddressID: FWpublicIP.outputs.publicIPAddressResourceId
     subnetID: VirtualNetworkCentralNetwork.outputs.SubnetId
-    VnetCentname: VnetCentralNetworktName
-    FWManagemSubnetName: FWManagemSubnetName
-    FWManagemSubnetIP : FWManagemSubnetAddressPrefix
+   
   }
   dependsOn: [
     FWpublicIP
@@ -200,19 +200,31 @@ module FW 'Modules/FWXSmall.bicep' = {
   ]
 }
 
-module NSG 'Modules/NSGXSmall.bicep' = {
+module NSGPROD 'Modules/NSGXSmall.bicep' = {
   name: 'NSG-${deploymentTime}'
   scope: resourceGroup(rgNameProductionSpoke)
   params: {
-    NSG_name : NSG_name
+    NSG_name : NSG_name_PROD
     NSG_location: VnetLocation
-    
-   
-
+    NSG_addressPrefix_FWIP: FWpublicIP.outputs.publicIPAddress
   }
   dependsOn: [
     
     VirtualNetworkProduction
+  ]
+}
+
+module NSGDEV 'Modules/NSGXSmall.bicep' = {
+  name: 'NSG-${deploymentTime}'
+  scope: resourceGroup(rgNameDevelopmentSpoke)
+  params: {
+    NSG_name : NSG_name_DEV
+    NSG_location: VnetLocation
+    NSG_addressPrefix_FWIP: FWpublicIP.outputs.publicIPAddress
+  }
+  dependsOn: [
+    
+    VirtualNetworkDevelopment
   ]
 }
 
@@ -225,11 +237,10 @@ module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
     VnetName: VnetProductionName
     VnetSubnetName: VnetProductionSubnetName
     SUBaddressPrefix: VnetProductionSubnetAddressPrefix
-    NSGID: NSG.outputs.NsgId
+    NSGID: NSGPROD.outputs.NsgId
   }
   dependsOn: [
-    NSG
-    VirtualNetworkProduction
+    NSGPROD
   ]
 }
 
@@ -240,11 +251,10 @@ module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
     VnetName: VnetDevelopmentName
     VnetSubnetName: VnetDevelopmentSubnetName
     SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
-    NSGID: NSG.outputs.NsgId
+    NSGID: NSGDEV.outputs.NsgId
   }
   dependsOn: [
-    NSG
-    VirtualNetworkDevelopment
+    NSGDEV
   ]
 }
 
