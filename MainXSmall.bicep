@@ -26,10 +26,10 @@ param FWName string
 param NSG_name_DEV string
 param NSG_name_PROD string
 param HubRouteTableName string
-param routtableID string
-param FWManagemSubnetName string
-param FWManagemSubnetAddressPrefix string
-param NSG_addressPrefix_FWIP string
+// param routtableID string
+// param FWManagemSubnetName string
+// param FWManagemSubnetAddressPrefix string
+// param NSG_addressPrefix_FWIP string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
