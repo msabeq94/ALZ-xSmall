@@ -77,7 +77,7 @@ stages:
               sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
               sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
               sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
-              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmal.bicep
+              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
               az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
           displayName: 'Run Bicep MAIN file'    
 
