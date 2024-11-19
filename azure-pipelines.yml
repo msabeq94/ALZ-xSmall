@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger: none
 
 pool: default
@@ -48,7 +43,6 @@ parameters:
     type: object
     default: "alz-MgDeployment-mos"
 
-
 stages:
 - stage: Stage1
   jobs:
@@ -67,25 +61,35 @@ stages:
 #         az deployment tenant create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep"  --parameters "managementGroups.parameters.XSmall.json"
 #       displayName: 'Run_bicep_file_MG'
 
-
 - stage: Stage3
   dependsOn: Stage1
   jobs:
-        - job: Run_bicep_file_MAIN
-          steps:
-          - script: |
-              sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
-              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
-              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
-              sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
-              az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
-          displayName: 'Run Bicep MAIN file'    
+  - job: Run_bicep_file_MAIN
+    steps:
+    - script: |
+        sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
+        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
+        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
+        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
+        az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
+      displayName: 'Run Bicep MAIN file'
 
-
-
-
-        
-
-
-
-      
+- stage: Stage4
+  dependsOn: Stage3
+  jobs:
+  - job: manual_approval
+    displayName: "Manual Approval Step"
+    steps:
+    - task: ManualValidation@0
+      inputs:
+        notifyUsers: 'msabeq@outlook.com'  # Replace with the email(s) of approvers
+        instructions: 'Please approve or reject the execution of Stage4.'
+  - job: Run_bicep_file_MAIN
+    dependsOn: manual_approval
+    steps:
+    - script: |
+        az group delete --name "vf-core-InternalServices-rg" --yes 
+        az group delete --name "vf-core-Production-rg" --yes 
+        az group delete --name "vf-core-Development-rg" --yes 
+        az group delete --name "vf-core-CentralHub-rg" --yes 
+      displayName: 'Run Bicep RM-RG'
