@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworks_vf_core_ProductionSpoke_production_vnet_name": {
+            "value": null
+        },
+        "networkSecurityGroups_vf_core_alz_nsg_PROD_externalid": {
+            "value": null
+        },
+        "routeTables_vf_core_alz_rt_externalid": {
+            "value": null
+        },
+        "virtualNetworks_vf_core_CentralNetwork_central_NW_hub_vnet_externalid": {
+            "value": null
+        }
+    }
+}

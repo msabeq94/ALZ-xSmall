@@ -1,6 +1,6 @@
 param VnetName string
 param VnetSubnetName string
-param routeTablesID string
+// param routeTablesID string
 param SUBaddressPrefix string
 
 
@@ -21,11 +21,13 @@ resource subnetNSG 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' = {
   properties: {
     addressPrefix: SUBaddressPrefix
     routeTable: {
-      id: routeTablesID
+      id: '/subscriptions/102170e2-9371-4b66-95de-d4530f8bf56e/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/vf-core-alz-rt'
     }
   }
 
 }
+
+
 
 
 

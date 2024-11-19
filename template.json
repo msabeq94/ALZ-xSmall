@@ -1,0 +1,143 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualNetworks_vf_core_ProductionSpoke_production_vnet_name": {
+            "defaultValue": "vf-core-ProductionSpoke-production-vnet",
+            "type": "String"
+        },
+        "networkSecurityGroups_vf_core_alz_nsg_PROD_externalid": {
+            "defaultValue": "/subscriptions/102170e2-9371-4b66-95de-d4530f8bf56e/resourceGroups/ProductionSpoke/providers/Microsoft.Network/networkSecurityGroups/vf-core-alz-nsg-PROD",
+            "type": "String"
+        },
+        "routeTables_vf_core_alz_rt_externalid": {
+            "defaultValue": "/subscriptions/102170e2-9371-4b66-95de-d4530f8bf56e/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/vf-core-alz-rt",
+            "type": "String"
+        },
+        "virtualNetworks_vf_core_CentralNetwork_central_NW_hub_vnet_externalid": {
+            "defaultValue": "/subscriptions/102170e2-9371-4b66-95de-d4530f8bf56e/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/virtualNetworks/vf-core-CentralNetwork-central-NW-hub-vnet",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Network/virtualNetworks",
+            "apiVersion": "2024-01-01",
+            "name": "[parameters('virtualNetworks_vf_core_ProductionSpoke_production_vnet_name')]",
+            "location": "eastus",
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "10.1.0.0/16"
+                    ]
+                },
+                "encryption": {
+                    "enabled": false,
+                    "enforcement": "AllowUnencrypted"
+                },
+                "subnets": [
+                    {
+                        "name": "ProductionSubnet",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworks_vf_core_ProductionSpoke_production_vnet_name'), 'ProductionSubnet')]",
+                        "properties": {
+                            "addressPrefix": "10.1.0.0/24",
+                            "networkSecurityGroup": {
+                                "id": "[parameters('networkSecurityGroups_vf_core_alz_nsg_PROD_externalid')]"
+                            },
+                            "routeTable": {
+                                "id": "[parameters('routeTables_vf_core_alz_rt_externalid')]"
+                            },
+                            "delegations": [],
+                            "privateEndpointNetworkPolicies": "Disabled",
+                            "privateLinkServiceNetworkPolicies": "Enabled"
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/subnets"
+                    }
+                ],
+                "virtualNetworkPeerings": [
+                    {
+                        "name": "PRO_CENT_peering",
+                        "id": "[resourceId('Microsoft.Network/virtualNetworks/virtualNetworkPeerings', parameters('virtualNetworks_vf_core_ProductionSpoke_production_vnet_name'), 'PRO_CENT_peering')]",
+                        "properties": {
+                            "peeringState": "Connected",
+                            "peeringSyncLevel": "FullyInSync",
+                            "remoteVirtualNetwork": {
+                                "id": "[parameters('virtualNetworks_vf_core_CentralNetwork_central_NW_hub_vnet_externalid')]"
+                            },
+                            "allowVirtualNetworkAccess": true,
+                            "allowForwardedTraffic": false,
+                            "allowGatewayTransit": false,
+                            "useRemoteGateways": false,
+                            "doNotVerifyRemoteGateways": false,
+                            "peerCompleteVnets": true,
+                            "remoteAddressSpace": {
+                                "addressPrefixes": [
+                                    "10.10.0.0/16"
+                                ]
+                            },
+                            "remoteVirtualNetworkAddressSpace": {
+                                "addressPrefixes": [
+                                    "10.10.0.0/16"
+                                ]
+                            }
+                        },
+                        "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings"
+                    }
+                ],
+                "enableDdosProtection": false
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/subnets",
+            "apiVersion": "2024-01-01",
+            "name": "[concat(parameters('virtualNetworks_vf_core_ProductionSpoke_production_vnet_name'), '/ProductionSubnet')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_vf_core_ProductionSpoke_production_vnet_name'))]"
+            ],
+            "properties": {
+                "addressPrefix": "10.1.0.0/24",
+                "networkSecurityGroup": {
+                    "id": "[parameters('networkSecurityGroups_vf_core_alz_nsg_PROD_externalid')]"
+                },
+                "routeTable": {
+                    "id": "[parameters('routeTables_vf_core_alz_rt_externalid')]"
+                },
+                "delegations": [],
+                "privateEndpointNetworkPolicies": "Disabled",
+                "privateLinkServiceNetworkPolicies": "Enabled"
+            }
+        },
+        {
+            "type": "Microsoft.Network/virtualNetworks/virtualNetworkPeerings",
+            "apiVersion": "2024-01-01",
+            "name": "[concat(parameters('virtualNetworks_vf_core_ProductionSpoke_production_vnet_name'), '/PRO_CENT_peering')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworks_vf_core_ProductionSpoke_production_vnet_name'))]"
+            ],
+            "properties": {
+                "peeringState": "Connected",
+                "peeringSyncLevel": "FullyInSync",
+                "remoteVirtualNetwork": {
+                    "id": "[parameters('virtualNetworks_vf_core_CentralNetwork_central_NW_hub_vnet_externalid')]"
+                },
+                "allowVirtualNetworkAccess": true,
+                "allowForwardedTraffic": false,
+                "allowGatewayTransit": false,
+                "useRemoteGateways": false,
+                "doNotVerifyRemoteGateways": false,
+                "peerCompleteVnets": true,
+                "remoteAddressSpace": {
+                    "addressPrefixes": [
+                        "10.10.0.0/16"
+                    ]
+                },
+                "remoteVirtualNetworkAddressSpace": {
+                    "addressPrefixes": [
+                        "10.10.0.0/16"
+                    ]
+                }
+            }
+        }
+    ]
+}
