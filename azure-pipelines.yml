@@ -77,19 +77,22 @@ stages:
 - stage: Stage4
   dependsOn: Stage3
   jobs:
-  - job: manual_approval
-    displayName: "Manual Approval Step"
-    steps:
-    - task: ManualValidation@0
-      inputs:
-        notifyUsers: 'msabeq@outlook.com'  # Replace with the email(s) of approvers
-        instructions: 'Please approve or reject the execution of Stage4.'
-  - job: Run_bicep_file_MAIN
-    dependsOn: manual_approval
-    steps:
-    - script: |
-        az group delete --name "vf-core-InternalServices-rg" --yes 
-        az group delete --name "vf-core-Production-rg" --yes 
-        az group delete --name "vf-core-Development-rg" --yes 
-        az group delete --name "vf-core-CentralHub-rg" --yes 
-      displayName: 'Run Bicep RM-RG'
+        - job: manual_approval
+          displayName: "Manual Approval Step"
+          pool: server  # Ensures the job runs without an agent
+          steps:
+            - task: ManualValidation@0
+              inputs:
+                notifyUsers: 'msabeq@outlook.com'  # Replace with the actual approver's email
+                instructions: 'Please approve or reject the execution of Stage4.'
+        - job: Run_bicep_file_MAIN
+          dependsOn: manual_approval
+          steps:
+            - script: |
+                az group delete --name "vf-core-InternalServices-rg" --yes 
+                az group delete --name "vf-core-Production-rg" --yes 
+                az group delete --name "vf-core-Development-rg" --yes 
+                az group delete --name "vf-core-CentralHub-rg" --yes 
+              displayName: 'Run Bicep RM-RG'
+    
+    
