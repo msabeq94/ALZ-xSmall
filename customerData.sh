@@ -38,10 +38,10 @@ echo "Enter customer management subscription ID:"
 read mgmtSubID
 
 # Feed file
-sed -i "s/mgmtSubID/${mgmtSubID}/g" Main.parameters.XSmall.json
-sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/FWXSmall.bicep
+# sed -i "s/mgmtSubID/${mgmtSubID}/g" Main.parameters.XSmall.json
+# sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/FWXSmall.bicep
 sed -i "s/mgmtSubID/${mgmtSubID}/g" Modules/PolicyassignmentsXSmal.bicep
-RouteTableID="/subscriptions/${mgmtSubID}/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable"
+# RouteTableID="/subscriptions/${mgmtSubID}/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable"
 #sed -i "s/mgmtSubID/${mgmtSubID}/g" VNetCentralNetworkHub.parameters.XSmall.json
 
 # Prompt the user for the securityEmail variable 

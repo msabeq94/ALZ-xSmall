@@ -9,27 +9,20 @@ param VnetProductionName string
 param VnetProductionAddressPrefix string
 param VnetProductionSubnetName string
 param VnetProductionSubnetAddressPrefix string
-param VnetProductionid string
 param VnetDevelopmentName string
 param VnetDevelopmentAddressPrefix string
 param VnetDevelopmentSubnetName string
 param VnetDevelopmentSubnetAddressPrefix string
-param VnetDevelopmentid string
 param VnetCentralNetworktName string
 param VnetCentralNetworkAddressPrefix string
 param VnetCentralNetworkSubnetName string
 param VnetCentralNetworkSubnetAddressPrefix string
-param VnetCentralNetworkid string
 param VnetLocation string
 param FWpublicIPAddName string
 param FWName string
 param NSG_name_DEV string
 param NSG_name_PROD string
 param HubRouteTableName string
-// param routtableID string
-// param FWManagemSubnetName string
-// param FWManagemSubnetAddressPrefix string
-// param NSG_addressPrefix_FWIP string
 param deploymentTime string = utcNow()
 
 module ResourceGroupProductionSpoke 'Modules/ResourceGroupXSmall.bicep' = {
@@ -77,7 +70,7 @@ module VirtualNetworkProduction 'Modules/VNetXSmall.bicep' = {
   }
   dependsOn: [
     ResourceGroupProductionSpoke
-    RouteTable
+    RouteTableXSmall
   ]
 }
 
@@ -94,7 +87,7 @@ module VirtualNetworkDevelopment 'Modules/VNetXSmall.bicep' = {
   }
   dependsOn: [
     ResourceGroupDevelopmentSpoke
-    RouteTable
+    RouteTableXSmall
   ]
 }
 
@@ -111,7 +104,7 @@ module VirtualNetworkCentralNetwork 'Modules/VNetXSmall.bicep' = {
   }
   dependsOn: [
     ResourceGroupCentralNetwork
-    RouteTable
+    RouteTableXSmall
   ]
 }
 
@@ -120,7 +113,7 @@ module VnetPeeringPRO_CENT 'Modules/VNetPeeringXSmall.bicep' = {
   scope: resourceGroup(rgNameProductionSpoke)
   params: {
     VnetPeeringName: '${VnetProductionName}/PRO_CENT_peering'
-    RemoteVnetID: VnetCentralNetworkid
+    RemoteVnetID: VirtualNetworkCentralNetwork.outputs.VnetId
     RemoteNetworkAddressPrefix: VnetCentralNetworkAddressPrefix
   }
   dependsOn: [
@@ -134,7 +127,7 @@ module VnetPeeringCEN_PRO 'Modules/VNetPeeringXSmall.bicep' = {
   scope: resourceGroup(rgNameCentralNetwork)
   params: {
     VnetPeeringName: '${VnetCentralNetworktName}/CEN_PRO_peering'
-    RemoteVnetID: VnetProductionid
+    RemoteVnetID: VirtualNetworkProduction.outputs.VnetId
     RemoteNetworkAddressPrefix: VnetProductionAddressPrefix
   }
   dependsOn: [
@@ -147,7 +140,7 @@ module VnetPeeringDEV_CENT 'Modules/VNetPeeringXSmall.bicep' = {
   scope: resourceGroup(rgNameDevelopmentSpoke)
   params: {
     VnetPeeringName: '${VnetDevelopmentName}/DEV_CENT_peering'
-    RemoteVnetID: VnetCentralNetworkid
+    RemoteVnetID: VirtualNetworkCentralNetwork.outputs.VnetId
     RemoteNetworkAddressPrefix: VnetCentralNetworkAddressPrefix
   }
   dependsOn: [
@@ -161,7 +154,7 @@ module VnetPeeringCENT_DEV 'Modules/VNetPeeringXSmall.bicep' = {
   scope: resourceGroup(rgNameCentralNetwork)
   params: {
     VnetPeeringName: '${VnetCentralNetworktName}/CENT_DEV_peering'
-    RemoteVnetID: VnetDevelopmentid
+    RemoteVnetID: VirtualNetworkDevelopment.outputs.VnetId
     RemoteNetworkAddressPrefix: VnetDevelopmentAddressPrefix
   }
   dependsOn: [
@@ -227,44 +220,13 @@ module NSGDEV 'Modules/NSGXSmall.bicep' = {
     VirtualNetworkDevelopment
   ]
 }
-
-
-
-// module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
-//   name: 'NSGAssociate-${deploymentTime}'
-//   scope: resourceGroup(rgNameProductionSpoke)
-//   params: {
-//     VnetName: VnetProductionName
-//     VnetSubnetName: VnetProductionSubnetName
-//     SUBaddressPrefix: VnetProductionSubnetAddressPrefix
-//     NSGID: NSGPROD.outputs.NsgId
-//   }
-//   dependsOn: [
-//     NSGPROD
-//   ]
-// }
-
-// module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
-//   name: 'NSGAssociate-${deploymentTime}'
-//   scope: resourceGroup(rgNameDevelopmentSpoke)
-//   params: {
-//     VnetName: VnetDevelopmentName
-//     VnetSubnetName: VnetDevelopmentSubnetName
-//     SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
-//     NSGID: NSGDEV.outputs.NsgId
-//   }
-//   dependsOn: [
-//     NSGDEV
-//   ]
-// }
-
 module PolicyDefinitions 'Modules/PolicyDefinitionsXSmall.bicep' = {
   name: 'PolicyDefinitions-${deploymentTime}'
   scope: subscription()
 
 }
 
-module PolicyAssignments 'Modules/PolicyassignmentsXSmal.bicep' = {
+module PolicyAssignments 'Modules/PolicyassignmentsXSmall.bicep' = {
   name: 'PolicyAssignments-${deploymentTime}'
   scope: resourceGroup(rgNameInternalServicesHub)
   dependsOn: [
@@ -273,7 +235,7 @@ module PolicyAssignments 'Modules/PolicyassignmentsXSmal.bicep' = {
   ]
 }
 
-module RouteTable 'Modules/RouteTable.bicep' = {
+module RouteTableXSmall 'Modules/RouteTableXSmall.bicep' = {
   name: 'RouteTable-${deploymentTime}'
   scope: resourceGroup(rgNameCentralNetwork)
   params: {
@@ -288,33 +250,33 @@ module RouteTable 'Modules/RouteTable.bicep' = {
   ]
 }
 
-module RouteTableAssociatePRO 'Modules/RoutheTabelAssociate.bicep' = {
+module RouteTableAssociatePRO 'Modules/NSG_RT_Associate.bicep' = {
   name: 'RouteTableAssociate-${deploymentTime}'
   scope: resourceGroup(rgNameProductionSpoke)
   params: {
     VnetName: VnetProductionName
     VnetSubnetName: VnetProductionSubnetName
-    routeTablesID: RouteTable.outputs.resHubRouteTableId
+    routeTablesID: RouteTableXSmall.outputs.resHubRouteTableId
     SUBaddressPrefix: VnetProductionSubnetAddressPrefix
     networkSecurityGroups_vf_core_alz_nsg_PROD_externalid: NSGPROD.outputs.NsgId
   }
   dependsOn: [
-    RouteTable
+    RouteTableXSmall
   ]
 }
 
-module RouteTableAssociateDEV 'Modules/RoutheTabelAssociate.bicep' = {
+module RouteTableAssociateDEV 'Modules/NSG_RT_Associate.bicep' = {
   name: 'RouteTableAssociate-${deploymentTime}'
   scope: resourceGroup(rgNameDevelopmentSpoke)
   params: {
     VnetName: VnetDevelopmentName
     VnetSubnetName: VnetDevelopmentSubnetName
-    routeTablesID: RouteTable.outputs.resHubRouteTableId
+    routeTablesID: RouteTableXSmall.outputs.resHubRouteTableId
     SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
     networkSecurityGroups_vf_core_alz_nsg_PROD_externalid: NSGDEV.outputs.NsgId
   }
   dependsOn: [
-    RouteTable
+    RouteTableXSmall
   ]
 }
 

@@ -3,46 +3,46 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "rgNameProductionSpoke" : {
-      "value": "ProductionSpoke"
+      "value": "vf-core-Production-rg"
     },
   "rgNameCentralNetwork" : {
-      "value": "CentralNetworkHub"
+      "value": "vf-core-CentralHub-rg"
     },
     "rgNameDevelopmentSpoke"  : {
-      "value": "DevelopmentSpoke"
+      "value": "vf-core-Development-rg"
     },
     "rgNameInternalServicesHub" : {
-      "value": "InternalServicesHub"
+      "value": "vf-core-InternalServices-rg"
     },
     "rgLocation"  : {
       "value": "customerLocation"
     },
     "VnetProductionName" : {
-      "value": "vf-core-ProductionSpoke-production-vnet"
+      "value": "vf-core-alz-production-spoke-vnet"
     },
     "VnetProductionAddressPrefix" : {
       "value": "10.1.0.0/16"
     },
     "VnetProductionSubnetName" : {
-      "value": "ProductionSubnet"
+      "value": "vf-core-alz-prod-subnet"
     },
     "VnetProductionSubnetAddressPrefix" : {
       "value": "10.1.0.0/24"
     },
     "VnetDevelopmentName" : {
-      "value": "vf-core-DevelopmentSpoke-development-vnet"
+      "value": "vf-core-alz-develpment-spoke-vnet"
     },
     "VnetDevelopmentAddressPrefix" : {
       "value": "10.2.0.0/16" 
     },
     "VnetDevelopmentSubnetName" : {
-      "value": "DevelopmentSubnet"
+      "value": "vf-core-alz-dev-subnet"
     },
     "VnetDevelopmentSubnetAddressPrefix" : {
       "value": "10.2.0.0/24"
     },
     "VnetCentralNetworktName" : {
-      "value": "vf-core-CentralNetwork-central-NW-hub-vnet"
+      "value": "vf-core-alz-central-hub-vnet"
     },
     "VnetCentralNetworkAddressPrefix" : {
       "value": "10.10.0.0/16" 
@@ -53,17 +53,9 @@
     "VnetCentralNetworkSubnetAddressPrefix" : {
       "value": "10.10.254.0/24"
     },
-    "VnetCentralNetworkid" : {
-      "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/virtualNetworks/vf-core-CentralNetwork-central-NW-hub-vnet"
-    },
-    "VnetProductionid" : {
-      "value": "/subscriptions/mgmtSubID/resourceGroups/ProductionSpoke/providers/Microsoft.Network/virtualNetworks/vf-core-ProductionSpoke-production-vnet"
-    },
-    "VnetDevelopmentid" : {
-      "value": "/subscriptions/mgmtSubID/resourceGroups/DevelopmentSpoke/providers/Microsoft.Network/virtualNetworks/vf-core-DevelopmentSpoke-development-vnet"
-    },
+  
     "FWpublicIPAddName" : {
-      "value": "fw-public-ip"
+      "value": "vf-core-alz-fw-ip"
     },
     "FWName" : {
       "value": "vf-core-alz-fw-customerLocation"
