@@ -80,14 +80,6 @@
     },
     "VnetLocation" : {
       "value": "customerLocation"
-    },
-    "routtableID"  :{
-      "value": "/subscriptions/mgmtSubID/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable"
-    },
-    "FWManagemSubnetName" : {
-      "value": "AzureFirewallManagementSubnet"
-    },
-    "FWManagemSubnetAddressPrefix" : {
-      "value": "10.10.253.0/24"
-  }
+    }
+   
 }}
