@@ -1,5 +1,0 @@
-RouteTableID="/subscriptions/${mgmtSubID}/resourceGroups/CentralNetworkHub/providers/Microsoft.Network/routeTables/ALZ-hub-routetable"
-
-az network vnet subnet update --resource-group 'DevelopmentSpoke' --vnet-name 'vf-core-DevelopmentSpoke-development-vnet' --name 'DevelopmentSubnet' --route-table $RouteTableID
-
-az network vnet subnet update --resource-group 'ProductionSpoke' --vnet-name 'vf-core-ProductionSpoke-production-vnet' --name 'ProductionSubnet' --route-table $RouteTableID

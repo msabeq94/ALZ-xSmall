@@ -23,3 +23,4 @@ resource resHubRouteTable 'Microsoft.Network/routeTables@2024-01-01' =  {
 }
 
 
+output resHubRouteTableId string = resHubRouteTable.id

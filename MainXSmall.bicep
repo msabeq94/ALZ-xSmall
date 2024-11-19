@@ -288,3 +288,31 @@ module RouteTable 'Modules/RouteTable.bicep' = {
   ]
 }
 
+module RouteTableAssociatePRO 'Modules/RoutheTabelAssociate.bicep' = {
+  name: 'RouteTableAssociate-${deploymentTime}'
+  scope: resourceGroup(rgNameProductionSpoke)
+  params: {
+    VnetName: VnetProductionName
+    VnetSubnetName: VnetProductionSubnetName
+    routeTablesID: RouteTable.outputs.resHubRouteTableId
+    SUBaddressPrefix: VnetProductionSubnetAddressPrefix
+  }
+  dependsOn: [
+    RouteTable
+  ]
+}
+
+module RouteTableAssociateDEV 'Modules/RoutheTabelAssociate.bicep' = {
+  name: 'RouteTableAssociate-${deploymentTime}'
+  scope: resourceGroup(rgNameDevelopmentSpoke)
+  params: {
+    VnetName: VnetDevelopmentName
+    VnetSubnetName: VnetDevelopmentSubnetName
+    routeTablesID: RouteTable.outputs.resHubRouteTableId
+    SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
+  }
+  dependsOn: [
+    RouteTable
+  ]
+}
+
