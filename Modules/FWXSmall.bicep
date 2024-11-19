@@ -32,11 +32,41 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
       }
     ]
     networkRuleCollections: [
+      {        name: 'Deny Internet Access'
+      properties: {
+        priority: 100
+        action: {
+          type: 'Allow'
+        }
+        rules: [
+          {
+            name: 'Deny All Outbound'
+            protocols: [
+              'Any'
+            ]
+            sourceAddresses: [
+              '*'
+            ]
+            destinationAddresses: [
+              '*'
+            ]
+            sourceIpGroups: []
+            destinationIpGroups: []
+            destinationFqdns: []
+            destinationPorts: [
+              '*'
+            ]
+          }
     
      ]
+    }
 
   
-  }
+      
 
+
+}
+    ]
+  }
 }
 
