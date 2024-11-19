@@ -230,33 +230,33 @@ module NSGDEV 'Modules/NSGXSmall.bicep' = {
 
 
 
-module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
-  name: 'NSGAssociate-${deploymentTime}'
-  scope: resourceGroup(rgNameProductionSpoke)
-  params: {
-    VnetName: VnetProductionName
-    VnetSubnetName: VnetProductionSubnetName
-    SUBaddressPrefix: VnetProductionSubnetAddressPrefix
-    NSGID: NSGPROD.outputs.NsgId
-  }
-  dependsOn: [
-    NSGPROD
-  ]
-}
+// module NSGAssociatePRO 'Modules/NSGXSmallAssociate.bicep' = {
+//   name: 'NSGAssociate-${deploymentTime}'
+//   scope: resourceGroup(rgNameProductionSpoke)
+//   params: {
+//     VnetName: VnetProductionName
+//     VnetSubnetName: VnetProductionSubnetName
+//     SUBaddressPrefix: VnetProductionSubnetAddressPrefix
+//     NSGID: NSGPROD.outputs.NsgId
+//   }
+//   dependsOn: [
+//     NSGPROD
+//   ]
+// }
 
-module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
-  name: 'NSGAssociate-${deploymentTime}'
-  scope: resourceGroup(rgNameDevelopmentSpoke)
-  params: {
-    VnetName: VnetDevelopmentName
-    VnetSubnetName: VnetDevelopmentSubnetName
-    SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
-    NSGID: NSGDEV.outputs.NsgId
-  }
-  dependsOn: [
-    NSGDEV
-  ]
-}
+// module NSGAssociateDEV 'Modules/NSGXSmallAssociate.bicep' = {
+//   name: 'NSGAssociate-${deploymentTime}'
+//   scope: resourceGroup(rgNameDevelopmentSpoke)
+//   params: {
+//     VnetName: VnetDevelopmentName
+//     VnetSubnetName: VnetDevelopmentSubnetName
+//     SUBaddressPrefix: VnetDevelopmentSubnetAddressPrefix
+//     NSGID: NSGDEV.outputs.NsgId
+//   }
+//   dependsOn: [
+//     NSGDEV
+//   ]
+// }
 
 module PolicyDefinitions 'Modules/PolicyDefinitionsXSmall.bicep' = {
   name: 'PolicyDefinitions-${deploymentTime}'
