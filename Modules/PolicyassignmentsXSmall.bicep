@@ -1,5 +1,3 @@
-// param parPolicyAssignmentIdentityType string = 'None'
-// var varPolicyIdentity = parPolicyAssignmentIdentityType == 'SystemAssigned' ? 'SystemAssigned' : 'None'
 var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
  
   {
@@ -21,30 +19,8 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Udr'
    
 }
-// {
-//     name: 'Deploy-FirewallPolicy'
-//     displayName: 'Deploy Firewall Policy'
-//     description: 'This policy deploys a firewall policy to the specified scope.'
-//     enforcementMode: 'Default'
-//     source: 'https://github.com/Azure/Enterprise-Scale/'
-//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deploy-FirewallPolicy'
-//     parameters:{
-//       firewallPolicyName: {
-//         value: 'azfwpolicy'
-//       }
-//     }
-//   }
-
-
-// {
-//    Name: 'Audit-RDP-From-Internet'
-//     displayName: 'RDP should not be allowed from the Internet'
-//     description: 'This policy denies the creation of a security rule that allows RDP traffic from the Internet. RDP should be restricted to specific IP ranges.'
-//     enforcementMode: 'Default'
-//     source: 'https://github.com/Azure/Enterprise-Scale/'
-//     policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-RDP-From-Internet'
-//   }
 ]
+
 resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-01' = [for assignmentAD in varCustomPolicyassignmentsAuditDenyArrayXSmall: {
   name: assignmentAD.name
   properties: {
@@ -61,22 +37,3 @@ resource assignmentAuditDeny 'Microsoft.Authorization/policyAssignments@2020-09-
   
 }
 ]
-
-// param assignmentName string = 'CISMicrosoftAzureFoundationsBenchmarkAssignment'
-// param policySetDefinitionId string = '/providers/Microsoft.Authorization/policySetDefinitions/06f19060-9e68-4070-92ca-f15cc126059e'
-// param parameters object = {
-//   maximumDaysToRotate: {
-//     value: 90
-//   }
-// }
-
-// resource policyAssignmentCIS 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
-//   name: assignmentName
-
-//   properties: {
-//     displayName: 'CIS Microsoft Azure Foundations Benchmark v2.0.0 Assignment'
-//     policyDefinitionId: policySetDefinitionId
-//     parameters: parameters
-//     enforcementMode: 'Default'
-//   }
-// }

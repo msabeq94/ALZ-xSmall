@@ -14,6 +14,6 @@ properties: {
     idleTimeoutInMinutes: 4
   }
 }
-output publicIPAddressResourceId string = publicIPAddressesFW.id
 
+output publicIPAddressResourceId string = publicIPAddressesFW.id
 output publicIPAddress string = publicIPAddressesFW.properties.ipAddress
