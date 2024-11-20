@@ -34,12 +34,12 @@ case $choice in
     read  NetworkCollectionPriority
 
     echo "Select the action: (1) Allow, (2) Deny"
-    read -p "Enter your choice (1 or 2): " choice
+    #read -p "Enter your choice (1 or 2): " choice
 
     # Respond based on user input
     while true; do
-        read -p "Select the action: (1) Allow, (2) Deny: " choice
-        case $choice in
+        read -p "Enter your choice (1 or 2): " choiceaction
+        case $choiceaction in
             1)
                 action="Allow"
                 break
@@ -60,9 +60,9 @@ case $choice in
 
     echo "Select the protocol: (1) Any, (2) TCP, (3) UDP"
     while true; do
-        read -p "Enter your choice : " choice
+        read -p "Enter your choice : " choiceProtocol
 
-        case $protocol in
+        case $choiceProtocol in
             1)
                 protocol="Any"
                 break
