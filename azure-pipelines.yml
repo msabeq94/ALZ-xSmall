@@ -51,15 +51,15 @@ stages:
     - script: az login --service-principal --username ${{ parameters.customer_client_id}} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
       displayName: 'login'
       
-# - stage: Stage2
-#   dependsOn: Stage1
-#   jobs:
-#   - job: Run_bicep_file_MG
-#     steps:
-#     - script: | 
-#         sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
-#         az deployment tenant create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep"  --parameters "managementGroups.parameters.XSmall.json"
-#       displayName: 'Run_bicep_file_MG'
+- stage: Stage2
+  dependsOn: Stage1
+  jobs:
+  - job: Run_bicep_file_MG
+    steps:
+    - script: | 
+        sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
+        az deployment tenant create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep"  --parameters "managementGroups.parameters.XSmall.json"
+      displayName: 'Run_bicep_file_MG'
 
 - stage: Stage3
   dependsOn: Stage1
