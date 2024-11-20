@@ -30,7 +30,7 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
     networkRuleCollections: [
       {        name: 'DenyInternetAccess'
       properties: {
-        priority: 100
+        priority: 65000
         action: {
           type: 'Allow'
         }
