@@ -37,41 +37,49 @@ case $choice in
     read -p "Enter your choice (1 or 2): " choice
 
     # Respond based on user input
-    case $choice in
-        1)
-            action="Allow"
-            ;;
-        2)
-            action="Deny"
-            ;;
-        *)
-            echo "Invalid choice. Please enter 1 or 2."
-            exit 1
-            ;;
-    esac
+    while true; do
+        read -p "Select the action: (1) Allow, (2) Deny: " choice
+        case $choice in
+            1)
+                action="Allow"
+                break
+                ;;
+            2)
+                action="Deny"
+                break
+                ;;
+            *)
+                echo "Invalid choice. Please enter 1 or 2."
+                ;;
+        esac
+    done
 
     
     echo "Enter the Rule Name:"
     read NetworkRuleName
 
     echo "Select the protocol: (1) Any, (2) TCP, (3) UDP"
-    read -p "Enter your choice : " choice
+    while true; do
+        read -p "Enter your choice : " choice
 
-    case $protocol in
-        1)
-            protocol="Any"
-            ;;
-        2)
-            protocol="TCP"
-            ;;
-        3)
-            protocol="UDP"
-            ;;
-        *)
-            echo "Invalid protocol. Please enter 1, 2, or 3."
-            exit 1
-            ;;
-    esac
+        case $protocol in
+            1)
+                protocol="Any"
+                break
+                ;;
+            2)
+                protocol="TCP"
+                break
+                ;;
+            3)
+                protocol="UDP"
+                break
+                ;;
+            *)
+                echo "Invalid protocol. Please enter 1, 2, or 3."
+               
+                ;;
+        esac
 
     echo "Enter the source address:"    
     read  NetworksourceAddress
