@@ -105,7 +105,7 @@ stages:
                 az group delete --name "vf-core-CentralHub-rg" --yes 
               displayName: 'Delete Resources'
 
-- stage: CleanUp ManagementGroups
+- stage: CleanUpManagementGroups
   dependsOn: AssignResourcesToManagementGroups
   jobs:
         - job: ManualApprovalManagementGroupsStep
