@@ -44,27 +44,27 @@ parameters:
     default: "alz-MgDeployment-mos"
 
 stages:
-- stage: AuthenticateAzure
+- stage: Stage1
   jobs:
-  - job: AuthenticateServicePrincipal
+  - job: login
     steps:
     - script: az login --service-principal --username ${{ parameters.customer_client_id}} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
-      displayName: 'Authenticate Service Principal'
+      displayName: 'login'
       
-- stage: DeployManagementGroups
-  dependsOn: AuthenticateAzure
+- stage: Stage2
+  dependsOn: Stage1
   jobs:
-  - job: DeployManagementGroupBicep
+  - job: Run_bicep_file_MG
     steps:
     - script: | 
         sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
         az deployment tenant create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep"  --parameters "managementGroups.parameters.XSmall.json"
-      displayName: 'Deploy Management Group Bicep'
+      displayName: 'Run_bicep_file_MG'
 
-- stage:  DeployMainInfrastructure
-  dependsOn: AuthenticateAzure
+- stage: Stage3
+  dependsOn: Stage1
   jobs:
-  - job: DeployMainBicepModules
+  - job: Run_bicep_file_MAIN
     steps:
     - script: |
         sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
@@ -72,58 +72,60 @@ stages:
         sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
         sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
         az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
-      displayName: 'Deploy Main Bicep File'
+      displayName: 'Run Bicep MAIN file'
 
-- stage: AssignResourcesToManagementGroups
-  dependsOn: DeployManagementGroups
+- stage: Stage4
+  dependsOn: Stage2
   jobs:
-    - job:  AssignSubscriptionsToManagementGroups
-      steps:
-      - script: |
-            az account management-group subscription add --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-      displayName: 'Assign Subscription to Management Groups'
+              - job: Run_bicep_file_MAIN
+                dependsOn: manual_approval
+                steps:
+                  - script: |
+                             az account management-group subscription add --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
+                    displayName: 'Run Bicep RM-RG'
 
 
-- stage: CleanUpResources
-  dependsOn: DeployMainInfrastructure
+- stage: Stage5
+  dependsOn: Stage3
   jobs:
-        - job: ManualApprovalResourcesStep
-          displayName: "Review and Approve Resources Cleanup"
+        - job: manual_approval
+          displayName: "Manual Approval Step"
           pool: server  # Ensures the job runs without an agent
           steps:
             - task: ManualValidation@0
               inputs:
                 notifyUsers: 'msabeq@outlook.com'  # Replace with the actual approver's email
-                instructions: 'Please approve or reject the execution of resource cleanup.'
-        - job: RemoveResources
-          dependsOn: ManualApprovalResourcesStep
+                instructions: 'Please approve or reject the execution of Stage4.'
+        - job: Run_bicep_file_MAIN
+          dependsOn: manual_approval
           steps:
             - script: |
                 az group delete --name "vf-core-InternalServices-rg" --yes 
                 az group delete --name "vf-core-Production-rg" --yes 
                 az group delete --name "vf-core-Development-rg" --yes 
                 az group delete --name "vf-core-CentralHub-rg" --yes 
-              displayName: 'Delete Resources'
+              displayName: 'Run Bicep RM-RG'
 
-- stage: CleanUp ManagementGroups
-  dependsOn: AssignResourcesToManagementGroups
+- stage: Stage5
+  dependsOn: Stage3
   jobs:
-        - job: ManualApprovalManagementGroupsStep
-          displayName: "Review and Approve ManagementGroups Cleanup"
+        - job: manual_approval
+          displayName: "Manual Approval Step"
           pool: server  # Ensures the job runs without an agent
           steps:
             - task: ManualValidation@0
               inputs:
                 notifyUsers: 'msabeq@outlook.com'  # Replace with the actual approver's email
-                instructions: 'Please approve or reject the execution of ManagementGroups cleanup.'
-        - job: RemoveManagementGroups
-          dependsOn: ManualApprovalManagementGroupsStep
+                instructions: 'Please approve or reject the execution of Stage4.'
+        - job: Run_bicep_file_MAIN
+          dependsOn: manual_approval
           steps:
             - script: |
                 # Add your script here
                 az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
                  az account management-group delete --name alz-landingzones-online
                  az account management-group delete --name alz-landingzones
-                 az account management-group delete --name alz           
-              displayName: 'Delete ManagementGroups'
+                 az account management-group delete --name alz
+                            
+                          displayName: 'Run Bicep RM-RG'
     
