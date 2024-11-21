@@ -119,7 +119,7 @@ case $choice in
     # done
 
      echo "Select the protocol:"
-    read  "Enter your choice :" APprotocol
+    read   APprotocol
 
     echo "Enter the source address:"
     read ApplicationSourceAddress
