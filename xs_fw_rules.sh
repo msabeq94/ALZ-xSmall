@@ -1,6 +1,6 @@
 #!/bin/bash
-# mgmtSubID='102170e2-9371-4b66-95de-d4530f8bf56e'
-# firewallName='vf-core-alz-fw-eastus'
+mgmtSubID='102170e2-9371-4b66-95de-d4530f8bf56e'
+firewallName='vf-core-alz-fw-eastus'
 
 rg='vf-core-CentralHub-rg'
 fwpublicipName='vf-core-alz-fw-ip'
