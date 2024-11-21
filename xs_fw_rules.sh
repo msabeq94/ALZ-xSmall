@@ -118,8 +118,8 @@ case $choice in
     #     esac
     # done
 
-     echo "Select the protocol:"
-    read   APprotocol
+    #  echo "Select the protocol:"
+    # read   APprotocol
 
     echo "Enter the source address:"
     read ApplicationSourceAddress
@@ -131,7 +131,7 @@ case $choice in
     --collection-name $ApplicationCollectionName \
     --firewall-name $firewallName \
     --name $ApplicationRuleName \
-    --protocols "$APprotocol" \
+    --protocols "http:80" \
     --resource-group $rg \
     --source-addresses "$ApplicationSourceAddress" \
     --target-fqdns "$ApplicationTargetFQDNs" \
