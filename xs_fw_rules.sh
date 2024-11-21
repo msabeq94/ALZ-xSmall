@@ -109,12 +109,12 @@ case $choice in
     read ApplicationRuleName
 
     while true; do
-        echo "Select the protocol: (1) http , (2) https" 
+        echo "Select the protocol: (1) http:80, (2) https:443 " 
         read -p "Enter your choice : " choiceAPProtocol
         case $choiceAPProtocol in
-            1) APprotocol="http"; break ;;
-            2) APprotocol=" https"; break ;;
-            *) echo "Invalid protocol. Please enter 1, or 2" ;;
+        1) APprotocol="http:80"; break ;;
+        2) APprotocol="https:443"; break ;; 
+        *) echo "Invalid protocol. Please enter 1, or 2" ;;
         esac
     done
 
@@ -153,7 +153,7 @@ esac
 
 # # #application-rule
 # # #az network firewall application-rule create --collection-name "DefaultCollection" --firewall-name $firewallName --name "AllowAll" --protocols "Any" --resource-group $rg --source-addresses "*" --fqdn-tags "AzureBackup" --action "Allow" --priority 200
-# az network firewall application-rule create --collection-name "DefaultCollection" --firewall-name $firewallName --name "AllowAll" --protocols "http=80" --resource-group $rg --source-addresses "*" --target-fqdns "www.alz.com" --action "Allow" --priority 200
+# az network firewall application-rule create --collection-name "DefaultCollection" --firewall-name $firewallName --name "AllowAll" --protocols "http" --resource-group $rg --source-addresses "*" --target-fqdns "www.alz.com" --action "Allow" --priority 200
 
 
 
