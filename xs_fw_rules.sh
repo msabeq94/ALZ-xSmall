@@ -38,7 +38,7 @@ case $choice in
 
     while true; do
         echo "Select the action: (1) Allow, (2) Deny"
-        read -p "Enter your choice (1 or 2): " choiceaction
+        read -p "Enter your choice (1 or 2): " choiceNTaction
         case $choiceNTaction in
             1) NTaction="Allow"; break ;;
             2) NTaction="Deny"; break ;;
@@ -51,7 +51,7 @@ case $choice in
 
     while true; do
         echo "Select the protocol: (1) Any, (2) ICMP, (3) TCP, (4) UDP" 
-        read -p "Enter your choice : " choiceProtocol
+        read -p "Enter your choice : " choiceNTprotocol
         case $choiceNTprotocol in
             1) NTprotocol="Any"; break ;;
             2) NTprotocol="ICMP"; break ;;
@@ -97,7 +97,7 @@ case $choice in
 
     while true; do
         echo "Select the action: (1) Allow, (2) Deny"
-        read -p "Enter your choice (1 or 2): " choiceaction
+        read -p "Enter your choice (1 or 2): " choiceAPaction
         case $choiceAPaction in
             1) APaction="Allow"; break ;;
             2) APaction="Deny"; break ;;
@@ -110,7 +110,7 @@ case $choice in
 
     while true; do
         echo "Select the protocol: (1) http:80, (2) https:443 " 
-        read -p "Enter your choice : " choiceProtocol
+        read -p "Enter your choice : " choiceAPProtocol
         case $choiceAPProtocol in
             1) APprotocol="http:80"; break ;;
             2) APprotocol=" https:443"; break ;;
