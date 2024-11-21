@@ -109,11 +109,11 @@ case $choice in
     read ApplicationRuleName
 
     while true; do
-        echo "Select the protocol: (1) http:80, (2) https:443 " 
+        echo "Select the protocol: (1) http , (2) https" 
         read -p "Enter your choice : " choiceAPProtocol
         case $choiceAPProtocol in
-            1) APprotocol="http:80"; break ;;
-            2) APprotocol=" https:443"; break ;;
+            1) APprotocol="http"; break ;;
+            2) APprotocol=" https"; break ;;
             *) echo "Invalid protocol. Please enter 1, or 2" ;;
         esac
     done
