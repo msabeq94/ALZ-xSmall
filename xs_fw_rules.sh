@@ -61,16 +61,16 @@ case $choice in
         esac
     done
 
-    # echo "Enter the source address:"    
-    # read NetworksourceAddress
-    NetworksourceAddress=*
+    echo "Enter the source address:"    
+    read NetworksourceAddress
+  
 
-    # echo "Enter the destination address:"
-    # read NetworkdestinationAddress
-    NetworkdestinationAddress='*'
-    # echo "Enter the destination port:"
-    # read NetworkdestinationPort
-    NetworkdestinationPort='*'
+    echo "Enter the destination address:"
+    read NetworkdestinationAddress
+   
+    echo "Enter the destination port:"
+    read NetworkdestinationPort
+    
 
 
     # Run the Azure CLI command
@@ -80,9 +80,9 @@ case $choice in
         --name $NetworkRuleName \
         --protocols $NTprotocol \
         --resource-group $rg \
-        --source-addresses $NetworksourceAddress \
-        --destination-addresses $NetworkdestinationAddress \
-        --destination-ports $NetworkdestinationPort \
+        --source-addresses "$NetworksourceAddress" \
+        --destination-addresses "$NetworkdestinationAddress" \
+        --destination-ports "$NetworkdestinationPort" \
         --action $NTaction \
         --priority $NetworkCollectionPriority
     ;;
