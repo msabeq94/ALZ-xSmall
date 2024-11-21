@@ -62,7 +62,9 @@ stages:
       displayName: 'Deploy Management Group Bicep'
 
 - stage:  DeployMainInfrastructure
-  dependsOn: AuthenticateAzure
+  dependsOn: 
+    - AuthenticateAzure
+    - AssignResourcesToManagementGroups
   jobs:
   - job: DeployMainBicepModules
     steps:
