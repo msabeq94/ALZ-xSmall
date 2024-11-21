@@ -108,15 +108,15 @@ case $choice in
     echo "Enter the Rule Name:"
     read ApplicationRuleName
 
-    # while true; do
-    #     echo "Select the protocol: (1) http:80, (2) https:443 " 
-    #     read -p "Enter your choice : " choiceAPProtocol
-    #     case $choiceAPProtocol in
-    #     1) APprotocol="http:80"; break ;;
-    #     2) APprotocol="https:443"; break ;; 
-    #     *) echo "Invalid protocol. Please enter 1, or 2" ;;
-    #     esac
-    # done
+    while true; do
+        echo "Select the protocol: (1) http:80, (2) https:443 " 
+        read -p "Enter your choice : " choiceAPProtocol
+        case $choiceAPProtocol in
+        1) APprotocol="http=80"; break ;;
+        2) APprotocol="https=443"; break ;; 
+        *) echo "Invalid protocol. Please enter 1, or 2" ;;
+        esac
+    done
 
     #  echo "Select the protocol:"
     # read   APprotocol
@@ -131,7 +131,7 @@ case $choice in
     --collection-name $ApplicationCollectionName \
     --firewall-name $firewallName \
     --name $ApplicationRuleName \
-    --protocols 'http:80' \
+    --protocols '80' \
     --resource-group $rg \
     --source-addresses "$ApplicationSourceAddress" \
     --target-fqdns "$ApplicationTargetFQDNs" \

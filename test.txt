@@ -1,0 +1,1 @@
+ az network firewall application-rule create --collection-name $ApplicationCollectionName --firewall-name $firewallName  --name $ApplicationRuleName  --protocols Http:80  --resource-group $rg --source-addresses "$ApplicationSourceAddress" --target-fqdns "$ApplicationTargetFQDNs"  --action $APaction  --priority $ApplicationCollectionPriority
