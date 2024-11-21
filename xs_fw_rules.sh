@@ -1,5 +1,5 @@
 #!/bin/bash
-mgmtSubID='102170e2-9371-4b66-95de-d4530f8bf56e'
+mgmtSubID='24624965-8c6d-4d1a-b50d-a4970f5b21df'
 firewallName='vf-core-alz-fw-eastus'
 
 rg='vf-core-CentralHub-rg'

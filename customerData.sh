@@ -60,3 +60,6 @@ echo "Management Sub ID: $mgmtSubID"
 echo "Deployment Type: $deploymentType"
 echo "Customer Name: $customerName"
 #echo "Security Email: $securityEmail"
+
+
+#az role assignment create --scope '/' --role 'Owner' --assignee-object-id "115c24f7-f361-46c4-826d-4cb4ac7b1f03" --assignee-principal-type 'ServicePrincipal'
