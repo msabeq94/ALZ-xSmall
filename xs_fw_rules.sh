@@ -50,13 +50,14 @@ case $choice in
     read NetworkRuleName
 
     while true; do
-        echo "Select the protocol: (1) Any, (2) TCP, (3) UDP"
+        echo "Select the protocol: (1) Any, (2) ICMP, (3) TCP, (4) UDP" 
         read -p "Enter your choice : " choiceProtocol
         case $choiceProtocol in
             1) protocol="Any"; break ;;
-            2) protocol="TCP"; break ;;
-            3) protocol="UDP"; break ;;
-            *) echo "Invalid protocol. Please enter 1, 2, or 3." ;;
+            2) protocol="ICMP"; break ;;
+            3) protocol="TCP"; break ;;
+            4) protocol="UDP"; break ;;
+            *) echo "Invalid protocol. Please enter 1, 2, 3 or 4." ;;
         esac
     done
 
