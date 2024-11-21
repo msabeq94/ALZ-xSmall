@@ -133,7 +133,7 @@ case $choice in
     --source-addresses $ApplicationSourceAddress \
     --target-fqdns $ApplicationTargetFQDNs \
     --action $APaction \
-    --priority $APaction
+    --priority $ApplicationCollectionPriority
     ;;
 
   *)
