@@ -67,10 +67,10 @@ case $choice in
 
     # echo "Enter the destination address:"
     # read NetworkdestinationAddress
-    NetworkdestinationAddress=*
+    NetworkdestinationAddress='*'
     # echo "Enter the destination port:"
     # read NetworkdestinationPort
-    NetworkdestinationPort=*
+    NetworkdestinationPort='*'
 
 
     # Run the Azure CLI command
