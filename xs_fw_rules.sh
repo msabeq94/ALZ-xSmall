@@ -39,9 +39,9 @@ case $choice in
     while true; do
         echo "Select the action: (1) Allow, (2) Deny"
         read -p "Enter your choice (1 or 2): " choiceaction
-        case $choiceaction in
-            1) action="Allow"; break ;;
-            2) action="Deny"; break ;;
+        case $choiceNTaction in
+            1) NTaction="Allow"; break ;;
+            2) NTaction="Deny"; break ;;
             *) echo "Invalid choice. Please enter 1 or 2." ;;
         esac
     done
@@ -52,50 +52,88 @@ case $choice in
     while true; do
         echo "Select the protocol: (1) Any, (2) ICMP, (3) TCP, (4) UDP" 
         read -p "Enter your choice : " choiceProtocol
-        case $choiceProtocol in
-            1) protocol="Any"; break ;;
-            2) protocol="ICMP"; break ;;
-            3) protocol="TCP"; break ;;
-            4) protocol="UDP"; break ;;
+        case $choiceNTprotocol in
+            1) NTprotocol="Any"; break ;;
+            2) NTprotocol="ICMP"; break ;;
+            3) NTprotocol="TCP"; break ;;
+            4) NTprotocol="UDP"; break ;;
             *) echo "Invalid protocol. Please enter 1, 2, 3 or 4." ;;
         esac
     done
 
-    echo "Enter the source address:"    
-    read NetworksourceAddress
+    # echo "Enter the source address:"    
+    # read NetworksourceAddress
+    NetworksourceAddress=*
 
-    echo "Enter the destination address:"
-    read NetworkdestinationAddress
+    # echo "Enter the destination address:"
+    # read NetworkdestinationAddress
+    NetworkdestinationAddress=*
+    # echo "Enter the destination port:"
+    # read NetworkdestinationPort
+    NetworkdestinationPort=*
 
-    echo "Enter the destination port:"
-    read NetworkdestinationPort
-
-    # # Ensure firewallName and rg (resource group) are set
-    # echo "Enter the Firewall Name:"
-    # read firewallName
-
-    # echo "Enter the Resource Group Name:"
-    # read rg
 
     # Run the Azure CLI command
     az network firewall network-rule create \
         --collection-name $NetworkCollectionName \
         --firewall-name $firewallName \
         --name $NetworkRuleName \
-        --protocols $protocol \
+        --protocols $NTprotocol \
         --resource-group $rg \
         --source-addresses $NetworksourceAddress \
         --destination-addresses $NetworkdestinationAddress \
         --destination-ports $NetworkdestinationPort \
-        --action $action \
+        --action $NTaction \
         --priority $NetworkCollectionPriority
     ;;
 
   3)
     echo "You selected Application Rule Collection."
-    # Add your Application Rule Collection configuration commands here
-    # Example command:
-    # az network firewall application-rule create --collection-name "DefaultCollection" --firewall-name $firewallName --name "AllowAll" --protocols "http=80" --resource-group $rg --source-addresses "*" --target-fqdns "www.alz.com" --action "Allow" --priority 200
+    echo "Enter the Application Rule Collection name:"
+    read ApplicationCollectionName
+
+    echo "Enter the Application Rule Collection priority (100-64999):"
+    read ApplicationCollectionPriority
+
+    while true; do
+        echo "Select the action: (1) Allow, (2) Deny"
+        read -p "Enter your choice (1 or 2): " choiceaction
+        case $choiceAPaction in
+            1) APaction="Allow"; break ;;
+            2) APaction="Deny"; break ;;
+            *) echo "Invalid choice. Please enter 1 or 2." ;;
+        esac
+    done
+
+    echo "Enter the Rule Name:"
+    read ApplicationRuleName
+
+    while true; do
+        echo "Select the protocol: (1) http:80, (2) https:443 " 
+        read -p "Enter your choice : " choiceProtocol
+        case $choiceAPProtocol in
+            1) APprotocol="http:80"; break ;;
+            2) APprotocol=" https:443"; break ;;
+            *) echo "Invalid protocol. Please enter 1, or 2" ;;
+        esac
+    done
+
+    echo "Enter the source address:"
+    read ApplicationSourceAddress
+
+    echo "Enter the target FQDNs:"
+    read ApplicationTargetFQDNs
+    
+    az network firewall application-rule create \
+    --collection-name $ApplicationCollectionName \
+    --firewall-name $firewallName \
+    --name $ApplicationRuleName \
+    --protocols $APprotocol \
+    --resource-group $rg \
+    --source-addresses $ApplicationSourceAddress \
+    --target-fqdns $ApplicationTargetFQDNs \
+    --action $APaction \
+    --priority $APaction
     ;;
 
   *)
@@ -108,7 +146,7 @@ esac
 
 
 # # #network-rule
-#  az network firewall network-rule create  --collection-name "DefweererwewausdsdsdltCollection" --firewall-name $firewallName --name "AllowewwAll" --protocols "Any" --resource-group $rg   --source-addresses "10.0.0.0/24"  --destination-addresses "10.1.0.0/24" --destination-ports "*" --action "Allow" --priority 3550 
+#  az network firewall network-rule create  --collection-name "DefweererwewausdsdsdltCollection" --firewall-name $firewallName --name "AllowewwAll" --protocols "Any" --resource-group $rg   --source-addresses "*"  --destination-addresses "*" --destination-ports "*" --action "Allow" --priority 3550 
 
 # # #nat-rule
 # az network firewall nat-rule create --collection-name "DefaultCollectionSSS" --firewall-name $firewallName --name "AllowAll" --protocols "Any" --resource-group $rg --source-addresses "*" --destination-addresses $fwIPAddress --destination-ports "40" --action "Dnat" --priority 200 --translated-port 80 --translated-address "10.1.1.0"
