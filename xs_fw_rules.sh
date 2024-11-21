@@ -128,10 +128,10 @@ case $choice in
     --collection-name $ApplicationCollectionName \
     --firewall-name $firewallName \
     --name $ApplicationRuleName \
-    --protocols $APprotocol \
+    --protocols "$APprotocol" \
     --resource-group $rg \
-    --source-addresses $ApplicationSourceAddress \
-    --target-fqdns $ApplicationTargetFQDNs \
+    --source-addresses "$ApplicationSourceAddress" \
+    --target-fqdns "$ApplicationTargetFQDNs" \
     --action $APaction \
     --priority $ApplicationCollectionPriority
     ;;
