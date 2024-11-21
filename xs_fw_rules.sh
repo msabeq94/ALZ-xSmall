@@ -25,6 +25,43 @@ case $choice in
   1)
     echo "You selected NAT Rule Collection."
     # Add your NAT Rule Collection configuration commands here
+    echo "Enter the NAT Rule Collection name:"
+    read NatCollectionName
+
+    echo "Enter the NAT Rule Collection priority (100-64999):"
+    read NatCollectionPriority
+
+   
+
+    echo "Enter the Rule Name:"
+    read NatRuleName
+
+
+    while true; do
+        echo "Select the protocol: (1) Any, (2) ICMP, (3) TCP, (4) UDP" 
+        read -p "Enter your choice : " choiceNATprotocol
+        case $choiceNATprotocol in
+            1) NATprotocol="TCP"; break ;;
+            2) NATprotocol="UDP"; break ;;
+            3) NATprotocol="ICMP"; break ;;
+            4) NATprotocol="Any"; break ;;
+            *) echo "Invalid protocol. Please enter 1, 2, 3 or 4." ;;
+        esac
+    done
+
+    echo "Enter the source address:"
+    read NatSourceAddress
+
+    echo "Enter the destination port:"
+    read NatDestinationPort
+ 
+    echo "Enter the translated port:"
+    read NatTranslatedPort
+
+    echo "Enter the translated address:"
+    read NatTranslatedAddress
+
+    az network firewall nat-rule create --collection-name "DefaultCollectionSSS" --firewall-name $firewallName --name "AllowAll" --protocols "Any" --resource-group $rg --source-addresses "*" --destination-addresses $fwIPAddress --destination-ports "40" --action "Dnat" --priority 200 --translated-port 80 --translated-address "10.1.1.0"
     ;;
 
   2)
