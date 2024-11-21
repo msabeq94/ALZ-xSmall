@@ -131,7 +131,7 @@ case $choice in
     --collection-name $ApplicationCollectionName \
     --firewall-name $firewallName \
     --name $ApplicationRuleName \
-    --protocols '80' \
+    --protocols $APprotocol \
     --resource-group $rg \
     --source-addresses "$ApplicationSourceAddress" \
     --target-fqdns "$ApplicationTargetFQDNs" \
