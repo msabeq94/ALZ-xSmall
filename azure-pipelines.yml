@@ -88,11 +88,11 @@ stages:
       steps:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $fwIPAddress > fwIPAddress
+            echo $fwIPAddress > fwIPAddress.txt
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress'
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress.txt'
             artifact: 'fwIPAddress'
 
 - stage: SaveFirewallIPInKeyVault
@@ -103,7 +103,7 @@ stages:
       steps:
         - task: DownloadPipelineArtifact@2
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress'
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress.txt'
             artifact: 'fwIPAddress'
             
         - script: |
