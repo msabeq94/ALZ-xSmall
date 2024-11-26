@@ -112,7 +112,7 @@ stages:
               
               fwIPAddress=$(cat '$(pipeline.workspace)/fwIPAddress')
               echo $fwIPAddress
-              az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP6779' --value "$fwIPAddress"
+              az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$fwIPAddress"
             
             displayName: 'Save IP to KeyVault'
   
