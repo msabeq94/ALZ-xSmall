@@ -16,7 +16,7 @@ parameters:
   - name: customer_tenant_id
     displayName: "Customer Tenant ID"
     type: string
-    default: "d57b6fc3-6090-4c9b-a5a2-150d67d8b506"
+    default: "d57b6fc3-6090-4c9b-a5a2-150d88d8b506"
 
   - name: customer_subscription_id
     displayName: "Customer Subscription ID"
