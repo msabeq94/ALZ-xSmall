@@ -196,3 +196,7 @@ esac
 
 
 
+
+az deployment group show --resource-group 'vf-core-CentralHub-rg' --name ${NAME:0:63}  --query "properties.outputs.publicIPAddress.value"
+
+

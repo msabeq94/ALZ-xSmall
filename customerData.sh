@@ -4,8 +4,8 @@
 dateYMD=$(date +%Y%m%dT%H%M%S%NZ)
 MGID=alz
 rg=rg-management
-NAME="alz-MgDeployment-${dateYMD}"
-
+#NAME="alz-MgDeployment-${dateYMD}"
+NAME="alz-MgDeployment"
 
 #sed -i "s/PPCR/N/g" infra-as-code/bicep/modules/policy/assignments/alzDefaults/parameters/alzDefaultPolicyAssignments.parameters.all.json
 # Prompt the user for deploymentType 
