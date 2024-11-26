@@ -85,6 +85,35 @@ stages:
             az account management-group subscription add --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
       displayName: 'Assign Subscription to Management Groups'
 
+- stage: Get firewall public IP
+  dependsOn: DeployMainInfrastructure
+  jobs:
+        - job: GetFirewallPublicIP
+          displayName: "Get Firewall Public IP"
+          
+          steps:
+            - script: |
+                fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
+              displayName: 'Get Firewall Public IP'
+            - script: echo $(fwIPAddress) > fwIPAddress.txt
+              displayName: 'Save Firewall Public IP'
+            - task: PublishPipelineArtifact@1
+              inputs:
+                targetPath: '$(Build.ArtifactStagingDirectory)/fwIPAddress.txt'
+                artifact: 'fwIPAddress'
+                publishLocation: 'pipeline'
+
+- stage: save the ip address in keyvault
+  dependsOn: DeployMainInfrastructure
+  - download: current
+    artifact: fwIPAddress
+  jobs:
+        - job: SavePasswordInKeyVault
+          displayName: "Save Password in KeyVault"
+          steps:
+            - script: |
+                az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP' --value "$(cat fwIPAddress.txt)"
+            displayName: 'Save Password in KeyVault'
 
 - stage: CleanUpResources
   dependsOn: DeployMainInfrastructure
@@ -100,14 +129,13 @@ stages:
         - job: RemoveResources
           dependsOn: ManualApprovalResourcesStep
           steps:
-            - script: |
+          - script: |
                 az group delete --name "vf-core-InternalServices-rg" --yes 
                 az group delete --name "vf-core-Production-rg" --yes 
                 az group delete --name "vf-core-Development-rg" --yes 
-                az group delete --name "vf-core-CentralHub-rg" --yes 
-              displayName: 'Delete Resources'
-
-- stage: CleanUpManagementGroups
+                az group delete --name "vf-core-CentralHub-rg" --yes
+                
+- stage: CleanUpManagementGroups 
   dependsOn: AssignResourcesToManagementGroups
   jobs:
         - job: ManualApprovalManagementGroupsStep

@@ -197,6 +197,6 @@ esac
 
 
 
-az deployment group show --resource-group 'vf-core-CentralHub-rg' --name ${NAME:0:63}  --query "properties.outputs.publicIPAddress.value"
+fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
 
-
+echo  $fwIPAddress > test.tet 
