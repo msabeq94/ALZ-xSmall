@@ -5,155 +5,148 @@ pool: default
 parameters:
   - name: customer_client_id
     displayName: "Customer Client ID"
-    type: object
+    type: string
     default: "87fac4cc-9e62-4b68-8603-6bcd69bd0920"
 
   - name: customer_client_secret
     displayName: "Customer Client Secret"
-    type: object
+    type: string
     default: "kcU8Q~1NrSsSavc5gr9panKTMfsenLWQuV~0came"
-  
+
   - name: customer_tenant_id
     displayName: "Customer Tenant ID"
-    type: object
+    type: string
     default: "d57b6fc3-6090-4c9b-a5a2-150d88d8b506"
 
   - name: customer_subscription_id
     displayName: "Customer Subscription ID"
-    type: object
+    type: string
     default: "24624965-8c6d-4d1a-b50d-a4970f5b21df"
 
   - name: customer_name
     displayName: "Customer Name"
-    type: object
+    type: string
     default: "mos"
 
   - name: customer_location
     displayName: "Customer location"
-    type: object
+    type: string
     default: "eastus"
-
-  - name: dateYMD
-    displayName: "dateYMD"
-    type: object
-    default: "$(date +%Y%m%dT%H%M%S%NZ)"
 
   - name: NAME
     displayName: "NAME"
-    type: object
+    type: string
     default: "alz-MgDeployment-mos"
 
 stages:
 - stage: AuthenticateAzure
   jobs:
-  - job: AuthenticateServicePrincipal
-    steps:
-    - script: az login --service-principal --username ${{ parameters.customer_client_id}} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
-      displayName: 'Authenticate Service Principal'
-      
+    - job: AuthenticateServicePrincipal
+      steps:
+        - script: az login --service-principal --username ${{ parameters.customer_client_id }} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
+          displayName: 'Authenticate Service Principal'
+
 - stage: DeployManagementGroups
   dependsOn: AuthenticateAzure
   jobs:
-  - job: DeployManagementGroupBicep
-    steps:
-    - script: | 
-        sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
-        az deployment tenant create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep"  --parameters "managementGroups.parameters.XSmall.json"
-      displayName: 'Deploy Management Group Bicep'
-
-- stage:  DeployMainInfrastructure
-  dependsOn: 
-    - AuthenticateAzure
-    - AssignResourcesToManagementGroups
-  jobs:
-  - job: DeployMainBicepModules
-    steps:
-    - script: |
-        sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
-        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
-        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
-        sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
-        az deployment sub create --name ${{parameters.NAME}}  --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep"  --parameters "Main.parameters.XSmall.json"
-      displayName: 'Deploy Main Bicep File'
+    - job: DeployManagementGroupBicep
+      steps:
+        - script: |
+            sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
+            az deployment tenant create --name ${{parameters.NAME}} --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep" --parameters "managementGroups.parameters.XSmall.json"
+          displayName: 'Deploy Management Group Bicep'
 
 - stage: AssignResourcesToManagementGroups
   dependsOn: DeployManagementGroups
   jobs:
-    - job:  AssignSubscriptionsToManagementGroups
+    - job: AssignSubscriptionsToManagementGroups
       steps:
-      - script: |
+        - script: |
             az account management-group subscription add --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-      displayName: 'Assign Subscription to Management Groups'
+          displayName: 'Assign Subscription to Management Groups'
 
-- stage: Get firewall public IP
+- stage: DeployMainInfrastructure
+  dependsOn:
+    - AuthenticateAzure
+    - AssignResourcesToManagementGroups
+  jobs:
+    - job: DeployMainBicepModules
+      steps:
+        - script: |
+            sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
+            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
+            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
+            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
+            az deployment sub create --name ${{parameters.NAME}} --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
+          displayName: 'Deploy Main Bicep File'
+
+- stage: GetFirewallPublicIP
   dependsOn: DeployMainInfrastructure
   jobs:
-        - job: GetFirewallPublicIP
-          displayName: "Get Firewall Public IP"
-          
-          steps:
-            - script: |
-                fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-              displayName: 'Get Firewall Public IP'
-            - script: echo $(fwIPAddress) > fwIPAddress.txt
-              displayName: 'Save Firewall Public IP'
-            - task: PublishPipelineArtifact@1
-              inputs:
-                targetPath: '$(Build.ArtifactStagingDirectory)/fwIPAddress.txt'
-                artifact: 'fwIPAddress'
-                publishLocation: 'pipeline'
+    - job: RetrieveFirewallIP
+      displayName: "Retrieve Firewall Public IP"
+      steps:
+        - script: |
+            fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
+            echo $(fwIPAddress) > fwIPAddress.txt
+          displayName: 'Get Firewall Public IP'
+        - task: PublishPipelineArtifact@1
+          inputs:
+            targetPath: 'fwIPAddress.txt'
+            artifact: 'fwIPAddress'
 
-- stage: save the ip address in keyvault
-  dependsOn: DeployMainInfrastructure
-  - download: current
-    artifact: fwIPAddress
+- stage: SaveFirewallIPInKeyVault
+  dependsOn: GetFirewallPublicIP
   jobs:
-        - job: SavePasswordInKeyVault
-          displayName: "Save Password in KeyVault"
-          steps:
-            - script: |
-                az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP' --value "$(cat fwIPAddress.txt)"
-            displayName: 'Save Password in KeyVault'
+    - job: SaveIPToKeyVault
+      displayName: "Save Firewall Public IP to KeyVault"
+      steps:
+        - task: DownloadPipelineArtifact@2
+          inputs:
+            artifact: 'fwIPAddress'
+            targetPath: '$(Pipeline.Workspace)/fwIPAddress'
+        - script: |
+            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP' --value "$(cat $(Pipeline.Workspace)/fwIPAddress/fwIPAddress.txt)"
+          displayName: 'Save IP to KeyVault'
 
 - stage: CleanUpResources
   dependsOn: DeployMainInfrastructure
   jobs:
-        - job: ManualApprovalResourcesStep
-          displayName: "Review and Approve Resources Cleanup"
-          pool: server  # Ensures the job runs without an agent
-          steps:
-            - task: ManualValidation@0
-              inputs:
-                notifyUsers: 'msabeq@outlook.com'  # Replace with the actual approver's email
-                instructions: 'Please approve or reject the execution of resource cleanup.'
-        - job: RemoveResources
-          dependsOn: ManualApprovalResourcesStep
-          steps:
-          - script: |
-                az group delete --name "vf-core-InternalServices-rg" --yes 
-                az group delete --name "vf-core-Production-rg" --yes 
-                az group delete --name "vf-core-Development-rg" --yes 
-                az group delete --name "vf-core-CentralHub-rg" --yes
-                
-- stage: CleanUpManagementGroups 
+    - job: ManualApprovalResourcesStep
+      displayName: "Review and Approve Resources Cleanup"
+      pool: none
+      steps:
+        - task: ManualValidation@0
+          inputs:
+            notifyUsers: 'msabeq@outlook.com'
+            instructions: 'Please approve or reject the execution of resource cleanup.'
+    - job: RemoveResources
+      dependsOn: ManualApprovalResourcesStep
+      steps:
+        - script: |
+            az group delete --name "vf-core-InternalServices-rg" --yes
+            az group delete --name "vf-core-Production-rg" --yes
+            az group delete --name "vf-core-Development-rg" --yes
+            az group delete --name "vf-core-CentralHub-rg" --yes
+          displayName: 'Delete Resource Groups'
+
+- stage: CleanUpManagementGroups
   dependsOn: AssignResourcesToManagementGroups
   jobs:
-        - job: ManualApprovalManagementGroupsStep
-          displayName: "Review and Approve ManagementGroups Cleanup"
-          pool: server  # Ensures the job runs without an agent
-          steps:
-            - task: ManualValidation@0
-              inputs:
-                notifyUsers: 'msabeq@outlook.com'  # Replace with the actual approver's email
-                instructions: 'Please approve or reject the execution of ManagementGroups cleanup.'
-        - job: RemoveManagementGroups
-          dependsOn: ManualApprovalManagementGroupsStep
-          steps:
-            - script: |
-                # Add your script here
-                az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-                 az account management-group delete --name alz-landingzones-online
-                 az account management-group delete --name alz-landingzones
-                 az account management-group delete --name alz           
-              displayName: 'Delete ManagementGroups'
-    
+    - job: ManualApprovalManagementGroupsStep
+      displayName: "Review and Approve ManagementGroups Cleanup"
+      pool: none
+      steps:
+        - task: ManualValidation@0
+          inputs:
+            notifyUsers: 'msabeq@outlook.com'
+            instructions: 'Please approve or reject the execution of ManagementGroups cleanup.'
+    - job: RemoveManagementGroups
+      dependsOn: ManualApprovalManagementGroupsStep
+      steps:
+        - script: |
+            az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
+            az account management-group delete --name alz-landingzones-online
+            az account management-group delete --name alz-landingzones
+            az account management-group delete --name alz
+          displayName: 'Delete Management Groups'
