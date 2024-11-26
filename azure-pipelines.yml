@@ -93,8 +93,8 @@ stages:
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress77.txt'
-            artifact: 'fwIPAddress77'
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress77.txt'
+            artifact: 'fwIPAddress'
 
 - stage: SaveFirewallIPInKeyVault
   dependsOn: GetFirewallPublicIP
@@ -105,7 +105,7 @@ stages:
         - task: DownloadPipelineArtifact@2
           inputs:
             targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress77.txt'
-            artifact: 'fwIPAddress77'
+            artifact: 'fwIPAddress'
             
         - script: |
 
