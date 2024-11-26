@@ -96,7 +96,7 @@ stages:
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: fwIPAddress4.txt
-            artifact: 'mos3'
+            artifact: 'mos4'
             publishLocation: 'pipeline'
 
 - stage: SaveFirewallIPInKeyVault
@@ -106,10 +106,10 @@ stages:
       displayName: "Save Firewall Public IP to KeyVault"
       steps:
          - download: current
-           artifact: mos3
+           artifact: mos4
 
          - script: |
-            Path= $(pipeline.workspace)\mos3\fwIPAddress4.txt
+            Path= $(pipeline.workspace)/mos4/fwIPAddress4.txt
             echo $Path
             fwIPAddress=$(cat $Path)
             echo $fwIPAddress
