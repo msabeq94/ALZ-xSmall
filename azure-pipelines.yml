@@ -111,7 +111,7 @@ stages:
 
             fwIPAddress= "$(cat $(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress66.txt)"
 
-            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP66' --value "$1fwIPAddress"
+            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP66' --value "$fwIPAddress"
           displayName: 'Save IP to KeyVault'
 
 # - stage: CleanUpResources
