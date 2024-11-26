@@ -105,17 +105,18 @@ stages:
     - job: SaveIPToKeyVault
       displayName: "Save Firewall Public IP to KeyVault"
       steps:
-         - download: current
-           artifact: mos4
-
-         - script: |
-            Path= $(pipeline.workspace)/mos4/fwIPAddress4.txt
-            echo $Path
-            fwIPAddress=$(cat $Path)
-            echo $fwIPAddress
-            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP679' --value "$fwIPAddress"
-           displayName: 'Save IP to KeyVault'
-
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifact: 'mos4'
+          - script: |
+              Path= $(pipeline.workspace)/mos4/fwIPAddress4.txt
+              echo $Path
+              fwIPAddress=$(cat $Path)
+              echo $fwIPAddress
+              az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP679' --value "$fwIPAddress"
+            
+            displayName: 'Save IP to KeyVault'
+  
 # - stage: CleanUpResources
 #   dependsOn: DeployMainInfrastructure
 #   jobs:
