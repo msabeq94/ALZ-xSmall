@@ -88,7 +88,7 @@ stages:
       steps:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $fwIPAddress > fwIPAddress.txt
+            echo $fwIPAddress > fwIPAddress
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
@@ -107,8 +107,8 @@ stages:
             artifact: 'fwIPAddress'
             
         - script: |
-            fwIPAddress=$(cat $(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress.txt)
-            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$fwIPAddress"
+            1fwIPAddress=$(cat $(System.DefaultWorkingDirectory)/fwIPAddress)
+            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP46' --value "$1fwIPAddress"
           displayName: 'Save IP to KeyVault'
 
 - stage: CleanUpResources
