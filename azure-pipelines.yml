@@ -111,8 +111,9 @@ stages:
          - script: |
             Path= $(pipeline.workspace)/mos3/fwIPAddress4.txt
             echo $Path
-            chmod +r $Path
-            fwIPAddress=$(cat $Path)
+            mv $Path $(pipeline.workspace)
+           
+            fwIPAddress=$(cat fwIPAddress4.txt)
             echo $fwIPAddress
             az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP679' --value "$fwIPAddress"
            displayName: 'Save IP to KeyVault'
