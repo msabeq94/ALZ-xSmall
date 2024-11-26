@@ -96,7 +96,7 @@ stages:
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: fwIPAddress2.txt
-            artifact: 'fwIPAddress2'
+            artifact: 'mos'
             publishLocation: 'pipeline'
 
 - stage: SaveFirewallIPInKeyVault
@@ -106,7 +106,7 @@ stages:
       displayName: "Save Firewall Public IP to KeyVault"
       steps:
          - download: current
-           artifact: fwIPAddress2
+           artifact: mos
 
          - script: |
             fwIPAddress=$(cat fwIPAddress2.txt)
