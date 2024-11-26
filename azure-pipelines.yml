@@ -114,7 +114,7 @@ stages:
   jobs:
     - job: ManualApprovalResourcesStep
       displayName: "Review and Approve Resources Cleanup"
-      pool: none
+      pool: server
       steps:
         - task: ManualValidation@0
           inputs:
@@ -135,7 +135,7 @@ stages:
   jobs:
     - job: ManualApprovalManagementGroupsStep
       displayName: "Review and Approve ManagementGroups Cleanup"
-      pool: none
+      pool: server
       steps:
         - task: ManualValidation@0
           inputs:
