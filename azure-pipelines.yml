@@ -81,7 +81,7 @@ stages:
           displayName: 'Deploy Main Bicep File'
 
 - stage: GetFirewallPublicIP
-  dependsOn:  AuthenticateAzure
+  dependsOn: DeployMainBicepModules
   jobs:
     - job: RetrieveFirewallIP
       displayName: "Retrieve Firewall Public IP"
@@ -89,7 +89,6 @@ stages:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
             echo $fwIPAddress > fwIPAddress
-            echo $fwIPAddress > fwIPAddress9.txt
             echo $fwIPAddress
             
           
@@ -97,7 +96,7 @@ stages:
         - task: PublishPipelineArtifact@1
           inputs:
             targetPath: 'fwIPAddress'
-            artifact: 'mos4'
+            artifact: 'fwIPAddress'
             publishLocation: 'pipeline'
 
 - stage: SaveFirewallIPInKeyVault
@@ -108,7 +107,7 @@ stages:
       steps:
           - task: DownloadPipelineArtifact@2
             inputs:
-              artifact: 'mos4'
+              artifact: 'fwIPAddress'
           - script: |
               
               fwIPAddress=$(cat '$(pipeline.workspace)/fwIPAddress')
