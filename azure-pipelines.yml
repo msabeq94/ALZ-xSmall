@@ -88,15 +88,15 @@ stages:
       steps:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $fwIPAddress > fwIPAddress3.txt
+            echo $fwIPAddress > fwIPAddress4.txt
             echo $fwIPAddress
             
           
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: fwIPAddress3.txt
-            artifact: 'mos2'
+            targetPath: fwIPAddress4.txt
+            artifact: 'mos3'
             publishLocation: 'pipeline'
 
 - stage: SaveFirewallIPInKeyVault
@@ -106,11 +106,12 @@ stages:
       displayName: "Save Firewall Public IP to KeyVault"
       steps:
          - download: current
-           artifact: mos2
+           artifact: mos3
 
          - script: |
-            Path= $(pipeline.workspace)/mos2/fwIPAddress3.txt
+            Path= $(pipeline.workspace)/mos3/fwIPAddress4.txt
             echo $Path
+            chmod +r $Path
             fwIPAddress=$(cat $Path)
             echo $fwIPAddress
             az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP679' --value "$fwIPAddress"
