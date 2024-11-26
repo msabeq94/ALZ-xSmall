@@ -138,7 +138,9 @@ stages:
           displayName: 'Delete Resource Groups'
 
 - stage: CleanUpManagementGroups
-  dependsOn: AssignResourcesToManagementGroups
+  dependsOn: 
+  - AssignResourcesToManagementGroups
+  - DeployMainInfrastructure
   jobs:
     - job: ManualApprovalManagementGroupsStep
       displayName: "Review and Approve ManagementGroups Cleanup"
