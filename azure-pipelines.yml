@@ -96,7 +96,7 @@ stages:
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: 'fwIPAddress8.txt, fwIPAddress9.txt'
+            targetPath: 'fwIPAddress8.txt,fwIPAddress9.txt'
             artifact: 'mos4'
             publishLocation: 'pipeline'
 
