@@ -104,12 +104,12 @@ stages:
       steps:
         - task: DownloadPipelineArtifact@2
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress66.txt'
+           
             artifact: 'fwIPAddress'
             
         - script: |
 
-            fwIPAddress= "$(cat $(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress66.txt)"
+            fwIPAddress= "$(cat $(System.DefaultWorkingDirectory)/fwIPAddress66.txt)"
             echo $fwIPAddress
             az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP66' --value "$fwIPAddress"
           displayName: 'Save IP to KeyVault'
