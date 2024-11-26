@@ -109,7 +109,7 @@ stages:
         #     artifact: 'fwIPAddress'
             
         - script: |
-s
+
             az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP67' --value "$fwIPAddress"
           displayName: 'Save IP to KeyVault'
 
