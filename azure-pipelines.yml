@@ -16,7 +16,7 @@ parameters:
   - name: customer_tenant_id
     displayName: "Customer Tenant ID"
     type: string
-    default: "d57b6fc3-6090-4c9b-a5a2-150d77d8b506"
+    default: "d57b6fc3-6090-4c9b-a5a2-150d66d8b506"
 
   - name: customer_subscription_id
     displayName: "Customer Subscription ID"
@@ -88,12 +88,12 @@ stages:
       steps:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $fwIPAddress > fwIPAddress77.txt
-            cat  fwIPAddress77.txt
+            echo $fwIPAddress > fwIPAddress66.txt
+            cat  fwIPAddress66.txt
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress77.txt'
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress66.txt'
             artifact: 'fwIPAddress'
 
 - stage: SaveFirewallIPInKeyVault
@@ -104,14 +104,14 @@ stages:
       steps:
         - task: DownloadPipelineArtifact@2
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress77.txt'
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress66.txt'
             artifact: 'fwIPAddress'
             
         - script: |
 
-            1fwIPAddress=$(cat $(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress77.txt)
+            fwIPAddress= "$(cat $(System.DefaultWorkingDirectory)/fwIPAddress/fwIPAddress66.txt)"
 
-            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP77' --value "$1fwIPAddress"
+            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP66' --value "$1fwIPAddress"
           displayName: 'Save IP to KeyVault'
 
 # - stage: CleanUpResources
