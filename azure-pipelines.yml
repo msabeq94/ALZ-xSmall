@@ -103,10 +103,11 @@ stages:
       steps:
         - task: DownloadPipelineArtifact@2
           inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress.txt'
             artifact: 'fwIPAddress'
             
         - script: |
-            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP' --value "$(cat fwIPAddress.txt)"
+            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$(cat fwIPAddress.txt)"
           displayName: 'Save IP to KeyVault'
 
 - stage: CleanUpResources
