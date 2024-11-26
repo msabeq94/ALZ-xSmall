@@ -107,7 +107,9 @@ stages:
             artifact: 'fwIPAddress99'
             
         - script: |
+
             1fwIPAddress=$(cat $(System.DefaultWorkingDirectory)/fwIPAddress99.txt)
+
             az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP99' --value "$1fwIPAddress"
           displayName: 'Save IP to KeyVault'
 
