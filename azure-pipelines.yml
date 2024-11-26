@@ -88,12 +88,12 @@ stages:
       steps:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $fwIPAddress > fwIPAddress.txt
+            echo $fwIPAddress > fwIPAddress99.txt
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress.txt'
-            artifact: 'fwIPAddress'
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress99.txt'
+            artifact: 'fwIPAddress99'
 
 - stage: SaveFirewallIPInKeyVault
   dependsOn: GetFirewallPublicIP
@@ -103,12 +103,12 @@ stages:
       steps:
         - task: DownloadPipelineArtifact@2
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress.txt'
-            artifact: 'fwIPAddress'
+            targetPath: '$(System.DefaultWorkingDirectory)/fwIPAddress99.txt'
+            artifact: 'fwIPAddress99'
             
         - script: |
-            1fwIPAddress=$(cat $(System.DefaultWorkingDirectory)/fwIPAddress.txt)
-            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP46' --value "$1fwIPAddress"
+            1fwIPAddress=$(cat $(System.DefaultWorkingDirectory)/fwIPAddress99.txt)
+            az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP99' --value "$1fwIPAddress"
           displayName: 'Save IP to KeyVault'
 
 - stage: CleanUpResources
