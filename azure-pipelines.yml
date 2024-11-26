@@ -88,14 +88,14 @@ stages:
       steps:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $fwIPAddress > fwIPAddress4.txt
+            echo $fwIPAddress > fwIPAddress5.txt
             echo $fwIPAddress
             
           
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: fwIPAddress4.txt
+            targetPath: fwIPAddress5.txt
             artifact: 'mos4'
             publishLocation: 'pipeline'
 
@@ -109,7 +109,7 @@ stages:
             inputs:
               artifact: 'mos4'
           - script: |
-              Path= $(pipeline.workspace)/mos4/fwIPAddress4.txt
+              Path= $(pipeline.workspace)/mos4/fwIPAddress5.txt
               echo $Path
               fwIPAddress=$(cat $Path)
               echo $fwIPAddress
