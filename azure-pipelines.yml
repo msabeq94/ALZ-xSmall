@@ -88,7 +88,7 @@ stages:
       steps:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $(fwIPAddress) > fwIPAddress.txt
+            echo $fwIPAddress > fwIPAddress.txt
           displayName: 'Get Firewall Public IP'
         - task: PublishPipelineArtifact@1
           inputs:
