@@ -15,7 +15,7 @@
       "value": "vf-core-InternalServices-rg"
     },
     "rgLocation"  : {
-      "value": "customerLocation"
+      "value": "dfd"
     },
     "VnetProductionName" : {
       "value": "vf-core-alz-production-spoke-vnet"
@@ -58,7 +58,7 @@
       "value": "vf-core-alz-fw-ip"
     },
     "FWName" : {
-      "value": "vf-core-alz-fw-customerLocation"
+      "value": "vf-core-alz-fw-dfd"
     },
     "NSG_name_DEV" : {
       "value": "vf-core-alz-nsg-dev"
@@ -71,7 +71,7 @@
       "value": "vf-core-alz-rt"
     },
     "VnetLocation" : {
-      "value": "customerLocation"
+      "value": "dfd"
     }
    
 }}

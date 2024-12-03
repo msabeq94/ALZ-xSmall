@@ -65,97 +65,97 @@ stages:
             az account management-group subscription add --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
           displayName: 'Assign Subscription to Management Groups'
 
-- stage: DeployMainInfrastructure
-  dependsOn:
-    - AuthenticateAzure
-    - AssignResourcesToManagementGroups
-  jobs:
-    - job: DeployMainBicepModules
-      steps:
-        - script: |
-            sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
-            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
-            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
-            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
-            az deployment sub create --name ${{parameters.NAME}} --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
-          displayName: 'Deploy Main Bicep File'
+# - stage: DeployMainInfrastructure
+#   dependsOn:
+#     - AuthenticateAzure
+#     - AssignResourcesToManagementGroups
+#   jobs:
+#     - job: DeployMainBicepModules
+#       steps:
+#         - script: |
+#             sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
+#             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
+#             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
+#             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
+#             az deployment sub create --name ${{parameters.NAME}} --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
+#           displayName: 'Deploy Main Bicep File'
 
-- stage: GetFirewallPublicIP
-  dependsOn: DeployMainBicepModules
-  jobs:
-    - job: RetrieveFirewallIP
-      displayName: "Retrieve Firewall Public IP"
-      steps:
-        - script: |
-            fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
-            echo $fwIPAddress > fwIPAddress
-            echo $fwIPAddress
+# - stage: GetFirewallPublicIP
+#   dependsOn: DeployMainBicepModules
+#   jobs:
+#     - job: RetrieveFirewallIP
+#       displayName: "Retrieve Firewall Public IP"
+#       steps:
+#         - script: |
+#             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
+#             echo $fwIPAddress > fwIPAddress
+#             echo $fwIPAddress
             
           
-          displayName: 'Get Firewall Public IP'
-        - task: PublishPipelineArtifact@1
-          inputs:
-            targetPath: 'fwIPAddress'
-            artifact: 'fwIPAddress'
-            publishLocation: 'pipeline'
+#           displayName: 'Get Firewall Public IP'
+#         - task: PublishPipelineArtifact@1
+#           inputs:
+#             targetPath: 'fwIPAddress'
+#             artifact: 'fwIPAddress'
+#             publishLocation: 'pipeline'
 
-- stage: SaveFirewallIPInKeyVault
-  dependsOn: GetFirewallPublicIP
-  jobs:
-    - job: SaveIPToKeyVault
-      displayName: "Save Firewall Public IP to KeyVault"
-      steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'fwIPAddress'
-          - script: |
+# - stage: SaveFirewallIPInKeyVault
+#   dependsOn: GetFirewallPublicIP
+#   jobs:
+#     - job: SaveIPToKeyVault
+#       displayName: "Save Firewall Public IP to KeyVault"
+#       steps:
+#           - task: DownloadPipelineArtifact@2
+#             inputs:
+#               artifact: 'fwIPAddress'
+#           - script: |
               
-              fwIPAddress=$(cat '$(pipeline.workspace)/fwIPAddress')
-              echo $fwIPAddress
-              az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$fwIPAddress"
+#               fwIPAddress=$(cat '$(pipeline.workspace)/fwIPAddress')
+#               echo $fwIPAddress
+#               az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$fwIPAddress"
             
-            displayName: 'Save IP to KeyVault'
+#             displayName: 'Save IP to KeyVault'
   
-- stage: CleanUpResources
-  dependsOn: DeployMainInfrastructure
-  jobs:
-    - job: ManualApprovalResourcesStep
-      displayName: "Review and Approve Resources Cleanup"
-      pool: server
-      steps:
-        - task: ManualValidation@0
-          inputs:
-            notifyUsers: 'msabeq@outlook.com'
-            instructions: 'Please approve or reject the execution of resource cleanup.'
-    - job: RemoveResources
-      dependsOn: ManualApprovalResourcesStep
-      steps:
-        - script: |
-            az group delete --name "vf-core-InternalServices-rg" --yes
-            az group delete --name "vf-core-Production-rg" --yes
-            az group delete --name "vf-core-Development-rg" --yes
-            az group delete --name "vf-core-CentralHub-rg" --yes
-          displayName: 'Delete Resource Groups'
+# - stage: CleanUpResources
+#   dependsOn: DeployMainInfrastructure
+#   jobs:
+#     - job: ManualApprovalResourcesStep
+#       displayName: "Review and Approve Resources Cleanup"
+#       pool: server
+#       steps:
+#         - task: ManualValidation@0
+#           inputs:
+#             notifyUsers: 'msabeq@outlook.com'
+#             instructions: 'Please approve or reject the execution of resource cleanup.'
+#     - job: RemoveResources
+#       dependsOn: ManualApprovalResourcesStep
+#       steps:
+#         - script: |
+#             az group delete --name "vf-core-InternalServices-rg" --yes
+#             az group delete --name "vf-core-Production-rg" --yes
+#             az group delete --name "vf-core-Development-rg" --yes
+#             az group delete --name "vf-core-CentralHub-rg" --yes
+#           displayName: 'Delete Resource Groups'
 
-- stage: CleanUpManagementGroups
-  dependsOn: 
-  - AssignResourcesToManagementGroups
-  - DeployMainInfrastructure
-  jobs:
-    - job: ManualApprovalManagementGroupsStep
-      displayName: "Review and Approve ManagementGroups Cleanup"
-      pool: server
-      steps:
-        - task: ManualValidation@0
-          inputs:
-            notifyUsers: 'msabeq@outlook.com'
-            instructions: 'Please approve or reject the execution of ManagementGroups cleanup.'
-    - job: RemoveManagementGroups
-      dependsOn: ManualApprovalManagementGroupsStep
-      steps:
-        - script: |
-            az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-            az account management-group delete --name alz-landingzones-online
-            az account management-group delete --name alz-landingzones
-            az account management-group delete --name alz
-          displayName: 'Delete Management Groups'
+# - stage: CleanUpManagementGroups
+#   dependsOn: 
+#   - AssignResourcesToManagementGroups
+#   - DeployMainInfrastructure
+#   jobs:
+#     - job: ManualApprovalManagementGroupsStep
+#       displayName: "Review and Approve ManagementGroups Cleanup"
+#       pool: server
+#       steps:
+#         - task: ManualValidation@0
+#           inputs:
+#             notifyUsers: 'msabeq@outlook.com'
+#             instructions: 'Please approve or reject the execution of ManagementGroups cleanup.'
+#     - job: RemoveManagementGroups
+#       dependsOn: ManualApprovalManagementGroupsStep
+#       steps:
+#         - script: |
+#             az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
+#             az account management-group delete --name alz-landingzones-online
+#             az account management-group delete --name alz-landingzones
+#             az account management-group delete --name alz
+#           displayName: 'Delete Management Groups'
