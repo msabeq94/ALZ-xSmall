@@ -29,7 +29,7 @@ parameters:
     default: "mos"
 
   - name: customer_location
-    displayName: "Customer location"
+    displayName: "Customer Location"
     type: string
     default: "eastus"
 
@@ -43,8 +43,9 @@ stages:
   jobs:
     - job: AuthenticateServicePrincipal
       steps:
-        - script: az login --service-principal --username ${{ parameters.customer_client_id }} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
-          displayName: 'Authenticate Service Principal'
+        - script: |
+            az login --service-principal --username ${{ parameters.customer_client_id }} --password ${{ parameters.customer_client_secret }} --tenant ${{ parameters.customer_tenant_id }}
+          displayName: "Authenticate Service Principal"
 
 - stage: DeployManagementGroups
   dependsOn: AuthenticateAzure
@@ -52,13 +53,12 @@ stages:
     - job: DeployManagementGroupBicep
       steps:
         - script: |
-            sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
-             seconds=$(date +%S%3N)
-             deploymentNameMG="alz-MgDeployment-mos-$seconds"
-             echo $deploymentNameMG
-             echo "##vso[task.setvariable variable=MGdeploymentName]$deploymentNameMG"
-            az deployment tenant create --name $deploymentNameMG --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep" --parameters "managementGroups.parameters.XSmall.json"
-          displayName: 'Deploy Management Group Bicep'
+            sed -i "s/customerName/${{ parameters.customer_name }}/g" managementGroups.parameters.XSmall.json
+            seconds=$(date +%S%3N)
+            deploymentNameMG="alz-MgDeployment-${{ parameters.customer_name }}-$seconds"
+            echo "##vso[task.setvariable variable=MGdeploymentName]$deploymentNameMG"
+            az deployment tenant create --name $deploymentNameMG --location ${{ parameters.customer_location }} --template-file "managementGroupsXSmall.bicep" --parameters "managementGroups.parameters.XSmall.json"
+          displayName: "Deploy Management Group Bicep"
 
 - stage: AssignResourcesToManagementGroups
   dependsOn: DeployManagementGroups
@@ -66,8 +66,8 @@ stages:
     - job: AssignSubscriptionsToManagementGroups
       steps:
         - script: |
-            az account management-group subscription add --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-          displayName: 'Assign Subscription to Management Groups'
+            az account management-group subscription add --name "alz-landingzones-online" -s ${{ parameters.customer_subscription_id }}
+          displayName: "Assign Subscription to Management Groups"
 
 - stage: DeployMainInfrastructure
   dependsOn:
@@ -77,16 +77,16 @@ stages:
     - job: DeployMainBicepModules
       steps:
         - script: |
-            az account set --subscription ${{parameters.customer_subscription_id}}
+            az account set --subscription ${{ parameters.customer_subscription_id }}
             seconds=$(date +%S%3N)
-             deploymentNameMAIN="alz-MgDeployment-mos-$seconds"
-             echo "##vso[task.setvariable variable=MAINdeploymentName]$deploymentNameMAIN"
-            sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
-            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
-            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
-            sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
-            az deployment sub create --name $deploymentNameMAIN --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
-          displayName: 'Deploy Main Bicep File'
+            deploymentNameMAIN="alz-MgDeployment-${{ parameters.customer_name }}-$seconds"
+            echo "##vso[task.setvariable variable=MAINdeploymentName]$deploymentNameMAIN"
+            sed -i "s/customerLocation/${{ parameters.customer_location }}/g" Main.parameters.XSmall.json
+            sed -i "s/mgmtSubID/${{ parameters.customer_subscription_id }}/g" Main.parameters.XSmall.json
+            sed -i "s/mgmtSubID/${{ parameters.customer_subscription_id }}/g" Modules/FWXSmall.bicep
+            sed -i "s/mgmtSubID/${{ parameters.customer_subscription_id }}/g" Modules/PolicyassignmentsXSmall.bicep
+            az deployment sub create --name $deploymentNameMAIN --location ${{ parameters.customer_location }} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
+          displayName: "Deploy Main Bicep File"
 
 - stage: GetFirewallPublicIP
   dependsOn: DeployMainInfrastructure
@@ -97,44 +97,24 @@ stages:
         - script: |
             fwIPAddress=$(az network public-ip show -g 'vf-core-CentralHub-rg' -n 'vf-core-alz-fw-ip' --query ipAddress -o tsv)
             echo $fwIPAddress > fwIPAddress
-            echo $fwIPAddress
-            
-          
-          displayName: 'Get Firewall Public IP'
+            echo "Firewall IP: $fwIPAddress"
+          displayName: "Get Firewall Public IP"
         - task: PublishPipelineArtifact@1
           inputs:
-            targetPath: 'fwIPAddress'
-            artifact: 'fwIPAddress'
-            publishLocation: 'pipeline'
+            targetPath: "fwIPAddress"
+            artifact: "fwIPAddress"
+            publishLocation: "pipeline"
 
-# - stage: SaveFirewallIPInKeyVault
-#   dependsOn: GetFirewallPublicIP
-#   jobs:
-#     - job: SaveIPToKeyVault
-#       displayName: "Save Firewall Public IP to KeyVault"
-#       steps:
-#           - task: DownloadPipelineArtifact@2
-#             inputs:
-#               artifact: 'fwIPAddress'
-#           - script: |
-              
-#               fwIPAddress=$(cat '$(pipeline.workspace)/fwIPAddress')
-#               echo $fwIPAddress
-#               az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$fwIPAddress"
-            
-#             displayName: 'Save IP to KeyVault'
-  
 - stage: CleanUpResources
   dependsOn: DeployMainInfrastructure
   jobs:
     - job: ManualApprovalResourcesStep
       displayName: "Review and Approve Resources Cleanup"
-      pool: server
       steps:
         - task: ManualValidation@0
           inputs:
-            notifyUsers: 'msabeq@outlook.com'
-            instructions: 'Please approve or reject the execution of resource cleanup.'
+            notifyUsers: "msabeq@outlook.com"
+            instructions: "Please approve or reject the execution of resource cleanup."
     - job: RemoveResources
       dependsOn: ManualApprovalResourcesStep
       steps:
@@ -143,72 +123,55 @@ stages:
             az group delete --name "vf-core-Production-rg" --yes
             az group delete --name "vf-core-Development-rg" --yes
             az group delete --name "vf-core-CentralHub-rg" --yes
-            echo $MAINdeploymentName
-            #az deployment sub delete -n "$MAINdeploymentName"
-
-          displayName: 'Delete Resource Groups'
+          displayName: "Delete Resource Groups"
 
 - stage: CleanUpManagementGroups
-  dependsOn: 
-  - AssignResourcesToManagementGroups
-  - DeployMainInfrastructure
+  dependsOn: AssignResourcesToManagementGroups
   jobs:
     - job: ManualApprovalManagementGroupsStep
       displayName: "Review and Approve ManagementGroups Cleanup"
-      pool: server
       steps:
         - task: ManualValidation@0
           inputs:
-            notifyUsers: 'msabeq@outlook.com'
-            instructions: 'Please approve or reject the execution of ManagementGroups cleanup.'
+            notifyUsers: "msabeq@outlook.com"
+            instructions: "Please approve or reject the execution of ManagementGroups cleanup."
     - job: RemoveManagementGroups
       dependsOn: ManualApprovalManagementGroupsStep
       steps:
         - script: |
-            az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-            az account management-group delete --name alz-landingzones-online
-            az account management-group delete --name alz-landingzones
-            az account management-group delete --name alz
-            echo $MAINdeploymentName
-            # az deployment sub delete --name "$MAINdeploymentName"
-                            
-          displayName: 'Delete Management Groups'
-
+            az account management-group subscription remove --name "alz-landingzones-online" -s ${{ parameters.customer_subscription_id }}
+            az account management-group delete --name "alz-landingzones-online"
+            az account management-group delete --name "alz-landingzones"
+            az account management-group delete --name "alz"
+          displayName: "Delete Management Groups"
 
 - stage: CleanUpAzurePolicy
-  dependsOn: 
-    - AssignResourcesToManagementGroups
-    - DeployMainInfrastructure
-  displayName: "Azure Policy Cleanup"
+  dependsOn: DeployMainInfrastructure
   jobs:
     - job: ManualApprovalAzurePolicyStep
       displayName: "Review and Approve Azure Policy Cleanup"
-      pool: server
       steps:
         - task: ManualValidation@0
           inputs:
-            notifyUsers: 'msabeq@outlook.com'
-            instructions: 'Please approve or reject the execution of Azure Policy cleanup.'
-    - job: RemoveAzurePolicy
+            notifyUsers: "msabeq@outlook.com"
+            instructions: "Please approve or reject the execution of Azure Policy cleanup."
+    - job: RemoveAzurePolicyAssignments
       dependsOn: ManualApprovalAzurePolicyStep
-      displayName: "Delete Azure Policy Assignments and Definitions"
-      
       steps:
         - script: |
             subscriptionId="${{ parameters.customer_subscription_id }}"
-
-            # Delete policy assignments
-            echo "Deleting policy assignments..."
             policyAssignments=$(az policy assignment list --scope "/subscriptions/$subscriptionId" --query "[].name" -o tsv)
             for assignment in $policyAssignments; do
               az policy assignment delete --name "$assignment" --scope "/subscriptions/$subscriptionId"
             done
-             
-
-            # Delete custom policy definitions
-            echo "Deleting policy definitions..."
+          displayName: "Delete Azure Policy Assignments"
+    - job: RemoveAzurePolicyDefinitions
+      dependsOn: RemoveAzurePolicyAssignments
+      steps:
+        - script: |
+            subscriptionId="${{ parameters.customer_subscription_id }}"
             policyDefinitions=$(az policy definition list --subscription $subscriptionId --query "[?policyType=='Custom'].name" -o tsv)
             for definition in $policyDefinitions; do
-              az policy definition delete --name "$definition" 
+              az policy definition delete --name "$definition"
             done
-          displayName: "Execute Azure Policy Cleanup Script"
+          displayName: "Delete Azure Policy Definitions"
