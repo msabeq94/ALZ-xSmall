@@ -110,6 +110,7 @@ stages:
   jobs:
     - job: ManualApprovalResourcesStep
       displayName: "Review and Approve Resources Cleanup"
+      pool: server 
       steps:
         - task: ManualValidation@0
           inputs:
@@ -130,6 +131,7 @@ stages:
   jobs:
     - job: ManualApprovalManagementGroupsStep
       displayName: "Review and Approve ManagementGroups Cleanup"
+      pool: server 
       steps:
         - task: ManualValidation@0
           inputs:
@@ -150,6 +152,7 @@ stages:
   jobs:
     - job: ManualApprovalAzurePolicyStep
       displayName: "Review and Approve Azure Policy Cleanup"
+      pool: server 
       steps:
         - task: ManualValidation@0
           inputs:
