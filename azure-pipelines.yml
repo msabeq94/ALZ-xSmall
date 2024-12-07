@@ -83,6 +83,7 @@ stages:
             echo "##vso[task.setvariable variable=MAINdeploymentName]$deploymentNameMAIN"
             sed -i "s/customerLocation/${{ parameters.customer_location }}/g" Main.parameters.XSmall.json
             sed -i "s/mgmtSubID/${{ parameters.customer_subscription_id }}/g" Main.parameters.XSmall.json
+             sed -i "s/mgmtSubID/${{ parameters.customer_subscription_id }}/g" MainXSmall.bicep
             sed -i "s/mgmtSubID/${{ parameters.customer_subscription_id }}/g" Modules/FWXSmall.bicep
             sed -i "s/mgmtSubID/${{ parameters.customer_subscription_id }}/g" Modules/PolicyassignmentsXSmall.bicep
             az deployment sub create --name $deploymentNameMAIN --location ${{ parameters.customer_location }} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
