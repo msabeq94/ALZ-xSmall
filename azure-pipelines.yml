@@ -173,3 +173,41 @@ stages:
             # az deployment sub delete --name "$MAINdeploymentName"
                             
           displayName: 'Delete Management Groups'
+
+
+- stage: CleanUpAzurePolicy
+  dependsOn: 
+    - AssignResourcesToManagementGroups
+    - DeployMainInfrastructure
+  displayName: "Azure Policy Cleanup"
+  jobs:
+    - job: ManualApprovalAzurePolicyStep
+      displayName: "Review and Approve Azure Policy Cleanup"
+      pool: server
+      steps:
+        - task: ManualValidation@0
+          inputs:
+            notifyUsers: 'msabeq@outlook.com'
+            instructions: 'Please approve or reject the execution of Azure Policy cleanup.'
+    - job: RemoveAzurePolicy
+      dependsOn: ManualApprovalAzurePolicyStep
+      displayName: "Delete Azure Policy Assignments and Definitions"
+      
+      steps:
+        - script: |
+            subscriptionId="${{ parameters.customer_subscription_id }}"
+
+            # Delete policy assignments
+            echo "Deleting policy assignments..."
+            policyAssignments=$(az policy assignment list --scope "/subscriptions/$subscriptionId" --query "[].name" -o tsv)
+            for assignment in $policyAssignments; do
+              az policy assignment delete --name "$assignment" --scope "/subscriptions/$subscriptionId"
+            done
+
+            # Delete custom policy definitions
+            echo "Deleting policy definitions..."
+            policyDefinitions=$(az policy definition list --scope "/subscriptions/$subscriptionId" --query "[?policyType=='Custom'].name" -o tsv)
+            for definition in $policyDefinitions; do
+              az policy definition delete --name "$definition" --scope "/subscriptions/$subscriptionId"
+            done
+          displayName: "Execute Azure Policy Cleanup Script"
