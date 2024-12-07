@@ -143,7 +143,7 @@ stages:
             # az group delete --name "vf-core-Production-rg" --yes
             # az group delete --name "vf-core-Development-rg" --yes
             # az group delete --name "vf-core-CentralHub-rg" --yes
-            az deployment sub delete -n ${{variables.MAINdeploymentName}} -y
+            az deployment sub delete -n $MAINdeploymentName -y
 
           displayName: 'Delete Resource Groups'
 
@@ -168,6 +168,6 @@ stages:
             # az account management-group delete --name alz-landingzones-online
             # az account management-group delete --name alz-landingzones
             # az account management-group delete --name alz
-            az deployment tenant delete -n ${{variables.MGdeploymentName}} -y
+            az deployment tenant delete -n $MGdeploymentName -y
                             
           displayName: 'Delete Management Groups'
