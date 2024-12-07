@@ -6,22 +6,22 @@ parameters:
   - name: customer_client_id
     displayName: "Customer Client ID"
     type: string
-    default: "87fac4cc-9e62-4b68-8603-6bcd69bd0920"
+    default: "14c278e4-bfb7-451a-8af2-40f0c1e7675f"
 
   - name: customer_client_secret
     displayName: "Customer Client Secret"
     type: string
-    default: "kcU8Q~1NrSsSavc5gr9panKTMfsenLWQuV~0came"
+    default: "IvX8Q~KXdcMvlHYIjVhyPf3VMmpQ1OYou~j0KbAK"
 
   - name: customer_tenant_id
     displayName: "Customer Tenant ID"
     type: string
-    default: "d57b6fc3-6090-4c9b-a5a2-150d88d8b506"
+    default: "87431d80-c13c-4f97-8d52-4bd5ec6e617e"
 
   - name: customer_subscription_id
     displayName: "Customer Subscription ID"
     type: string
-    default: "24624965-8c6d-4d1a-b50d-a4970f5b21df"
+    default: "1f61fe99-8069-40f0-ac65-41b326ed0d5a"
 
   - name: customer_name
     displayName: "Customer Name"
