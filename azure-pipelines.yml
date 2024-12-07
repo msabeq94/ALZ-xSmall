@@ -139,11 +139,12 @@ stages:
       dependsOn: ManualApprovalResourcesStep
       steps:
         - script: |
-            # az group delete --name "vf-core-InternalServices-rg" --yes
-            # az group delete --name "vf-core-Production-rg" --yes
-            # az group delete --name "vf-core-Development-rg" --yes
-            # az group delete --name "vf-core-CentralHub-rg" --yes
-            az deployment sub delete -n "$MAINdeploymentName"
+            az group delete --name "vf-core-InternalServices-rg" --yes
+            az group delete --name "vf-core-Production-rg" --yes
+            az group delete --name "vf-core-Development-rg" --yes
+            az group delete --name "vf-core-CentralHub-rg" --yes
+            echo $MAINdeploymentName
+            #az deployment sub delete -n "$MAINdeploymentName"
 
           displayName: 'Delete Resource Groups'
 
@@ -165,9 +166,10 @@ stages:
       steps:
         - script: |
             az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-            # az account management-group delete --name alz-landingzones-online
-            # az account management-group delete --name alz-landingzones
-            # az account management-group delete --name alz
-            az deployment sub delete --name "$MAINdeploymentName"
+            az account management-group delete --name alz-landingzones-online
+            az account management-group delete --name alz-landingzones
+            az account management-group delete --name alz
+            echo $MAINdeploymentName
+            # az deployment sub delete --name "$MAINdeploymentName"
                             
           displayName: 'Delete Management Groups'
