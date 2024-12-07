@@ -53,7 +53,11 @@ stages:
       steps:
         - script: |
             sed -i "s/customerName/${{parameters.customer_name}}/g" managementGroups.parameters.XSmall.json
-            az deployment tenant create --name ${{parameters.NAME}} --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep" --parameters "managementGroups.parameters.XSmall.json"
+             seconds=$(date +%S%3N)
+             deploymentNameMG="alz-MgDeployment-mos-$seconds"
+             echo $deploymentNameMG
+             echo "##vso[task.setvariable variable=MGdeploymentName]$deploymentNameMG"
+            az deployment tenant create --name $deploymentNameMG --location ${{parameters.customer_location}} --template-file "managementGroupsXSmall.bicep" --parameters "managementGroups.parameters.XSmall.json"
           displayName: 'Deploy Management Group Bicep'
 
 - stage: AssignResourcesToManagementGroups
@@ -74,11 +78,14 @@ stages:
       steps:
         - script: |
             az account set --subscription ${{parameters.customer_subscription_id}}
+            seconds=$(date +%S%3N)
+             deploymentNameMAIN="alz-MgDeployment-mos-$seconds"
+             echo "##vso[task.setvariable variable=MAINdeploymentName]$deploymentNameMAIN"
             sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/PolicyassignmentsXSmall.bicep
-            az deployment sub create --name ${{parameters.NAME}} --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
+            az deployment sub create --name $deploymentNameMAIN --location ${{parameters.customer_location}} --template-file "MainXSmall.bicep" --parameters "Main.parameters.XSmall.json"
           displayName: 'Deploy Main Bicep File'
 
 - stage: GetFirewallPublicIP
@@ -100,22 +107,22 @@ stages:
             artifact: 'fwIPAddress'
             publishLocation: 'pipeline'
 
-- stage: SaveFirewallIPInKeyVault
-  dependsOn: GetFirewallPublicIP
-  jobs:
-    - job: SaveIPToKeyVault
-      displayName: "Save Firewall Public IP to KeyVault"
-      steps:
-          - task: DownloadPipelineArtifact@2
-            inputs:
-              artifact: 'fwIPAddress'
-          - script: |
+# - stage: SaveFirewallIPInKeyVault
+#   dependsOn: GetFirewallPublicIP
+#   jobs:
+#     - job: SaveIPToKeyVault
+#       displayName: "Save Firewall Public IP to KeyVault"
+#       steps:
+#           - task: DownloadPipelineArtifact@2
+#             inputs:
+#               artifact: 'fwIPAddress'
+#           - script: |
               
-              fwIPAddress=$(cat '$(pipeline.workspace)/fwIPAddress')
-              echo $fwIPAddress
-              az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$fwIPAddress"
+#               fwIPAddress=$(cat '$(pipeline.workspace)/fwIPAddress')
+#               echo $fwIPAddress
+#               az keyvault secret set --vault-name 'vf-core-lighthouse-kv' --name 'vf-core-alz-fw-IP4' --value "$fwIPAddress"
             
-            displayName: 'Save IP to KeyVault'
+#             displayName: 'Save IP to KeyVault'
   
 - stage: CleanUpResources
   dependsOn: DeployMainInfrastructure
@@ -132,10 +139,12 @@ stages:
       dependsOn: ManualApprovalResourcesStep
       steps:
         - script: |
-            az group delete --name "vf-core-InternalServices-rg" --yes
-            az group delete --name "vf-core-Production-rg" --yes
-            az group delete --name "vf-core-Development-rg" --yes
-            az group delete --name "vf-core-CentralHub-rg" --yes
+            # az group delete --name "vf-core-InternalServices-rg" --yes
+            # az group delete --name "vf-core-Production-rg" --yes
+            # az group delete --name "vf-core-Development-rg" --yes
+            # az group delete --name "vf-core-CentralHub-rg" --yes
+            az deployment sub delete -n ${{variables.MAINdeploymentName}} -y
+
           displayName: 'Delete Resource Groups'
 
 - stage: CleanUpManagementGroups
@@ -159,6 +168,6 @@ stages:
             # az account management-group delete --name alz-landingzones-online
             # az account management-group delete --name alz-landingzones
             # az account management-group delete --name alz
-            az deployment tenant delete --name
+            az deployment tenant delete -n ${{variables.MGdeploymentName}} -y
                             
           displayName: 'Delete Management Groups'
