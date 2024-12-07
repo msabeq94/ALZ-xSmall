@@ -228,10 +228,11 @@ module PolicyDefinitions 'Modules/PolicyDefinitionsXSmall.bicep' = {
 
 module PolicyAssignments 'Modules/PolicyassignmentsXSmall.bicep' = {
   name: 'PolicyAssignments-${deploymentTime}'
-  scope: resourceGroup(rgNameInternalServicesHub)
+  scope: resourceGroup(rgNameCentralNetwork)
   dependsOn: [
     PolicyDefinitions
-    ResourceGroupInternalServicesHub
+    ResourceGroupCentralNetwork
+    
   ]
 }
 

@@ -36,7 +36,7 @@ parameters:
   - name: NAME
     displayName: "NAME"
     type: string
-    default: "alz-MgDeployment-mos"
+    default: "alz-MgDeployment-mos$"
 
 stages:
 - stage: AuthenticateAzure
@@ -156,7 +156,9 @@ stages:
       steps:
         - script: |
             az account management-group subscription remove --name 'alz-landingzones-online' -s ${{parameters.customer_subscription_id}}
-            az account management-group delete --name alz-landingzones-online
-            az account management-group delete --name alz-landingzones
-            az account management-group delete --name alz
+            # az account management-group delete --name alz-landingzones-online
+            # az account management-group delete --name alz-landingzones
+            # az account management-group delete --name alz
+            az deployment tenant delete --name
+                            
           displayName: 'Delete Management Groups'
