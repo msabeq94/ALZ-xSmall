@@ -6,7 +6,7 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     description: 'This policy denies the creation of a subnet without a Network Security Group. NSG help to protect traffic across subnet-level.'
     enforcementMode: 'Default'
     source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/dfdfdf/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Nsg'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Nsg'
     
 
   }
@@ -16,7 +16,7 @@ var varCustomPolicyassignmentsAuditDenyArrayXSmall = [
     description: 'This policy denies the creation of a subnet without a User Defined Route. UDRs help to control routing of traffic within a subnet.'
     enforcementMode: 'Default'
     source: 'https://github.com/Azure/Enterprise-Scale/'
-    policyDefinitionId: '/subscriptions/dfdfdf/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Udr'
+    policyDefinitionId: '/subscriptions/mgmtSubID/providers/Microsoft.Authorization/policyDefinitions/Deny-Subnet-Without-Udr'
    
 }
 ]
