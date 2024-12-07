@@ -73,6 +73,7 @@ stages:
     - job: DeployMainBicepModules
       steps:
         - script: |
+            az account set --subscription ${{parameters.customer_subscription_id}}
             sed -i "s/customerLocation/${{parameters.customer_location}}/g" Main.parameters.XSmall.json
             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Main.parameters.XSmall.json
             sed -i "s/mgmtSubID/${{parameters.customer_subscription_id}}/g" Modules/FWXSmall.bicep
