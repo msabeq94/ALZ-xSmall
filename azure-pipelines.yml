@@ -82,7 +82,7 @@ stages:
           displayName: 'Deploy Main Bicep File'
 
 - stage: GetFirewallPublicIP
-  dependsOn: DeployMainBicepModules
+  dependsOn: DeployMainInfrastructure
   jobs:
     - job: RetrieveFirewallIP
       displayName: "Retrieve Firewall Public IP"
