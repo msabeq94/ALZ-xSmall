@@ -36,7 +36,7 @@ parameters:
   - name: NAME
     displayName: "NAME"
     type: string
-    default: "alz-MgDeployment-mos$"
+    default: "alz-MgDeployment-mos"
 
 stages:
 - stage: AuthenticateAzure
