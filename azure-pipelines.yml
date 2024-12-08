@@ -125,6 +125,7 @@ stages:
             az group delete --name "vf-core-Production-rg" --yes
             az group delete --name "vf-core-Development-rg" --yes
             az group delete --name "vf-core-CentralHub-rg" --yes
+            az group delete --name "NetworkWatcherRG" --yes
           displayName: "Delete Resource Groups"
 
 - stage: CleanUpManagementGroups
