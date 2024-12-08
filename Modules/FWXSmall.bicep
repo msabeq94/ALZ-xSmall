@@ -32,7 +32,7 @@ resource XSmallFW 'Microsoft.Network/azureFirewalls@2024-01-01' = {
       properties: {
         priority: 65000
         action: {
-          type: 'Allow'
+          type: 'Deny'
         }
         rules: [
           {
